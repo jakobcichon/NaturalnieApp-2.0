@@ -16,14 +16,16 @@ using System.Windows.Shapes;
 
 namespace NaturalnieApp2.Views.Menu
 {
-
-    public partial class MenuBarView : UserControl
+    /// <summary>
+    /// Interaction logic for MenuBarItemView.xaml
+    /// </summary>
+    public partial class MenuBarItemView : UserControl
     {
-        public MenuBarView()
+        public MenuBarItemView()
         {
             InitializeComponent();
-            DataContext = new MenuBarViewModel();
-        }
 
+            DataContext = new MenuBarItemViewModel();
+        }
     }
 }

@@ -4,6 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NaturalnieApp2.Views.Menu"
+             xmlns:viewmodels="clr-namespace:NaturalnieApp2.ViewModels.Menu"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="400" Background="#FFF3CA71">
+
+    <StackPanel>
+        <ItemsControl ItemsSource="{Binding MenuBarViews}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:MenuBarItemView}">
+                    <local:MenuBarItemView/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
 </UserControl>
