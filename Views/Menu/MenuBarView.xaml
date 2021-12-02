@@ -10,9 +10,11 @@
 
     <StackPanel>
         <ItemsControl ItemsSource="{Binding MenuBarViews}">
-            <DataTemplate DataType="{x:Type vm:MenuBarItemViewModel}">
-                <local:MenuBarItemView/>
-            </DataTemplate>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:MenuBarItemViewModel}">
+                    <local:MenuBarItemView/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
         </ItemsControl>
     </StackPanel>
 </UserControl>
