@@ -25,7 +25,6 @@ namespace NaturalnieApp2.Views.Menu
         {
             InitializeComponent();
 
-            DataContext = new MenuBarItemViewModel();
         }
     }
 }

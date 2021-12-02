@@ -11,21 +11,22 @@ namespace NaturalnieApp2.ViewModels.Menu
 
     public class MenuBarItemViewModel: ViewModelBase
     {
-        private string _menuName = "Default menu";
-        public string MenuName
+        private string? _mainMenuName;
+
+        public string? MainMenuName
         {
-            get { return _menuName; }
-            set { _menuName = value; }
+            get { return _mainMenuName; }
+            set { _mainMenuName = value; }
         }
 
-        private ObservableCollection<Button> _subMenus = new ObservableCollection<Button>();
+        private ObservableCollection<string> _subMenuNames = new ObservableCollection<string>();
 
-        public ObservableCollection<Button> SubMenus { get { return _subMenus; } }  
+        public ObservableCollection<string> SubMenuNames { get { return _subMenuNames; } }  
 
-        public MenuBarItemViewModel()
+        public MenuBarItemViewModel(string mainMenuName)
         {
-            SubMenus.Add(new Button() { Content="Test1"});
-            SubMenus.Add(new Button() { Content = "Test2" });
+            MainMenuName = mainMenuName;
+
         }
 
     }

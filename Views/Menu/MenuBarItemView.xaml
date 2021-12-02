@@ -4,25 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NaturalnieApp2.Views.Menu"
+             xmlns:vm="clr-namespace:NaturalnieApp2.ViewModels.Menu"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400" Background="#FF65A992">
     <Grid>
-        <Grid.RowDefinitions> 
-            <RowDefinition Height="100"/>   
+        <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="{Binding MenuName}" FontSize="24"/>
 
-        <StackPanel Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding SubMenus}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type Button}">
-                        <Button/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
-        
-        
+        <ItemsControl>
+            <DataTemplate DataType="{x:Type vm:MenuBarItemViewModel}">
+                <Button Content="{Binding MainMenuName}"/>
+            </DataTemplate>
+        </ItemsControl>
+
     </Grid>
 </UserControl>

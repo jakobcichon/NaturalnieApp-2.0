@@ -10,9 +10,9 @@ namespace NaturalnieApp2.ViewModels.Menu
 {
     public class MenuBarViewModel: ViewModelBase
     {
-        private ObservableCollection<MenuBarItemView> _MenuBarViews = new ObservableCollection<MenuBarItemView>();
+        private ObservableCollection<MenuBarItemViewModel> _MenuBarViews;
 
-        public ObservableCollection<MenuBarItemView> MenuBarViews
+        public ObservableCollection<MenuBarItemViewModel> MenuBarViews
         {
             get { return _MenuBarViews; }
             set { _MenuBarViews = value; }
@@ -20,7 +20,10 @@ namespace NaturalnieApp2.ViewModels.Menu
 
         public MenuBarViewModel()
         {
-            MenuBarViews.Add(new MenuBarItemView());
+            MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
+            MenuBarViews.Add(new MenuBarItemViewModel("Test1"));
+            MenuBarViews.Add(new MenuBarItemViewModel("Test2"));
+
         }
     }
 }
