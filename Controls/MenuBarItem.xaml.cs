@@ -1,5 +1,4 @@
-﻿using NaturalnieApp2.ViewModels.Menu;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NaturalnieApp2.Views.Menu
+namespace NaturalnieApp2.Controls
 {
     /// <summary>
-    /// Interaction logic for MenuBarItemView.xaml
+    /// Interaction logic for MenuBarItem.xaml
     /// </summary>
-    public partial class MenuBarItemView : UserControl
+    public partial class MenuBarItem : UserControl
     {
-        public MenuBarItemView()
+        public MenuBarItem()
         {
             InitializeComponent();
-
         }
     }
 }

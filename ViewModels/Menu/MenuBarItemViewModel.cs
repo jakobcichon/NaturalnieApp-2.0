@@ -1,33 +1,53 @@
-﻿using System;
+﻿using NaturalnieApp2.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace NaturalnieApp2.ViewModels.Menu
 {
 
-    public class MenuBarItemViewModel: ViewModelBase
+    internal class MenuBarItemViewModel
     {
-        private string? _mainMenuName;
+        private ICommand _mainButtonCommand;
 
-        public string? MainMenuName
+        public ICommand MainButtonCommand
         {
-            get { return _mainMenuName; }
-            set { _mainMenuName = value; }
+            get { return _mainButtonCommand; }
+            set { _mainButtonCommand = value; }
         }
 
-        private ObservableCollection<string> _subMenuNames = new ObservableCollection<string>();
 
-        public ObservableCollection<string> SubMenuNames { get { return _subMenuNames; } }  
+        private string _mainButtonTitle;
 
-        public MenuBarItemViewModel(string mainMenuName)
+        public string MainButtonTittle
         {
-            MainMenuName = mainMenuName;
-
+            get { return _mainButtonTitle; }
+            set { _mainButtonTitle = value; }
         }
 
+        private ObservableCollection<string> _subButtonCollection;
+
+        public ObservableCollection<string> SubButtonCollection
+        {
+            get { return _subButtonCollection; }
+            set { _subButtonCollection = value; }
+        }
+
+        public MenuBarItemViewModel(string mainButtonTittle)
+        {
+            _mainButtonTitle = mainButtonTittle;
+            _subButtonCollection = new ObservableCollection<string>();
+
+            _mainButtonCommand = new MenuBarItemCommands();
+        }
+
+        public void AddSubButton(string name)
+        {
+            _subButtonCollection.Add(name);
+        }
     }
 }

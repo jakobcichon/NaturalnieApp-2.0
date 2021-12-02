@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.ViewModels.Menu
 {
-    public class MenuBarViewModel: ViewModelBase
+    internal class MenuBarViewModel: ViewModelBase
     {
         private ObservableCollection<MenuBarItemViewModel> _MenuBarViews;
 
@@ -22,6 +22,7 @@ namespace NaturalnieApp2.ViewModels.Menu
         {
             MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
             MenuBarViews.Add(new MenuBarItemViewModel("Test1"));
+            MenuBarViews[MenuBarViews.Count - 1].AddSubButton("Sub1");
             MenuBarViews.Add(new MenuBarItemViewModel("Test2"));
 
         }
