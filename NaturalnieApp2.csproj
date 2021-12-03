@@ -11,9 +11,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Naturalnielogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Models\Menu\" />
     <Folder Include="Views\Bars\" />
-    <Folder Include="Views\User controls\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Naturalnielogo.png" />
   </ItemGroup>
 
 </Project>

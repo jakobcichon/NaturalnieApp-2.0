@@ -3,21 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:NaturalnieApp2.Controls"
-             xmlns:vm="clr-namespace:NaturalnieApp2.ViewModels.Menu"
-             mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="100" Background="#FF885D5D">
+             mc:Ignorable="d" >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" MinHeight="50"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" FontSize="24" Content="{Binding MainButtonTittle}" Command="{Binding MainButtonCommand}"/>
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding SubButtonCollection}">
+        <Button Grid.Row="0" FontSize="22" Padding="3" 
+                Content="{Binding MainButtonTittle}" 
+                Command="{Binding MainButtonCommand}" 
+                CommandParameter="{Binding}" 
+                Background="#FF2D9877" BorderBrush="#FF2D9877"/>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding SubButtonCollection}"
+                      Visibility="{Binding Visibility}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button FontSize="20" Content="{Binding}" />
+                    <Button FontSize="16" Padding="3" Content="{Binding}"
+                            Background="#FF5FA992" BorderBrush="#FF2D9877" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

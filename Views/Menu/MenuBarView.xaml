@@ -7,19 +7,34 @@
              xmlns:vm="clr-namespace:NaturalnieApp2.ViewModels.Menu"
              xmlns:controls="clr-namespace:NaturalnieApp2.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="400" Background="#FFF3CA71">
+             d:DesignHeight="800" d:DesignWidth="400" Background="#FFEADFCB">
+
 
     <UserControl.DataContext>
         <vm:MenuBarViewModel/>
     </UserControl.DataContext>
 
-    <StackPanel>
-        <ItemsControl ItemsSource="{Binding MenuBarViews}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Logo image-->
+        <Image Grid.Row="0">
+            <Image.Source>
+                <BitmapImage UriSource="/Images/Naturalnielogo.png"/>
+            </Image.Source>
+        </Image>
+
+        <!--Buttons-->
+        <ItemsControl Grid.Row="1"  ItemsSource="{Binding MenuBarViews}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <controls:MenuBarItem/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-    </StackPanel>
+    </Grid>
+
 </UserControl>

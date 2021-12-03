@@ -21,10 +21,10 @@ namespace NaturalnieApp2.ViewModels.Menu
         public MenuBarViewModel()
         {
             MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
-            MenuBarViews.Add(new MenuBarItemViewModel("Test1"));
-            MenuBarViews[MenuBarViews.Count - 1].AddSubButton("Sub1");
-            MenuBarViews.Add(new MenuBarItemViewModel("Test2"));
-
+            MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja"));
+            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację");
+            
+            MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja"));
         }
     }
 }
