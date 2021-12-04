@@ -14,20 +14,12 @@ namespace NaturalnieApp2.ViewModels
 {
     internal class MainViewModel: ViewModelBase
     {
-        private ViewModelBase _selectedView = new MainLayoutViewModel();
-
-        public ViewModelBase SelectedView
-        {
-            get { return _selectedView; }
-            set { _selectedView = value; }
-        }
-
-        private ViewModelBase _menuBarView = new MenuBarViewModel();
+        private ViewModelBase _menuBarView;
 
         public ViewModelBase MenuBarView
         {
             get { return _menuBarView; }
-            set { MenuBarView = value; }
+            set { _menuBarView = value; }
         }
 
         private UserControl _menuView;
@@ -40,7 +32,11 @@ namespace NaturalnieApp2.ViewModels
 
         public MainViewModel()
         {
-            MenuView = new MenuScreenWithButtonBar();
+            //Menu bar view
+            MenuBarView = new MenuBarViewModel();
+
+            //Current menu view
+            MenuView = new MenuScreenWithButtonBarViewModels(new MenuScreens.ExecuteInventorizationViewModel()).MenuScreen;
         }
 
     }

@@ -10,12 +10,12 @@ namespace NaturalnieApp2.ViewModels.Menu
 {
     internal class MenuBarViewModel: ViewModelBase
     {
-        private ObservableCollection<MenuBarItemViewModel> _MenuBarViews;
+        private ObservableCollection<MenuBarItemViewModel> _menuBarViews;
 
         public ObservableCollection<MenuBarItemViewModel> MenuBarViews
         {
-            get { return _MenuBarViews; }
-            set { _MenuBarViews = value; }
+            get { return _menuBarViews; }
+            set { _menuBarViews = value; }
         }
 
         public MenuBarViewModel()
@@ -23,8 +23,9 @@ namespace NaturalnieApp2.ViewModels.Menu
             MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
             MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja"));
             MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację");
+           //MenuBarViews[^1].Visibility = System.Windows.Visibility.Collapsed;
             
-            MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja"));
+            MenuBarViews.Add(new MenuBarItemViewModel("Testowy przycisk"));
         }
     }
 }

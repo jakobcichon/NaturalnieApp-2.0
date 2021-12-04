@@ -23,6 +23,7 @@ namespace NaturalnieApp2.Controls
         public MenuScreenWithButtonBar()
         {
             InitializeComponent();
+
         }
     }
 }

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controls\" />
     <Folder Include="Models\Menu\" />
     <Folder Include="Views\Bars\" />
   </ItemGroup>

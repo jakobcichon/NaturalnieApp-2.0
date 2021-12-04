@@ -20,7 +20,8 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button FontSize="16" Padding="3" Content="{Binding}"
-                            Background="#FF5FA992" BorderBrush="#FF2D9877" />
+                            Background="#FF5FA992" BorderBrush="Black" >
+                    </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

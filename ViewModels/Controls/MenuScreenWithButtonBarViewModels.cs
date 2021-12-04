@@ -1,31 +1,67 @@
-﻿using System;
+﻿using NaturalnieApp2.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace NaturalnieApp2.ViewModels.Controls
 {
     internal class MenuScreenWithButtonBarViewModels: ViewModelBase
     {
-        #region 
+        #region Buttons collection
+        private ObservableCollection<MenuScreenButtonsBarViewModel> _buttonsCollection;
 
+        public ObservableCollection<MenuScreenButtonsBarViewModel> ButtonsCollection
+        {
+            get { return _buttonsCollection; }
+            set { _buttonsCollection = value; }
+        }
         #endregion
 
-        #region Buttons titles
-        private ObservableCollection<string> _buttonsTitles;
+        
 
-        public ObservableCollection<string> ButtonsTitles
+        public MenuScreenWithButtonBarViewModels(IMenuScreen menuScreen)
+        {
+            ButtonsCollection = new ObservableCollection<MenuScreenButtonsBarViewModel>();
+            ButtonsCollection.Add(new MenuScreenButtonsBarViewModel("title", HorizontalAlignment.Left));
+            MenuScreen = new NaturalnieApp2.Controls.MenuScreenWithButtonBar();
+        }
+
+        public void AddButton(string title, HorizontalAlignment horizontalAligment)
+        {
+            ButtonsCollection.Add(new MenuScreenButtonsBarViewModel(title, horizontalAligment));
+        }
+
+    }
+
+    internal class MenuScreenButtonsBarViewModel: ViewModelBase
+    {
+        #region Buttons titles
+        private string _buttonsTitles;
+
+        public string ButtonsTitles
         {
             get { return _buttonsTitles; }
             set { _buttonsTitles = value; }
         }
         #endregion
 
-        public MenuScreenWithButtonBarViewModels(ObservableCollection<string> buttonsNames)
+        private HorizontalAlignment _horizontalAligment;
+
+        public HorizontalAlignment HorizontalAligment
         {
-            _buttonsTitles = buttonsNames;
+            get { return _horizontalAligment; }
+            set { _horizontalAligment = value; }
+        }
+
+        public MenuScreenButtonsBarViewModel(string buttonTitle, HorizontalAlignment buttonHorizontalAligment)
+        {
+            _buttonsTitles= buttonTitle;
+            _horizontalAligment= buttonHorizontalAligment;
         }
 
     }

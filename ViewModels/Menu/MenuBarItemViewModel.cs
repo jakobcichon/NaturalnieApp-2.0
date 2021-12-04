@@ -12,7 +12,7 @@ using System.Windows.Input;
 namespace NaturalnieApp2.ViewModels.Menu
 {
 
-    internal class MenuBarItemViewModel: INotifyPropertyChanged
+    internal class MenuBarItemViewModel: ViewModelBase
     {
         #region Visibility
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -75,8 +75,8 @@ namespace NaturalnieApp2.ViewModels.Menu
         {
             _mainButtonTitle = mainButtonTittle;
             _subButtonCollection = new ObservableCollection<string>();
-
             _mainButtonCommand = new MenuBarItemCommands();
+
         }
 
     }
