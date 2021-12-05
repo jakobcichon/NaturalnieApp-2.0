@@ -11,13 +11,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Bars\**" />
+    <EmbeddedResource Remove="Views\Bars\**" />
+    <None Remove="Views\Bars\**" />
+    <Page Remove="Views\Bars\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Images\Naturalnielogo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controls\" />
+    <Folder Include="Interfaces\" />
     <Folder Include="Models\Menu\" />
-    <Folder Include="Views\Bars\" />
   </ItemGroup>
 
   <ItemGroup>

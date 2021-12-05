@@ -1,4 +1,4 @@
-﻿using NaturalnieApp2.Interfaces;
+﻿using NaturalnieApp2.ViewModels.MenuScreens;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace NaturalnieApp2.ViewModels.Controls
 {
-    internal class MenuScreenWithButtonBarViewModels: ViewModelBase
+    public class MenuScreenWithButtonBarViewModels: ViewModelBase
     {
         #region Buttons collection
         private ObservableCollection<MenuScreenButtonsBarViewModel> _buttonsCollection;
@@ -22,13 +22,21 @@ namespace NaturalnieApp2.ViewModels.Controls
         }
         #endregion
 
-        
+        private ViewModelBase _currentScreen;
 
-        public MenuScreenWithButtonBarViewModels(IMenuScreen menuScreen)
+        public ViewModelBase CurrentScreen
+        {
+            get { return _currentScreen; }
+            set { _currentScreen = value; }
+        }
+
+
+        public MenuScreenWithButtonBarViewModels()
         {
             ButtonsCollection = new ObservableCollection<MenuScreenButtonsBarViewModel>();
-            ButtonsCollection.Add(new MenuScreenButtonsBarViewModel("title", HorizontalAlignment.Left));
-            MenuScreen = new NaturalnieApp2.Controls.MenuScreenWithButtonBar();
+            ButtonsCollection.Add(new MenuScreenButtonsBarViewModel("Przycisk testowy", HorizontalAlignment.Left));
+            ButtonsCollection.Add(new MenuScreenButtonsBarViewModel("Drugis asfafs sf afs ", HorizontalAlignment.Right));
+            CurrentScreen = new ExecuteInventorizationViewModel();
         }
 
         public void AddButton(string title, HorizontalAlignment horizontalAligment)
@@ -38,7 +46,7 @@ namespace NaturalnieApp2.ViewModels.Controls
 
     }
 
-    internal class MenuScreenButtonsBarViewModel: ViewModelBase
+    public class MenuScreenButtonsBarViewModel: ViewModelBase
     {
         #region Buttons titles
         private string _buttonsTitles;
@@ -46,7 +54,10 @@ namespace NaturalnieApp2.ViewModels.Controls
         public string ButtonsTitles
         {
             get { return _buttonsTitles; }
-            set { _buttonsTitles = value; }
+            set 
+            { 
+                _buttonsTitles = value; 
+            }
         }
         #endregion
 

@@ -1,24 +1,29 @@
-﻿<UserControl x:Class="NaturalnieApp2.Controls.MenuScreenWithButtonBar"
+﻿<UserControl x:Class="NaturalnieApp2.Views.Controls.MenuScreenWithButtonBar"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:NaturalnieApp2.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200">
+             d:DesignHeight="200" d:DesignWidth="200" Background="#FFC18585">
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="40" MinHeight="30"/>
         </Grid.RowDefinitions>
 
-        <UserControl Grid.Row="0" DataContext="{Binding MenuScreen}" />
-
+        <ContentControl Grid.Row="0" Content="{Binding CurrentScreen}" />
         <ItemsControl Grid.Row="1" ItemsSource="{Binding ButtonsCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Width="50" MinHeight="20" HorizontalAlignment="{Binding HorizontalAligment}"  
-                            Padding="5" Content="{Binding ButtonsTitles}"/>
+                    <Button Name="ButtonBar" MinHeight="20" HorizontalAlignment="{Binding HorizontalAligment}"
+                            Padding="5" Margin="5" Content="{Binding ButtonsTitles}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

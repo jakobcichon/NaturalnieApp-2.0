@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NaturalnieApp2.Controls
+namespace NaturalnieApp2.Views.Controls
 {
     /// <summary>
     /// Interaction logic for MenuBarItem.xaml

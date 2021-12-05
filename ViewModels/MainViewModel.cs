@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
-using NaturalnieApp2.Controls;
+using NaturalnieApp2.Views.Controls;
 
 namespace NaturalnieApp2.ViewModels
 {
@@ -22,9 +22,9 @@ namespace NaturalnieApp2.ViewModels
             set { _menuBarView = value; }
         }
 
-        private UserControl _menuView;
+        private ViewModelBase _menuView;
 
-        public UserControl MenuView
+        public ViewModelBase MenuView
         {
             get { return _menuView; }
             set { _menuView = value; }
@@ -36,7 +36,7 @@ namespace NaturalnieApp2.ViewModels
             MenuBarView = new MenuBarViewModel();
 
             //Current menu view
-            MenuView = new MenuScreenWithButtonBarViewModels(new MenuScreens.ExecuteInventorizationViewModel()).MenuScreen;
+            MenuView = new MenuScreenWithButtonBarViewModels();
         }
 
     }

@@ -15,12 +15,7 @@ namespace NaturalnieApp2.ViewModels.Menu
     internal class MenuBarItemViewModel: ViewModelBase
     {
         #region Visibility
-        public event PropertyChangedEventHandler? PropertyChanged;
 
-        private void NotifyPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
 
         private Visibility _visibility;
 
@@ -30,7 +25,7 @@ namespace NaturalnieApp2.ViewModels.Menu
             set
             {
                 _visibility = value;
-                NotifyPropertyChanged(nameof(Visibility));
+                OnPropertyChanged(nameof(Visibility));
             }
         }
         #endregion

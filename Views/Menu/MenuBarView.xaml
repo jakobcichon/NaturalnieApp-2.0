@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NaturalnieApp2.Views.Menu"
              xmlns:vm="clr-namespace:NaturalnieApp2.ViewModels.Menu"
-             xmlns:controls="clr-namespace:NaturalnieApp2.Controls"
+             xmlns:controls="clr-namespace:NaturalnieApp2.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="400" Background="#FFEADFCB">
 

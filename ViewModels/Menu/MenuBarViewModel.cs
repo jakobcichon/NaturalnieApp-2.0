@@ -23,8 +23,9 @@ namespace NaturalnieApp2.ViewModels.Menu
             MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
             MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja"));
             MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację");
-           //MenuBarViews[^1].Visibility = System.Windows.Visibility.Collapsed;
-            
+            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację2");
+            //MenuBarViews[^1].Visibility = System.Windows.Visibility.Collapsed;
+
             MenuBarViews.Add(new MenuBarItemViewModel("Testowy przycisk"));
         }
     }
