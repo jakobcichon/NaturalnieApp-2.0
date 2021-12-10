@@ -19,8 +19,10 @@
                       Visibility="{Binding Visibility}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button FontSize="16" Padding="3" Content="{Binding}"
-                            Background="#FF5FA992" BorderBrush="Black" >
+                    <Button FontSize="16" Padding="3" Content="{Binding Path=Name}"
+                            Background="#FF5FA992" BorderBrush="Black"
+                            Command="{Binding Path=Command}" 
+                            CommandParameter="{Binding}">
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

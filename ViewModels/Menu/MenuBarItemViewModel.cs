@@ -51,28 +51,73 @@ namespace NaturalnieApp2.ViewModels.Menu
         #endregion
 
         #region Submenu buttons
-        private ObservableCollection<string> _subButtonCollection;
+        private ObservableCollection<SubMenuBarItem> _subButtonCollection;
 
 
-        public ObservableCollection<string> SubButtonCollection
+        public ObservableCollection<SubMenuBarItem> SubButtonCollection
         {
             get { return _subButtonCollection; }
             set { _subButtonCollection = value; }
         }
 
-        public void AddSubButton(string name)
+
+        /// <summary>
+        /// Method used to add button to the collection
+        /// </summary>
+        /// <param name="name">Displayed name of the button</param>
+        /// <param name="command">Command that will be executed after button pressed</param>
+        public void AddSubButton(string name, ICommand command, object screenToDisplay)
         {
-            _subButtonCollection.Add(name);
+            _subButtonCollection.Add(new SubMenuBarItem(name, command, screenToDisplay));
         }
         #endregion
+
+
 
         public MenuBarItemViewModel(string mainButtonTittle)
         {
             _mainButtonTitle = mainButtonTittle;
-            _subButtonCollection = new ObservableCollection<string>();
             _mainButtonCommand = new MenuBarItemCommands();
 
+            _subButtonCollection = new ObservableCollection<SubMenuBarItem>();
         }
+
+    }
+
+    internal class SubMenuBarItem
+    {
+        private string? _name;
+
+        public string? Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        private ICommand? _command;
+
+        public ICommand? Command
+        {
+            get { return _command; }
+            set { _command = value; }
+        }
+
+        private object _screenToDisplay;
+
+        public object ScreenToDisplay
+        {
+            get { return _screenToDisplay; }
+            set { _screenToDisplay = value; }
+        }
+
+
+        public SubMenuBarItem(string name, ICommand command, object screenToDisplay)
+        {
+            Name = name;
+            Command = command;
+            ScreenToDisplay = screenToDisplay;
+        }
+
 
     }
 }

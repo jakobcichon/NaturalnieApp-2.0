@@ -9,8 +9,6 @@ namespace NaturalnieApp2.Commands
 {
     internal class MenuBarItemCommands : CommandBase
     {
-
-
         public override void Execute(object? parameter)
         {
             MenuBarItemViewModel menuBarItemViewModel = parameter as MenuBarItemViewModel;
@@ -27,5 +25,15 @@ namespace NaturalnieApp2.Commands
                 }
             }
         }
+    }
+
+    internal class SubMenuItemCommands: CommandBase
+    {
+        public override void Execute(object? parameter)
+        {
+            SubMenuBarItem menuBarItemViewModel = parameter as SubMenuBarItem;
+            ;
+
+         }
     }
 }

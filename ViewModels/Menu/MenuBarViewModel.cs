@@ -1,4 +1,5 @@
-﻿using NaturalnieApp2.Views.Menu;
+﻿using NaturalnieApp2.Commands;
+using NaturalnieApp2.Views.Menu;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,9 +23,10 @@ namespace NaturalnieApp2.ViewModels.Menu
         {
             MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
             MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja"));
-            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację");
-            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację2");
-            //MenuBarViews[^1].Visibility = System.Windows.Visibility.Collapsed;
+
+            SubMenuItemCommands _inventorizationButtonsCommand = new SubMenuItemCommands();
+            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację", _inventorizationButtonsCommand, null);
+            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację2", _inventorizationButtonsCommand, null);
 
             MenuBarViews.Add(new MenuBarItemViewModel("Testowy przycisk"));
         }

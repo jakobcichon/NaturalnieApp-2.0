@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using NaturalnieApp2.Views.Controls;
+using NaturalnieApp2.ViewModels.MenuScreens;
 
 namespace NaturalnieApp2.ViewModels
 {
@@ -30,13 +31,27 @@ namespace NaturalnieApp2.ViewModels
             set { _menuView = value; }
         }
 
+        private List<ViewModelBase> _screenCollection { get; set; }
+
         public MainViewModel()
         {
             //Menu bar view
             MenuBarView = new MenuBarViewModel();
 
             //Current menu view
-            MenuView = new MenuScreenWithButtonBarViewModels();
+            MenuView = new MainScreenViewModel();
+
+            AddScreen(ScreensDefinitions.ExecuteInventorization);
+        }
+
+        public void ChangeScreen(object screen)
+        {
+            MenuView = _screenCollection.FirstOrDefault(screen) as ViewModelBase;
+        }
+
+        public void AddScreen(ViewModelBase screen)
+        {
+            _screenCollection.Add(screen);
         }
 
     }

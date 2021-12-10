@@ -13,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NaturalnieApp2.Views.Controls
+namespace NaturalnieApp2.Views.MenuScreens
 {
     /// <summary>
-    /// Interaction logic for MenuScreenWithButtonBar.xaml
+    /// Interaction logic for MainScreen.xaml
     /// </summary>
-    public partial class MenuScreenWithButtonBar : UserControl
+    public partial class MainScreen : UserControl
     {
-        public MenuScreenWithButtonBar()
+        public MainScreen()
         {
             InitializeComponent();
-
         }
     }
 }
