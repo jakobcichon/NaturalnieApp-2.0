@@ -1,4 +1,6 @@
 ﻿using NaturalnieApp2.Commands;
+using NaturalnieApp2.Stores;
+using NaturalnieApp2.ViewModels.MenuScreens;
 using NaturalnieApp2.Views.Menu;
 using System;
 using System.Collections.Generic;
@@ -19,16 +21,16 @@ namespace NaturalnieApp2.ViewModels.Menu
             set { _menuBarViews = value; }
         }
 
-        public MenuBarViewModel()
+        public MenuBarViewModel(NavigationStore navigationStore)
         {
             MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
-            MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja"));
+            MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja", navigationStore));
 
-            SubMenuItemCommands _inventorizationButtonsCommand = new SubMenuItemCommands();
-            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację", _inventorizationButtonsCommand, null);
-            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację2", _inventorizationButtonsCommand, null);
+            ViewModelBase _inventorizationButtonsCommand = new ExecuteInventorizationViewModel();
+            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację", _inventorizationButtonsCommand);
+            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację2", _inventorizationButtonsCommand);
 
-            MenuBarViews.Add(new MenuBarItemViewModel("Testowy przycisk"));
+            MenuBarViews.Add(new MenuBarItemViewModel("Testowy przycisk", navigationStore));
         }
     }
 }

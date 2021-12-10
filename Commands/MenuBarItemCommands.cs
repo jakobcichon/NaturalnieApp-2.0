@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NaturalnieApp2.ViewModels;
+using NaturalnieApp2.Stores;
+using NaturalnieApp2.Interfaces;
 
 namespace NaturalnieApp2.Commands
 {
@@ -29,10 +32,19 @@ namespace NaturalnieApp2.Commands
 
     internal class SubMenuItemCommands: CommandBase
     {
+
+        private readonly NavigationStore _navigationStore;
+
+        public SubMenuItemCommands(NavigationStore navigationStore)
+        {
+            _navigationStore = navigationStore;
+        }
+
         public override void Execute(object? parameter)
         {
-            SubMenuBarItem menuBarItemViewModel = parameter as SubMenuBarItem;
-            ;
+            ViewModelBase _viewModel = (parameter as ISelectableViewModel).TargetViewModel;
+
+            _navigationStore.CurrentViewModel = _viewModel;
 
          }
     }

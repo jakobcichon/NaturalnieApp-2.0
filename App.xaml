@@ -4,9 +4,7 @@
              xmlns:views_menu="clr-namespace:NaturalnieApp2.Views.Menu"
              xmlns:v_ms="clr-namespace:NaturalnieApp2.Views.MenuScreens"
              xmlns:viewmodels_menu="clr-namespace:NaturalnieApp2.ViewModels.Menu"
-             xmlns:vm_ms="clr-namespace:NaturalnieApp2.ViewModels.MenuScreens"
-             
-             StartupUri="MainWindow.xaml">
+             xmlns:vm_ms="clr-namespace:NaturalnieApp2.ViewModels.MenuScreens">
     <Application.Resources>
 
         <ResourceDictionary>

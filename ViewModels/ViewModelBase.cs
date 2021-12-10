@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.ViewModels
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public virtual void Dispose()
+        {
+        }
 
         public void OnPropertyChanged(string propertyName)
         {

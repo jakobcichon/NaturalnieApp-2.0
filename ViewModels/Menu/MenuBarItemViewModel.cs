@@ -1,4 +1,6 @@
 ﻿using NaturalnieApp2.Commands;
+using NaturalnieApp2.Interfaces;
+using NaturalnieApp2.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -60,31 +62,39 @@ namespace NaturalnieApp2.ViewModels.Menu
             set { _subButtonCollection = value; }
         }
 
+        private ICommand _subButtonCommand;
+
+        public ICommand SubButtonCommand
+        {
+            get { return _subButtonCommand; }
+            set { _subButtonCommand = value; }
+        }
+
 
         /// <summary>
         /// Method used to add button to the collection
         /// </summary>
         /// <param name="name">Displayed name of the button</param>
         /// <param name="command">Command that will be executed after button pressed</param>
-        public void AddSubButton(string name, ICommand command, object screenToDisplay)
+        public void AddSubButton(string name, ViewModelBase screenToDisplay)
         {
-            _subButtonCollection.Add(new SubMenuBarItem(name, command, screenToDisplay));
+            _subButtonCollection.Add(new SubMenuBarItem(name, screenToDisplay));
         }
         #endregion
 
 
 
-        public MenuBarItemViewModel(string mainButtonTittle)
+        public MenuBarItemViewModel(string mainButtonTittle, NavigationStore navigationStore)
         {
-            _mainButtonTitle = mainButtonTittle;
-            _mainButtonCommand = new MenuBarItemCommands();
-
-            _subButtonCollection = new ObservableCollection<SubMenuBarItem>();
+            MainButtonTittle = mainButtonTittle;
+            MainButtonCommand = new MenuBarItemCommands();
+            SubButtonCommand = new SubMenuItemCommands(navigationStore);
+            SubButtonCollection = new ObservableCollection<SubMenuBarItem>();
         }
 
     }
 
-    internal class SubMenuBarItem
+    internal class SubMenuBarItem: ISelectableViewModel
     {
         private string? _name;
 
@@ -94,28 +104,14 @@ namespace NaturalnieApp2.ViewModels.Menu
             set { _name = value; }
         }
 
-        private ICommand? _command;
+        private ViewModelBase _targetViewModel { get; }
 
-        public ICommand? Command
-        {
-            get { return _command; }
-            set { _command = value; }
-        }
+        public ViewModelBase TargetViewModel => _targetViewModel;
 
-        private object _screenToDisplay;
-
-        public object ScreenToDisplay
-        {
-            get { return _screenToDisplay; }
-            set { _screenToDisplay = value; }
-        }
-
-
-        public SubMenuBarItem(string name, ICommand command, object screenToDisplay)
+        public SubMenuBarItem(string name, ViewModelBase screenToDisplay)
         {
             Name = name;
-            Command = command;
-            ScreenToDisplay = screenToDisplay;
+            _targetViewModel = screenToDisplay;
         }
 
 

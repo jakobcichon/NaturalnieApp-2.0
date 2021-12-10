@@ -25,7 +25,6 @@ namespace NaturalnieApp2
         {
             InitializeComponent();
 
-            DataContext = new MainViewModel();
         }
     }
 }

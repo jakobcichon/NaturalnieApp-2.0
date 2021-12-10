@@ -10,11 +10,16 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using NaturalnieApp2.Views.Controls;
 using NaturalnieApp2.ViewModels.MenuScreens;
+using NaturalnieApp2.Stores;
 
 namespace NaturalnieApp2.ViewModels
 {
     internal class MainViewModel: ViewModelBase
     {
+        private readonly NavigationStore _navigationStore;
+
+        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+
         private ViewModelBase _menuBarView;
 
         public ViewModelBase MenuBarView
@@ -28,30 +33,18 @@ namespace NaturalnieApp2.ViewModels
         public ViewModelBase MenuView
         {
             get { return _menuView; }
-            set { _menuView = value; }
+            set 
+            { 
+                _menuView = value; 
+                OnPropertyChanged(nameof(MenuView));
+            }
         }
 
-        private List<ViewModelBase> _screenCollection { get; set; }
-
-        public MainViewModel()
+        public MainViewModel(NavigationStore navigationStore)
         {
             //Menu bar view
-            MenuBarView = new MenuBarViewModel();
-
-            //Current menu view
-            MenuView = new MainScreenViewModel();
-
-            AddScreen(ScreensDefinitions.ExecuteInventorization);
-        }
-
-        public void ChangeScreen(object screen)
-        {
-            MenuView = _screenCollection.FirstOrDefault(screen) as ViewModelBase;
-        }
-
-        public void AddScreen(ViewModelBase screen)
-        {
-            _screenCollection.Add(screen);
+            MenuBarView = new MenuBarViewModel(navigationStore);
+            _navigationStore = navigationStore;
         }
 
     }
