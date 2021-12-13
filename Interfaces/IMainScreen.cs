@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NaturalnieApp2.Stores
+namespace NaturalnieApp2.Interfaces
 {
-    internal class NavigationStore
+    internal interface IMainScreen
     {
-        public ViewModelBase CurrentViewModel { get; set; }
+        public void ShowScreen(ViewModelBase screenToShow);
     }
 }

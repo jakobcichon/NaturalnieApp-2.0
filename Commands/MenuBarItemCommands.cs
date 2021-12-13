@@ -33,18 +33,16 @@ namespace NaturalnieApp2.Commands
     internal class SubMenuItemCommands: CommandBase
     {
 
-        private readonly NavigationStore _navigationStore;
+        private readonly NavigationDispatcher _navigationStore;
 
-        public SubMenuItemCommands(NavigationStore navigationStore)
+        public SubMenuItemCommands(NavigationDispatcher navigationStore)
         {
             _navigationStore = navigationStore;
         }
 
         public override void Execute(object? parameter)
         {
-            ViewModelBase _viewModel = (parameter as ISelectableViewModel).TargetViewModel;
 
-            _navigationStore.CurrentViewModel = _viewModel;
 
          }
     }

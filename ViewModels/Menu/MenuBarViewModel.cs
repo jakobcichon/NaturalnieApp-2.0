@@ -21,7 +21,7 @@ namespace NaturalnieApp2.ViewModels.Menu
             set { _menuBarViews = value; }
         }
 
-        public MenuBarViewModel(NavigationStore navigationStore)
+        public MenuBarViewModel()
         {
             MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
             MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja", navigationStore));

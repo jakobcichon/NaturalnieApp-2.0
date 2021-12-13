@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Interfaces
 {
-    internal interface ISelectableViewModel
-    {
-        public ViewModelBase TargetViewModel { get; }
+    internal interface INavigateToScreen
+    { 
+        public void Navigate(ViewModelBase navigateToScreen);
     }
 }

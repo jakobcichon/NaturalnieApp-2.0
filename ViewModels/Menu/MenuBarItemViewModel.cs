@@ -84,7 +84,7 @@ namespace NaturalnieApp2.ViewModels.Menu
 
 
 
-        public MenuBarItemViewModel(string mainButtonTittle, NavigationStore navigationStore)
+        public MenuBarItemViewModel(string mainButtonTittle, NavigationDispatcher navigationStore)
         {
             MainButtonTittle = mainButtonTittle;
             MainButtonCommand = new MenuBarItemCommands();
@@ -94,7 +94,7 @@ namespace NaturalnieApp2.ViewModels.Menu
 
     }
 
-    internal class SubMenuBarItem: ISelectableViewModel
+    internal class SubMenuBarItem
     {
         private string? _name;
 
@@ -106,7 +106,7 @@ namespace NaturalnieApp2.ViewModels.Menu
 
         private ViewModelBase _targetViewModel { get; }
 
-        public ViewModelBase TargetViewModel => _targetViewModel;
+        public ViewModelBase ReferenceViewModel => _targetViewModel;
 
         public SubMenuBarItem(string name, ViewModelBase screenToDisplay)
         {

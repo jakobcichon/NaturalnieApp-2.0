@@ -16,9 +16,8 @@ namespace NaturalnieApp2.ViewModels
 {
     internal class MainViewModel: ViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
 
-        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+        public ViewModelBase CurrentViewModel;
 
         private ViewModelBase _menuBarView;
 
@@ -40,11 +39,10 @@ namespace NaturalnieApp2.ViewModels
             }
         }
 
-        public MainViewModel(NavigationStore navigationStore)
+        public MainViewModel()
         {
             //Menu bar view
-            MenuBarView = new MenuBarViewModel(navigationStore);
-            _navigationStore = navigationStore;
+            MenuBarView = new MenuBarViewModel();
         }
 
     }
