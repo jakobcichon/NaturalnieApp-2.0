@@ -13,9 +13,9 @@ namespace NaturalnieApp2.ViewModels.Menu
 {
     internal class MenuBarViewModel: ViewModelBase
     {
-        private ObservableCollection<MenuBarItemViewModel> _menuBarViews;
+        private ObservableCollection<MainButtonViewModel> _menuBarViews;
 
-        public ObservableCollection<MenuBarItemViewModel> MenuBarViews
+        public ObservableCollection<MainButtonViewModel> MenuBarViews
         {
             get { return _menuBarViews; }
             set { _menuBarViews = value; }
@@ -23,14 +23,7 @@ namespace NaturalnieApp2.ViewModels.Menu
 
         public MenuBarViewModel()
         {
-            MenuBarViews = new ObservableCollection<MenuBarItemViewModel>();
-            MenuBarViews.Add(new MenuBarItemViewModel("Inwentaryzaja", navigationStore));
 
-            ViewModelBase _inventorizationButtonsCommand = new ExecuteInventorizationViewModel();
-            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację", _inventorizationButtonsCommand);
-            MenuBarViews[^1].AddSubButton("Wykonaj inwentaryzację2", _inventorizationButtonsCommand);
-
-            MenuBarViews.Add(new MenuBarItemViewModel("Testowy przycisk", navigationStore));
         }
     }
 }

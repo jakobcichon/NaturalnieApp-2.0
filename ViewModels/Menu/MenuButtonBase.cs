@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace NaturalnieApp2.Commands
+namespace NaturalnieApp2.ViewModels.Menu
 {
-    internal abstract class CommandBase : ICommand
+    internal abstract class MenuButtonBase: ViewModelBase, ICommand
     {
         public event EventHandler? CanExecuteChanged;
 

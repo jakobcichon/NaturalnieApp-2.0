@@ -14,7 +14,7 @@ namespace NaturalnieApp2.Commands
     {
         public override void Execute(object? parameter)
         {
-            MenuBarItemViewModel menuBarItemViewModel = parameter as MenuBarItemViewModel;
+            MainButtonViewModel menuBarItemViewModel = parameter as MainButtonViewModel;
 
             if (menuBarItemViewModel != null)
             {
@@ -33,17 +33,15 @@ namespace NaturalnieApp2.Commands
     internal class SubMenuItemCommands: CommandBase
     {
 
-        private readonly NavigationDispatcher _navigationStore;
 
-        public SubMenuItemCommands(NavigationDispatcher navigationStore)
+        public SubMenuItemCommands()
         {
-            _navigationStore = navigationStore;
         }
 
         public override void Execute(object? parameter)
         {
 
 
-         }
+        }
     }
 }

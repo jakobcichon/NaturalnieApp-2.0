@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NaturalnieApp2.Stores;
 using NaturalnieApp2.ViewModels;
+using NaturalnieApp2.ViewModels.Menu;
 using NaturalnieApp2.ViewModels.MenuScreens;
 using System;
 using System.Collections.Generic;
@@ -25,12 +26,14 @@ namespace NaturalnieApp2
         {
             IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton<IMainScreenViewModel>();
+            services.AddSingleton<MainButtonViewModel>();
 
             services.AddSingleton<NavigationDispatcher>();
             
 
             _serviceProvider = services.BuildServiceProvider();
+
+            _serviceProvider.GetRequiredService<MainButtonViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

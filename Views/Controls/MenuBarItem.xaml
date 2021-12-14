@@ -11,8 +11,8 @@
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" FontSize="22" Padding="3" 
-                Content="{Binding MainButtonTittle}" 
-                Command="{Binding MainButtonCommand}" 
+                Content="{Binding Tittle}" 
+                Command="{Binding Command}" 
                 CommandParameter="{Binding}" 
                 Background="#FF2D9877" BorderBrush="#FF2D9877"/>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding SubButtonCollection}"
