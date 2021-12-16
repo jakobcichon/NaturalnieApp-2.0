@@ -14,10 +14,8 @@ using NaturalnieApp2.Stores;
 
 namespace NaturalnieApp2.ViewModels
 {
-    internal class MainViewModel: ViewModelBase
+    internal class MainWindowViewModel: ViewModelBase
     {
-
-        public ViewModelBase CurrentViewModel;
 
         private ViewModelBase _menuBarView;
 
@@ -27,23 +25,25 @@ namespace NaturalnieApp2.ViewModels
             set { _menuBarView = value; }
         }
 
-        private ViewModelBase _menuView;
+        private ViewModelBase _currentView;
 
-        public ViewModelBase MenuView
+        public ViewModelBase CurrentView
         {
-            get { return _menuView; }
+            get { return _currentView; }
             set 
             { 
-                _menuView = value; 
-                OnPropertyChanged(nameof(MenuView));
+                _currentView = value; 
+                OnPropertyChanged(nameof(CurrentView));
             }
         }
 
-        public MainViewModel()
+        public MainWindowViewModel(ViewModelBase _menuBarViewModel, ViewModelBase initialScreen=null)
         {
-            //Menu bar view
-            MenuBarView = new MenuBarViewModel();
+            _menuBarView = _menuBarViewModel;
+            CurrentView = initialScreen;
         }
+
+
 
     }
 }

@@ -18,9 +18,9 @@ namespace NaturalnieApp2.Views.MenuScreens
     /// <summary>
     /// Interaction logic for MainScreen.xaml
     /// </summary>
-    public partial class MainScreen : UserControl
+    public partial class InitialScreenView : UserControl
     {
-        public MainScreen()
+        public InitialScreenView()
         {
             InitializeComponent();
         }

@@ -10,7 +10,6 @@ namespace NaturalnieApp2.Interfaces
     internal interface ISubMenuButton
     {
         string DisplayText { get; }
-        ICommand Command { get; }
 
     }
 }

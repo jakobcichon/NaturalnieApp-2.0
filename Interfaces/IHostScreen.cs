@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Interfaces
 {
-    internal interface IMainScreen
+    internal interface IHostScreen
     {
         public void ShowScreen(ViewModelBase screenToShow);
     }

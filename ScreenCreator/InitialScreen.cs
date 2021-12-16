@@ -9,8 +9,8 @@ using System.Windows.Input;
 
 namespace NaturalnieApp2.ScreenCreator
 {
-    internal class InitialScreen : IScreenCreator
-    {
+    internal class InitialScreen
+    { 
         public string mainButtonTittle;
 
         public ICommand commad;

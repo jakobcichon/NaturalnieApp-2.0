@@ -24,7 +24,6 @@ namespace NaturalnieApp2
         public MainWindow()
         {
             InitializeComponent();
-
         }
     }
 }

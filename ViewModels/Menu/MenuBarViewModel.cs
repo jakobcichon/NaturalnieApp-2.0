@@ -23,7 +23,18 @@ namespace NaturalnieApp2.ViewModels.Menu
 
         public MenuBarViewModel()
         {
+            _menuBarViews = new ObservableCollection<MainButtonViewModel>();   
+        }
 
+        public void AddMenuBarMainButton(MainButtonViewModel menuBarMainButton)
+        {
+            _menuBarViews.Add(menuBarMainButton);
+        }
+
+        public void AddMenuBarMainButton(List<MainButtonViewModel> menuBarMainButton)
+        {
+            foreach (var menuItem in menuBarMainButton) { _menuBarViews.Add(menuItem); }
+            ;
         }
     }
 }

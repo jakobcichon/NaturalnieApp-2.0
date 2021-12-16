@@ -10,7 +10,7 @@ namespace NaturalnieApp2.ViewModels.MenuScreens
     internal class InitialScreenViewModel : ViewModelBase
     {
 
-        public InitialScreenViewModel(ViewModelBase referenceViewModel)
+        public InitialScreenViewModel()
         {
 
         }

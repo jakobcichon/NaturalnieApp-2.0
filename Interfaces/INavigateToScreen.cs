@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace NaturalnieApp2.Interfaces
 {
     internal interface INavigateToScreen
-    { 
-        public void Navigate(ViewModelBase navigateToScreen);
+    {
+        public IHostScreen MainScreen { get; set; }
+        public void Navigate(ViewModelBase screenToNavigate);
     }
 }

@@ -67,14 +67,15 @@ namespace NaturalnieApp2.ViewModels.Menu
         /// </summary>
         /// <param name="name">Displayed name of the button</param>
         /// <param name="command">Command that will be executed after button pressed</param>
-        public void AddSubButton(string name, ViewModelBase screenToDisplay)
+        public void AddSubButton(string name, ViewModelBase screenToDisplay, IScreenDispatcher screenDispatcher)
         {
-            _subButtonCollection.Add(new SubButtonViewModel(name, screenToDisplay));
+            _subButtonCollection.Add(new SubButtonViewModel(name, screenToDisplay, screenDispatcher));
         }
         #endregion
 
-        public MainButtonViewModel()
+        public MainButtonViewModel(string displayText)
         {
+            Name = displayText;
         }
 
         private void ToggleMenu()
@@ -85,7 +86,7 @@ namespace NaturalnieApp2.ViewModels.Menu
 
         public override void Execute(object? parameter)
         {
-            
+            ToggleMenu();
         }
     }
 }

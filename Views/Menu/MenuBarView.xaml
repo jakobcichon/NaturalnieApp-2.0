@@ -10,10 +10,6 @@
              d:DesignHeight="800" d:DesignWidth="400" Background="#FFEADFCB">
 
 
-    <UserControl.DataContext>
-        <vm:MenuBarViewModel/>
-    </UserControl.DataContext>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" MinHeight="50"/>
@@ -31,7 +27,7 @@
         <ItemsControl Grid.Row="1"  ItemsSource="{Binding MenuBarViews}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <controls:MenuBarItem/>
+                    <local:MainButtonView/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

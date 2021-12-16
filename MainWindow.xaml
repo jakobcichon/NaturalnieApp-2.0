@@ -17,7 +17,7 @@
             <RowDefinition MinHeight="10" Height="1*"/>
         </Grid.RowDefinitions>
         <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding MenuBarView}"/>
-        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding MenuView}"/>
+        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentView}"/>
     </Grid>
 
 </Window>

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NaturalnieApp2.Views.Controls
+namespace NaturalnieApp2.Views.Menu
 {
     /// <summary>
     /// Interaction logic for MenuBarItem.xaml
     /// </summary>
-    public partial class MenuBarItem : UserControl
+    public partial class MainButtonView : UserControl
     {
-        public MenuBarItem()
+        public MainButtonView()
         {
             InitializeComponent();
         }

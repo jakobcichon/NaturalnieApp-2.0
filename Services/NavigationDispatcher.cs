@@ -10,22 +10,22 @@ namespace NaturalnieApp2.Stores
 {
     internal class NavigationDispatcher: INavigateToScreen
     {
-        private IMainScreen _mainScreen;
+        private IHostScreen _mainScreen;
 
-        public IMainScreen MainScreen
+        public IHostScreen MainScreen
         {
             get { return _mainScreen; }
             set { _mainScreen = value; }
         }
 
-        public NavigationDispatcher(IMainScreen mainScreen)
+        public NavigationDispatcher(IHostScreen mainScreen)
         {
             _mainScreen = mainScreen;
         }
 
-        public void Navigate(ViewModelBase screenToNavigate)
+        public void Navigate(ViewModelBase screenToShow)
         {
-            _mainScreen.ShowScreen(screenToNavigate);
+            _mainScreen.ShowScreen(screenToShow);
         }
 
     }
