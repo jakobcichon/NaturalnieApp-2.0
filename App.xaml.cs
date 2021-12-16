@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NaturalnieApp2.Interfaces;
 using NaturalnieApp2.Stores;
 using NaturalnieApp2.ViewModels;
 using NaturalnieApp2.ViewModels.Menu;
@@ -50,7 +51,7 @@ namespace NaturalnieApp2
             #endregion
 
             #region Screen navigation manager
-            services.AddSingleton<NavigationDispatcher>();
+            services.AddSingleton(s => new NavigationDispatcher(s.GetRequiredService<MainWindowViewModel>()));
             #endregion
 
             //Build service provider
@@ -64,6 +65,7 @@ namespace NaturalnieApp2
 
 
             _serviceProvider.GetRequiredService<MenuBarViewModel>().AddMenuBarMainButton(CreateMenuBarMainButtons());
+            CreateSubMenuButtons_Inventorization(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
 
 
             MainWindow.Show();
@@ -78,6 +80,17 @@ namespace NaturalnieApp2
                 new MainButtonViewModel("Ekran główny"),
                 new MainButtonViewModel("Inwentaryzacja")
             };
+        }
+
+        private void CreateSubMenuButtons_Inventorization(MenuBarViewModel menuBar, IServiceProvider service)
+        {
+            menuBar.MenuBarViews[0].AddSubButton(new List<ISubMenuButton>()
+            {
+                new SubButtonViewModel("Testowy1",
+                service.GetRequiredService<InitialScreenViewModel>(),
+                service.GetRequiredService<NavigationDispatcher>()
+                )
+            });
         }
 
     }

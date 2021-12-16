@@ -53,10 +53,10 @@ namespace NaturalnieApp2.ViewModels.Menu
         #endregion
 
         #region Submenu buttons
-        private ObservableCollection<SubButtonViewModel> _subButtonCollection;
+        private ObservableCollection<ISubMenuButton> _subButtonCollection;
 
 
-        public ObservableCollection<SubButtonViewModel> SubButtonCollection
+        public ObservableCollection<ISubMenuButton> SubButtonCollection
         {
             get { return _subButtonCollection; }
             set { _subButtonCollection = value; }
@@ -67,15 +67,19 @@ namespace NaturalnieApp2.ViewModels.Menu
         /// </summary>
         /// <param name="name">Displayed name of the button</param>
         /// <param name="command">Command that will be executed after button pressed</param>
-        public void AddSubButton(string name, ViewModelBase screenToDisplay, IScreenDispatcher screenDispatcher)
+        public void AddSubButton(List<ISubMenuButton> button)
         {
-            _subButtonCollection.Add(new SubButtonViewModel(name, screenToDisplay, screenDispatcher));
+            foreach (var subButton in button)
+            {
+                _subButtonCollection.Add(subButton);
+            }
         }
         #endregion
 
         public MainButtonViewModel(string displayText)
         {
             Name = displayText;
+            _subButtonCollection = new ObservableCollection<ISubMenuButton>();
         }
 
         private void ToggleMenu()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaturalnieApp2.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace NaturalnieApp2.Interfaces
     internal interface ISubMenuButton
     {
         string DisplayText { get; }
+        ViewModelBase TargetScreen { get; }
+        INavigateToScreen ScreenDispatcher { get; }
 
     }
 }

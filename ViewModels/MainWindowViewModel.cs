@@ -11,10 +11,11 @@ using System.Windows.Controls;
 using NaturalnieApp2.Views.Controls;
 using NaturalnieApp2.ViewModels.MenuScreens;
 using NaturalnieApp2.Stores;
+using NaturalnieApp2.Interfaces;
 
 namespace NaturalnieApp2.ViewModels
 {
-    internal class MainWindowViewModel: ViewModelBase
+    internal class MainWindowViewModel: ViewModelBase, IHostScreen
     {
 
         private ViewModelBase _menuBarView;
@@ -43,7 +44,9 @@ namespace NaturalnieApp2.ViewModels
             CurrentView = initialScreen;
         }
 
-
-
+        public void ShowScreen(ViewModelBase screenToShow)
+        {
+            CurrentView = screenToShow;
+        }
     }
 }

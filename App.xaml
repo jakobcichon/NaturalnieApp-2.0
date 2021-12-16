@@ -7,6 +7,7 @@
              xmlns:vm_ms="clr-namespace:NaturalnieApp2.ViewModels.MenuScreens"
              xmlns:vm_c="clr-namespace:NaturalnieApp2.ViewModels.Controls"
              xmlns:v_c="clr-namespace:NaturalnieApp2.Views.Controls"
+             xmlns:i="clr-namespace:NaturalnieApp2.Interfaces"
              >
     
     <Application.Resources>

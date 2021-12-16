@@ -21,20 +21,18 @@ namespace NaturalnieApp2.ViewModels.Menu
 
         public string DisplayText { get; }
 
-        private IScreenDispatcher _screenDispatcher { get; }
+        public INavigateToScreen ScreenDispatcher { get; }
 
-        public SubButtonViewModel(string displayText, ViewModelBase targetScreen, IScreenDispatcher screenDispatcher)
+        public SubButtonViewModel(string displayText, ViewModelBase targetScreen, INavigateToScreen screenDispatcher)
         {
             TargetScreen = targetScreen;
             DisplayText = displayText;
-
-
-            _screenDispatcher = screenDispatcher;
+            ScreenDispatcher = screenDispatcher;
         }
 
         public override void Execute(object? parameter)
         {
-            _screenDispatcher.Navigate(TargetScreen);
+            ScreenDispatcher.Navigate(TargetScreen);
         }
     }
 }
