@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NaturalnieApp2.Views.MenuScreens
+namespace NaturalnieApp2.Views.MenuScreens.Inventory
 {
     /// <summary>
     /// Interaction logic for ExecuteInventarizationView.xaml
     /// </summary>
-    public partial class ExecuteInventarizationView : UserControl
+    public partial class ExecuteInventoryView : UserControl
     {
-        public ExecuteInventarizationView()
+        public ExecuteInventoryView()
         {
             InitializeComponent();
         }

@@ -9,7 +9,8 @@ namespace NaturalnieApp2.Interfaces
 {
     internal interface INavigateToScreen
     {
-        public IHostScreen MainScreen { get; set; }
+        public IHostScreen HostScreen { get; set; }
         public void Navigate(ViewModelBase screenToNavigate);
+        public void AddHostScreen(IHostScreen hostScreen);
     }
 }

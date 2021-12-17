@@ -17,11 +17,13 @@
         </Grid.RowDefinitions>
 
         <!--Logo image-->
-        <Image Grid.Row="0">
-            <Image.Source>
-                <BitmapImage UriSource="/Images/Naturalnielogo.png"/>
-            </Image.Source>
-        </Image>
+        <Button Command="{Binding}">
+            <Image>
+                <Image.Source>
+                    <BitmapImage UriSource="/Images/Naturalnielogo.png"/>
+                </Image.Source>
+            </Image>
+        </Button>
 
         <!--Buttons-->
         <ItemsControl Grid.Row="1"  ItemsSource="{Binding MenuBarViews}">

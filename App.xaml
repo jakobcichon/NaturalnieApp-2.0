@@ -3,11 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:views_menu="clr-namespace:NaturalnieApp2.Views.Menu"
              xmlns:v_ms="clr-namespace:NaturalnieApp2.Views.MenuScreens"
+             xmlns:v_ms_i="clr-namespace:NaturalnieApp2.Views.MenuScreens.Inventory"
              xmlns:viewmodels_menu="clr-namespace:NaturalnieApp2.ViewModels.Menu"
              xmlns:vm_ms="clr-namespace:NaturalnieApp2.ViewModels.MenuScreens"
-             xmlns:vm_c="clr-namespace:NaturalnieApp2.ViewModels.Controls"
-             xmlns:v_c="clr-namespace:NaturalnieApp2.Views.Controls"
-             xmlns:i="clr-namespace:NaturalnieApp2.Interfaces"
+             xmlns:vm_ms_i="clr-namespace:NaturalnieApp2.ViewModels.MenuScreens.Inventory"
              >
     
     <Application.Resources>
@@ -24,17 +23,14 @@
             <DataTemplate DataType="{x:Type viewmodels_menu:MenuBarViewModel}">
                 <views_menu:MenuBarView/>
             </DataTemplate>
-
-            <DataTemplate DataType="{x:Type vm_ms:MainScreenViewModel}">
-                <v_ms:InitialScreenView/>
-            </DataTemplate>
+                      
+            <!-- Screens  -->
             <DataTemplate DataType="{x:Type vm_ms:InitialScreenViewModel}">
                 <v_ms:InitialScreenView/>
             </DataTemplate>
-
-
-
-
+            <DataTemplate DataType="{x:Type vm_ms_i:ExecuteInventoryViewModel}">
+                <v_ms_i:ExecuteInventoryView/>
+            </DataTemplate>
 
         </ResourceDictionary>
 

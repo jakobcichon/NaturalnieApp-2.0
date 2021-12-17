@@ -33,15 +33,6 @@ namespace NaturalnieApp2.ViewModels.Menu
         #endregion
 
         #region Main button
-
-        private ICommand _command;
-
-        public ICommand Command
-        {
-            get { return _command; }
-            set { _command = value; }
-        }
-
         private string _name;
 
         public string Name
@@ -49,7 +40,6 @@ namespace NaturalnieApp2.ViewModels.Menu
             get { return _name; }
             set { _name = value; }
         }
-
         #endregion
 
         #region Submenu buttons
@@ -84,8 +74,8 @@ namespace NaturalnieApp2.ViewModels.Menu
 
         private void ToggleMenu()
         {
-            if (_visibility == Visibility.Visible) _visibility = Visibility.Collapsed;
-            else _visibility = Visibility.Visible;
+            if (Visibility == Visibility.Visible) Visibility = Visibility.Collapsed;
+            else Visibility = Visibility.Visible;
         }
 
         public override void Execute(object? parameter)

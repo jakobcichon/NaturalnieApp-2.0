@@ -12,7 +12,7 @@
 
         <Button Grid.Row="0" FontSize="22" Padding="3" 
                 Content="{Binding Name}" 
-                Command="{Binding Command}" 
+                Command="{Binding}" 
                 CommandParameter="{Binding}" 
                 Background="#FF2D9877" BorderBrush="#FF2D9877"/>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding SubButtonCollection}"

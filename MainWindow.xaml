@@ -7,8 +7,10 @@
         Title="NaturalnieApp 2.0" Height="600" Width="800" MinHeight="400" MinWidth="300" 
         WindowStyle="SingleBorderWindow">
     <Grid>
+        <!-- Column and row definition-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250" Width="*"/>
+            <ColumnDefinition Width="2" />
             <ColumnDefinition MinWidth="400" Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -16,8 +18,14 @@
             <RowDefinition MinHeight="300" Height="30*"/>
             <RowDefinition MinHeight="10" Height="1*"/>
         </Grid.RowDefinitions>
-        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding MenuBarView}"/>
-        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentView}"/>
+
+        <!-- Content control-->
+        <ContentControl Grid.Row="1" Grid.Column="0" 
+                        Content="{Binding MenuBarView}"/>
+        <ContentControl Grid.Row="1" Grid.Column="2" 
+                        Content="{Binding CurrentView}"/>
+
     </Grid>
+
 
 </Window>

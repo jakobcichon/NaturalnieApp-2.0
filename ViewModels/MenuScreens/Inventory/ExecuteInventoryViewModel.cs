@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace NaturalnieApp2.ViewModels.MenuScreens
+namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 {
-    internal class ExecuteInventorizationViewModel: ViewModelBase
+    internal class ExecuteInventoryViewModel: ViewModelBase
     {
 
-        public ExecuteInventorizationViewModel()
+        public ExecuteInventoryViewModel()
         {
         }
     }
