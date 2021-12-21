@@ -7,6 +7,7 @@
              xmlns:viewmodels_menu="clr-namespace:NaturalnieApp2.ViewModels.Menu"
              xmlns:vm_ms="clr-namespace:NaturalnieApp2.ViewModels.MenuScreens"
              xmlns:vm_ms_i="clr-namespace:NaturalnieApp2.ViewModels.MenuScreens.Inventory"
+             xmlns:sb="clr-namespace:NaturalnieApp2.Sandbox"
              >
     
     <Application.Resources>
@@ -31,7 +32,12 @@
             <DataTemplate DataType="{x:Type vm_ms_i:ExecuteInventoryViewModel}">
                 <v_ms_i:ExecuteInventoryView/>
             </DataTemplate>
-
+            
+            
+            <!-- Sandbox -->
+            <DataTemplate DataType="{x:Type sb:SandboxViewModel}">
+                <sb:SandboxView/>
+            </DataTemplate>
         </ResourceDictionary>
 
     </Application.Resources>

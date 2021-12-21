@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Controls\" />
-    <Folder Include="Sandbox\" />
   </ItemGroup>
 
   <ItemGroup>

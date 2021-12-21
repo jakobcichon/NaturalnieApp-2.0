@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NaturalnieApp2.Interfaces;
+using NaturalnieApp2.Sandbox;
 using NaturalnieApp2.Stores;
 using NaturalnieApp2.ViewModels;
 using NaturalnieApp2.ViewModels.Menu;
@@ -14,6 +15,9 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interop;
+using Windows.System;
 
 namespace NaturalnieApp2
 {
@@ -24,8 +28,14 @@ namespace NaturalnieApp2
     {
         private readonly IServiceProvider _serviceProvider;
 
+        public void OnKeyPressed(KeyEventArgs args)
+        {
+            ;
+        }
+
         public App()
         {
+
             IServiceCollection services = new ServiceCollection();
 
             // Create an instance for the main window
@@ -51,6 +61,7 @@ namespace NaturalnieApp2
 
             //Inventory
             services.AddSingleton<ExecuteInventoryViewModel>();
+            services.AddSingleton<SandboxViewModel>();
             #endregion
 
             #region Screen navigation manager
@@ -66,7 +77,7 @@ namespace NaturalnieApp2
         {
             //Create main window object
             MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-
+            
             //Add main view to the view dispatcher
             _serviceProvider.GetRequiredService<NavigationDispatcher>().
                 AddHostScreen(_serviceProvider.GetRequiredService<MainWindowViewModel>());
@@ -77,17 +88,25 @@ namespace NaturalnieApp2
             //Add inventory sub buttons
             CreateSubMenuButtons_Inventory(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
 
+            CreateSubMenuButtons_Sandbox(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
+
             //Show window
             MainWindow.Show();
 
             base.OnStartup(e);
+
+            //Create keyboard key handler
+            var window = Current.MainWindow;
+            var source = HwndSource.FromHwnd(new WindowInteropHelper(window).Handle);
+            source.AddHook(WndProc);
         }
 
         private List<MainButtonViewModel> CreateMenuBarMainButtons()
         {
             return new List<MainButtonViewModel>()
             {
-                new MainButtonViewModel(MenuButtonNames.InventoryButton)
+                new MainButtonViewModel(MenuButtonNames.InventoryButton),
+                new MainButtonViewModel(MenuButtonNames.Sandbox)
             };
         }
 
@@ -108,12 +127,37 @@ namespace NaturalnieApp2
             });
         }
 
+        private void CreateSubMenuButtons_Sandbox(MenuBarViewModel menuBar, IServiceProvider service)
+        {
+            menuBar.MenuBarViews.Where(m => m.Name == MenuButtonNames.Sandbox).
+                FirstOrDefault()?.AddSubButton(new List<ISubMenuButton>()
+            {
+                new SubButtonViewModel("Piaskownica",
+                service.GetRequiredService<SandboxViewModel>(),
+                service.GetRequiredService<NavigationDispatcher>()
+                )
+            });
+        }
+
         public static class MenuButtonNames
         {
             public static string MainMenuButton = "Ekran główny";
             public static string InventoryButton = "Inwentaryzacja";
+
+            public static string Sandbox = "Piaskownica";
         }
 
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            const int WM_KEYDOWN = 0x100;
+            if (msg == WM_KEYDOWN)
+            {
+                VirtualKey keyValue = (VirtualKey)wParam;
+                ;
+            }
+
+            return IntPtr.Zero;
+        }
 
     }
 

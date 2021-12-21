@@ -1,22 +1,14 @@
-﻿
-using NaturalnieApp2.ViewModels.Menu;
-using NaturalnieApp2.ViewModels.Controls;
+﻿using NaturalnieApp2.Interfaces;
+using NaturalnieApp2.Interfaces.Barcode;
+using NaturalnieApp2.Services.BarcodeReaderServices;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.Windows.Controls;
-using NaturalnieApp2.Views.Controls;
-using NaturalnieApp2.ViewModels.MenuScreens;
-using NaturalnieApp2.Stores;
-using NaturalnieApp2.Interfaces;
+using System.Windows.Input;
 
 namespace NaturalnieApp2.ViewModels
 {
-    internal class MainWindowViewModel: ViewModelBase, IHostScreen
+    internal class MainWindowViewModel : ViewModelBase, IHostScreen
     {
+        private readonly BarcodeReader BarcodeListner;
 
         private ViewModelBase _menuBarView;
 
@@ -31,22 +23,41 @@ namespace NaturalnieApp2.ViewModels
         public ViewModelBase CurrentView
         {
             get { return _currentView; }
-            set 
-            { 
-                _currentView = value; 
+            set
+            {
+                _currentView = value;
                 OnPropertyChanged(nameof(CurrentView));
             }
         }
 
-        public MainWindowViewModel(ViewModelBase _menuBarViewModel, ViewModelBase initialScreen=null)
+        public MainWindowViewModel(ViewModelBase _menuBarViewModel, ViewModelBase initialScreen = null)
         {
             _menuBarView = _menuBarViewModel;
             CurrentView = initialScreen;
+
+            //Create BarcodeReader instance
+            BarcodeListner = new BarcodeReader(1000.0);
+            BarcodeListner.BarcodeValid += BarcodeListner_BarcodeValid;
+            
         }
 
         public void ShowScreen(ViewModelBase screenToShow)
         {
             CurrentView = screenToShow;
         }
+
+        #region Barcode actions
+        private void BarcodeListner_BarcodeValid(object sender, BarcodeReader.BarcodeValidEventArgs e)
+        {
+            (CurrentView as IBarcodeListner)?.OnBarcodeValidAction(e.RecognizedBarcodeValue);
+
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            BarcodeListner.CheckIfBarcodeFromReader(e.Key);
+        }
+
+        #endregion
     }
 }

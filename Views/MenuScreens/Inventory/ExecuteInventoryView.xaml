@@ -10,10 +10,11 @@
              >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding BindingSource}">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding BindingSource}">
         </DataGrid>
     </Grid>
 </UserControl>
