@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NaturalnieApp2.Interfaces;
 using NaturalnieApp2.Sandbox;
+using NaturalnieApp2.Services.Database.Providers;
 using NaturalnieApp2.Stores;
 using NaturalnieApp2.ViewModels;
 using NaturalnieApp2.ViewModels.Menu;
@@ -18,6 +19,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using Windows.System;
+using System.Data.Entity.Core.EntityClient;
+using NaturalnieApp2.Models;
 
 namespace NaturalnieApp2
 {
@@ -73,11 +76,14 @@ namespace NaturalnieApp2
 
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected async override void OnStartup(StartupEventArgs e)
         {
+            EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyDownEvent, 
+                new KeyEventHandler(_serviceProvider.GetRequiredService<MainWindowViewModel>().OnKeyDown), true);
+
             //Create main window object
             MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            
+
             //Add main view to the view dispatcher
             _serviceProvider.GetRequiredService<NavigationDispatcher>().
                 AddHostScreen(_serviceProvider.GetRequiredService<MainWindowViewModel>());
@@ -94,11 +100,6 @@ namespace NaturalnieApp2
             MainWindow.Show();
 
             base.OnStartup(e);
-
-            //Create keyboard key handler
-            var window = Current.MainWindow;
-            var source = HwndSource.FromHwnd(new WindowInteropHelper(window).Handle);
-            source.AddHook(WndProc);
         }
 
         private List<MainButtonViewModel> CreateMenuBarMainButtons()
@@ -145,18 +146,6 @@ namespace NaturalnieApp2
             public static string InventoryButton = "Inwentaryzacja";
 
             public static string Sandbox = "Piaskownica";
-        }
-
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            const int WM_KEYDOWN = 0x100;
-            if (msg == WM_KEYDOWN)
-            {
-                VirtualKey keyValue = (VirtualKey)wParam;
-                ;
-            }
-
-            return IntPtr.Zero;
         }
 
     }

@@ -8,5 +8,6 @@ namespace NaturalnieApp2.Models.MenuScreens.Inventory
 {
     internal class InventoryModel
     {
+
     }
 }

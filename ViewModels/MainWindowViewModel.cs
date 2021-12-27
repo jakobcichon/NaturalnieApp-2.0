@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace NaturalnieApp2.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase, IHostScreen
+    internal class MainWindowViewModel : ViewModelBase, IHostScreen, IKeyDownListner
     {
         private readonly BarcodeReader BarcodeListner;
 

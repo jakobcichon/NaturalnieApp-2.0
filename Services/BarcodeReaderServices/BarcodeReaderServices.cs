@@ -227,7 +227,7 @@ namespace NaturalnieApp2.Services.BarcodeReaderServices
         /// It should be placed in object KEyDown event.
         /// </summary>
         /// <param name="key"></param>
-        public void CheckIfBarcodeFromReader(VirtualKey key)
+        public void CheckIfBarcodeFromReader(Key key)
         {
 
             //Make initialization after first call
@@ -240,8 +240,8 @@ namespace NaturalnieApp2.Services.BarcodeReaderServices
             }
 
             //Recognize only digits
-            if (key == VirtualKey.Number0 || key == VirtualKey.Number1 || key == VirtualKey.Number2 || key == VirtualKey.Number3 || key == VirtualKey.Number4 ||
-                key == VirtualKey.Number5 || key == VirtualKey.Number6 || key == VirtualKey.Number7 || key == VirtualKey.Number8 || key == VirtualKey.Number9)
+            if (key == Key.D0|| key == Key.D1 || key == Key.D2 || key == Key.D3 || key == Key.D4 ||
+                key == Key.D5 || key == Key.D6 || key == Key.D7 || key == Key.D8 || key == Key.D9)
             {
                 //Reset timer
                 this.timer.Stop();
@@ -249,40 +249,40 @@ namespace NaturalnieApp2.Services.BarcodeReaderServices
 
                 switch (key)
                 {
-                    case VirtualKey.Number0:
+                    case Key.D0:
                         this.TemporaryBarcodeValue += "0";
                         break;
-                    case VirtualKey.Number1:
+                    case Key.D1:
                         this.TemporaryBarcodeValue += "1";
                         break;
-                    case VirtualKey.Number2:
+                    case Key.D2:
                         this.TemporaryBarcodeValue += "2";
                         break;
-                    case VirtualKey.Number3:
+                    case Key.D3:
                         this.TemporaryBarcodeValue += "3";
                         break;
-                    case VirtualKey.Number4:
+                    case Key.D4:
                         this.TemporaryBarcodeValue += "4";
                         break;
-                    case VirtualKey.Number5:
+                    case Key.D5:
                         this.TemporaryBarcodeValue += "5";
                         break;
-                    case VirtualKey.Number6:
+                    case Key.D6:
                         this.TemporaryBarcodeValue += "6";
                         break;
-                    case VirtualKey.Number7:
+                    case Key.D7:
                         this.TemporaryBarcodeValue += "7";
                         break;
-                    case VirtualKey.Number8:
+                    case Key.D8:
                         this.TemporaryBarcodeValue += "8";
                         break;
-                    case VirtualKey.Number9:
+                    case Key.D9:
                         this.TemporaryBarcodeValue += "9";
                         break;
                 }
 
             }
-            else if (key == VirtualKey.Enter)
+            else if (key == Key.Enter)
             {
                 this.timer.Stop();
                 this.Ready = true;
