@@ -14,7 +14,41 @@
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding BindingSource}">
-        </DataGrid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="100"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="*" MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" 
+               Content="Obecny stan" 
+               HorizontalAlignment="Center" Padding="0"/>
+            <Label Grid.Row="0" Grid.Column="2" 
+               Content="Stan przed remantentem" 
+               HorizontalAlignment="Center" Padding="0"/>
+
+            <DataGrid x:Name="ActualData" Grid.Row="1" Grid.Column="0" 
+                  ItemsSource="{Binding BindingSource}" Margin="2,0,2,0" ScrollViewer.CanContentScroll="True">
+            </DataGrid>
+            <DataGrid x:Name="DatabaseData" Grid.Row="1" Grid.Column="2" 
+                  ItemsSource="{Binding BindingSource}" Background="#FFD0CFCF" Margin="2,0,2,0"
+                  >
+            </DataGrid>
+
+            <GridSplitter Grid.Column="1" Grid.Row="1" 
+                          Width="2" 
+                          HorizontalAlignment="Stretch"
+                          ResizeDirection="Columns"
+                          Padding="0"
+                          />
+        </Grid>
+
+
+            
     </Grid>
 </UserControl>

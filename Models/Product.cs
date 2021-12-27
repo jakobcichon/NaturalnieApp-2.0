@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaturalnieApp2.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace NaturalnieApp2.Models
 {
     internal class Product
     {
+        [DataGridAttributes.ColumnName("Nazwa dostawcy")]
         public string SupplierName { get; set; }
         public int ElzabProductId { get; set; }
         public string ManufacturerName { get; set; }
