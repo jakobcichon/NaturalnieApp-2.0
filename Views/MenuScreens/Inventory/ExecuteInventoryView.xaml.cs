@@ -24,5 +24,6 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
         {
             InitializeComponent();
         }
+
     }
 }

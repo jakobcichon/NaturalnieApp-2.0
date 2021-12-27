@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaturalnieApp2.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,25 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Models
 {
-    internal class Product
+    internal class Product: BindableModelBase
     {
         public string SupplierName { get; set; }
         public int ElzabProductId { get; set; }
         public string ManufacturerName { get; set; }
-        public string ProductName { get; set; }
+        //public string ProductName { get; set; }
+        private string _productName;
+
+        [DataGridAttributes.DisplayedPropertyName("Nazwa produktu")]
+        public string ProductName
+        {
+            get { return _productName; }
+            set 
+            { 
+                _productName = value;
+                OnPropertyChanged(nameof(ProductName));
+            }
+        }
+
         public string ElzabProductName { get; set; }
         public float PriceNet { get; set; }
         public int Discount { get; set; }

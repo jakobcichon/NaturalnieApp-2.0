@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NaturalnieApp2.Views.MenuScreens"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              Style="{StaticResource GeneralBackgroundColor}"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -14,7 +15,14 @@
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding BindingSource}">
+        <DataGrid x:Name="DataGrid" Grid.Row="1" ItemsSource="{Binding BindingSource}" AutoGenerateColumns="True">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="AutoGeneratingColumn" SourceObject="{Binding ElementName=DataGrid}">
+                    <i:InvokeCommandAction Command="{Binding OnAutoGeneratingColumn}"  PassEventArgsToCommand="True"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </DataGrid>
+        <Button Content="Button" HorizontalAlignment="Left" Height="28" 
+                Margin="176,10,0,0" VerticalAlignment="Top" Width="170" Command="{Binding TestButton}"/>
     </Grid>
 </UserControl>
