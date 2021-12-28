@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaturalnieApp2.Interfaces.DataGrid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,17 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
         public ExecuteInventoryView()
         {
             InitializeComponent();
+            DataGridSettingsActualState.AddDataGridReference(DataGridActualState);
+            DataGridSettingsToDateState.AddDataGridReference(DataGridToDateState);
+        }
+
+        private void ActualData_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            DataGrid dataGrid = sender as DataGrid;
+            if (dataGrid?.DataContext != null && dataGrid?.DataContext is IColumnEventHandler)
+            {
+                (dataGrid?.DataContext as IColumnEventHandler).OnAutomaticColumnGenerating(sender, e);
+            }
         }
     }
 }

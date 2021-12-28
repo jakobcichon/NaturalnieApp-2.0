@@ -23,7 +23,7 @@ namespace NaturalnieApp2.Services.Database.Providers
         //Product name and barcode or supplier code are obligatory
         //Method will return existing entity. If nothing from perspective of given keys exist in DB, it will return null.
         //====================================================================================================
-        public Product CheckIfProductExist(string productName, string barCode = "", string supplierCode = "")
+        public ProductModel CheckIfProductExist(string productName, string barCode = "", string supplierCode = "")
         {
             ProductDTO entity = new ProductDTO();
             int step = 0;
@@ -69,10 +69,10 @@ namespace NaturalnieApp2.Services.Database.Providers
             return GetProductFromProductDTO(entity);
         }
 
-        public Product? GetProductFromProductDTO(ProductDTO productDTO)
+        public ProductModel? GetProductFromProductDTO(ProductDTO productDTO)
         {
             if (productDTO == null) return null;
-            return new Product()
+            return new ProductModel()
             {
                 ProductName = productDTO.ProductName,
                 BarCode = productDTO.BarCode,

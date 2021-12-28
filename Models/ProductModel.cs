@@ -2,14 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Models
 {
-    internal class Product
+    internal class ProductModel
     {
-        [DataGridAttributes.ColumnName("Nazwa dostawcy")]
         public string SupplierName { get; set; }
         public int ElzabProductId { get; set; }
         public string ManufacturerName { get; set; }
@@ -26,12 +26,12 @@ namespace NaturalnieApp2.Models
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
 
-        public Product()
+        public ProductModel()
         {
 
         }
 
-        public Product(string supplierName, 
+        public ProductModel(string supplierName, 
             int elzabProductId, 
             string manufacturerName, 
             string productName, string 

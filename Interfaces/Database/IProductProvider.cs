@@ -10,6 +10,6 @@ namespace NaturalnieApp2.Interfaces.Database
 {
     internal interface IProductProvider
     {
-        public Product GetProductFromProductDTO(ProductDTO productDTO);
+        public ProductModel GetProductFromProductDTO(ProductDTO productDTO);
     }
 }

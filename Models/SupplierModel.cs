@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Models
 {
-    internal class Supplier
+    internal class SupplierModel
     {
         public string Name { get; set; }
         public string Info { get; set; }

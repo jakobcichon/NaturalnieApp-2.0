@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Models
 {
-    internal class Manufacturer
+    internal class ManufacturerModel
     {
         public string Name { get; set; }
         public string BarcodeEanPrefix { get; set; }

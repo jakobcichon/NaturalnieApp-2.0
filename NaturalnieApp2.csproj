@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\check.png" />
     <None Remove="Images\Naturalnielogo.png" />
+    <None Remove="Images\settings_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,12 +32,15 @@
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="MySql.Data" Version="8.0.27" />
     <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.27" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\check.png" />
     <Resource Include="Images\Naturalnielogo.png" />
+    <Resource Include="Images\settings_icon.png" />
   </ItemGroup>
 
 </Project>
