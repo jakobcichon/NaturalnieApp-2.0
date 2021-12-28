@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:NaturalnieApp2.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100" MinHeight="20" 
-             MaxWidth="300" MaxHeight="400">
+             MaxWidth="300" MaxHeight="400"
+             MouseLeave="UserControl_MouseLeave"
+             >
 
     <Grid>
         <Grid.RowDefinitions>

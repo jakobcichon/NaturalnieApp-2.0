@@ -168,5 +168,9 @@ namespace NaturalnieApp2.Views.Controls
             }
         }
 
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            HideMenuPanel();
+        }
     }
 }
