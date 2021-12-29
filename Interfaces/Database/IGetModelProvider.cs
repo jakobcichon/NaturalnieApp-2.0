@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Interfaces.Database
 {
-    public interface IGetModelProvider<T> where T : class
+    public interface IGetModelProvider
     {
-        public List<T> GetAllModelData();
+        public List<DisplayModelAttributes> GetAllModelData();
+        public Type GetModelType();
     }
 }

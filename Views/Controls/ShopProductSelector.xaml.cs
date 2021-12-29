@@ -1,8 +1,11 @@
 ﻿using NaturalnieApp2.Attributes;
 using NaturalnieApp2.Interfaces.Database;
 using NaturalnieApp2.Models;
+using NaturalnieApp2.Services.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,30 +24,35 @@ namespace NaturalnieApp2.Views.Controls
     /// <summary>
     /// Interaction logic for ShopProductSelector.xaml
     /// </summary>
-    public partial class ShopProductSelector : UserControl
+    public partial class ShopProductSelector: UserControl
     {
-
+        
         public ShopProductSelector()
         {
             this.InitializeComponent();
         }
 
         public static readonly DependencyProperty ModelProviderProperty =
-            DependencyProperty.Register("ModelProvider", typeof(DisplayModelAttributes), typeof(ShopProductSelector), 
+            DependencyProperty.Register("ModelProvider", typeof(IGetModelProvider), typeof(ShopProductSelector), 
                 new PropertyMetadata(new PropertyChangedCallback(OnModelProviderChanged)));
 
-        public DisplayModelAttributes ModelProvider
+        public IGetModelProvider ModelProvider
         {
-            get { return (DisplayModelAttributes)GetValue(ModelProviderProperty); }
+            get { return (IGetModelProvider)GetValue(ModelProviderProperty); }
             set { SetValue(ModelProviderProperty, value); } 
         }
 
         private static void OnModelProviderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            IGetModelProvider modelProvider = e.NewValue as IGetModelProvider;
+            Type modelType = modelProvider.GetModelType();
+            List<PropertyDescriptor> nameAttributes = DisplayModelAttributesServices.GetPropertiesOfClass(modelType, typeof(DisplayModelAttributes.DisplayName));
             ;
         }
 
+
     }
+    
    
 
 

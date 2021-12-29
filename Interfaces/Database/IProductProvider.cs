@@ -1,4 +1,5 @@
 ﻿using NaturalnieApp2.Models;
+using NaturalnieApp2.Services.Database.Providers;
 using NaturalnieApp2.Services.DTOs;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace NaturalnieApp2.Interfaces.Database
 {
     internal interface IProductProvider
     {
-        public ProductModel GetProductFromProductDTO(ProductDTO productDTO);
+        public ProductModel GetProductFromProductDTO(ProductDTO productDTO, 
+            List<ManufacturerDTO> manufacturerDTOs,
+            List<SupplierDTO> supplierDTOs,
+            List<TaxDTO> taxDTOs);
     }
 }

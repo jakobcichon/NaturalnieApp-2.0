@@ -22,7 +22,7 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 {
     internal class ExecuteInventoryViewModel: ViewModelBase, IBarcodeListner, IColumnEventHandler
     {
-        public InventoryModel ModelProvider { get; set; }
+        public ProductProvider ModelProvider { get; set; }
 
         private ObservableCollection<InventoryModel> _actualState;
 
@@ -45,8 +45,6 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
         {
             ActualState = new ObservableCollection<InventoryModel>() { new InventoryModel() { ProductName = "test1" } };
             ToDateState = new ObservableCollection<InventoryModel>() { new InventoryModel() { ProductName = "FromDB" } };
-
-            ModelProvider = new InventoryModel();
         }
 
         public void OnBarcodeValidAction(string barcode)

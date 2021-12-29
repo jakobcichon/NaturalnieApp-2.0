@@ -17,6 +17,22 @@ namespace NaturalnieApp2.Services.Database.Providers
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB all supplier ents
+        //====================================================================================================
+        public List<SupplierDTO> GetAllSupplierEnts()
+        {
+            List<SupplierDTO> localSupplier = new List<SupplierDTO>();
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from s in contextDB.Suppliers
+                            select s;
+
+                localSupplier = query.ToList<SupplierDTO>();
+            }
+            return localSupplier;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB supplier name by ID
         //====================================================================================================
         public string GetSupplierNameById(int id)

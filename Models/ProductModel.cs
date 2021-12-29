@@ -8,22 +8,66 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Models
 {
-    internal class ProductModel
+    internal class ProductModel: DisplayModelAttributes
     {
+        [DisplayName("Nazwa dostawcy")]
+        [VisibilityProperties(true, true)]
         public string SupplierName { get; set; }
+
+        [DisplayName("Numer w kasie elzab")]
+        [VisibilityProperties(true, true)]
         public int ElzabProductId { get; set; }
+
+        [DisplayName("Nazwa producenta")]
+        [VisibilityProperties(true, true)]
         public string ManufacturerName { get; set; }
+
+        [DisplayName("Nazwa produktu")]
+        [VisibilityProperties(true, true)]
         public string ProductName { get; set; }
+
+        [DisplayName("NAzwa produktu w kasie Elzab")]
+        [VisibilityProperties(true, true)]
         public string ElzabProductName { get; set; }
+
+        [DisplayName("Cena netto")]
+        [VisibilityProperties(true, true)]
         public float PriceNet { get; set; }
+
+        [DisplayName("Zniżka")]
+        [VisibilityProperties(true, true)]
         public int Discount { get; set; }
+
+        [DisplayName("Cena netto ze zniżką")]
+        [VisibilityProperties(true, true)]
         public float PriceNetWithDiscount { get; set; }
+
+        [DisplayName("Wartość podatku")]
+        [VisibilityProperties(true, true)]
         public int TaxValue { get; set; }
+
+        [DisplayName("Marża")]
+        [VisibilityProperties(true, true)]
         public int Marigin { get; set; }
+
+        [DisplayName("Cena klienta")]
+        [VisibilityProperties(true, true)]
         public float FinalPrice { get; set; }
+
+        [DisplayName("Kode kreskowy")]
+        [VisibilityProperties(true, true)]
         public string BarCode { get; set; }
+
+        [DisplayName("Kod kreskowy własny")]
+        [VisibilityProperties(true, true)]
         public string BarCodeShort { get; set; }
+
+        [DisplayName("Kod dostawcy")]
+        [VisibilityProperties(true, true)]
         public string SupplierCode { get; set; }
+
+        [DisplayName("Informacje o produkcie")]
+        [VisibilityProperties(true, true)]
         public string ProductInfo { get; set; }
 
         public ProductModel()

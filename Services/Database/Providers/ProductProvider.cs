@@ -8,10 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using NaturalnieApp2.Attributes;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class ProductProvider: DatabaseBase, IProductProvider, IGetModelProvider<ProductModel>
+    internal class ProductProvider: DatabaseBase, IProductProvider, IGetModelProvider
     {
         public ProductProvider(string connectionStrng): base(connectionStrng)
         {
@@ -66,7 +67,8 @@ namespace NaturalnieApp2.Services.Database.Providers
                 }
             }
 
-            return GetProductFromProductDTO(entity);
+            //return GetProductFromProductDTO(entity);
+            return null;
         }
 
         //====================================================================================================
@@ -80,31 +82,34 @@ namespace NaturalnieApp2.Services.Database.Providers
                 var query = from p in contextDB.Products
                             select p;
 
-                localProduct = GetProductFromProductDTO(query.ToList<ProductDTO>());
+                List<ProductDTO> productDTOs = query.ToList();
+
+                localProduct = GetProductFromProductDTO(productDTOs);
             }
             return localProduct;
-        }
-
-        public List<ProductModel> GetAllModelData()
-        {
-            return GetAllProductEntities();
         }
 
         public List<ProductModel> GetProductFromProductDTO(List<ProductDTO> productsDTO)
         {
             if (productsDTO == null) return null;
             List<ProductModel> localProduct = new List<ProductModel>();
+            List<ManufacturerDTO> manufacturerDTOs = new ManufacturerProvider(ConnectionString).GetAllManufacturersEnts();
+            List<SupplierDTO> supplierDTOs = new SupplierProvider(ConnectionString).GetAllSupplierEnts();
+            List<TaxDTO> taxDTOs = new TaxProvider(ConnectionString).GetAllTaxEnts();
 
             foreach (ProductDTO productDTO in productsDTO)
             {
-                ProductModel? _product = GetProductFromProductDTO(productDTO);
+                ProductModel? _product = GetProductFromProductDTO(productDTO, manufacturerDTOs, supplierDTOs, taxDTOs);
                 if(_product != null) localProduct.Add(_product);
             }
-
+              
             return localProduct;
         }
 
-        public ProductModel? GetProductFromProductDTO(ProductDTO productDTO)
+        public ProductModel? GetProductFromProductDTO(ProductDTO productDTO, 
+            List<ManufacturerDTO> manufacturerDTOs,
+            List<SupplierDTO> supplierDTOs,
+            List<TaxDTO> taxDTOs)
         {
             if (productDTO == null) return null;
             return new ProductModel()
@@ -117,15 +122,24 @@ namespace NaturalnieApp2.Services.Database.Providers
                 ElzabProductId = productDTO.ElzabProductId,
                 ElzabProductName = productDTO.ElzabProductName,
                 FinalPrice = productDTO.FinalPrice,
-                ManufacturerName = new ManufacturerProvider(ConnectionString).GetManufacturerNameById(productDTO.ManufacturerId),
+                ManufacturerName = manufacturerDTOs.Find(e => e.Id == productDTO.ManufacturerId)?.Name,
                 Marigin = productDTO.Marigin,
                 PriceNet = productDTO.PriceNet,
                 PriceNetWithDiscount = productDTO.PriceNetWithDiscount,
                 ProductInfo = productDTO.ProductInfo,
-                SupplierName = new SupplierProvider(ConnectionString).GetSupplierNameById(productDTO.Id),
-                TaxValue = new TaxProvider(ConnectionString).GetTaxValueById(productDTO.Id)
+                SupplierName = supplierDTOs.Find(e => e.Id == productDTO.SupplierId)?.Name,
+                TaxValue = taxDTOs.Find(e => e.Id == productDTO.TaxId).TaxValue
             };
         }
 
+        public Type GetModelType()
+        {
+            return typeof(ProductModel);
+        }
+
+        public List<DisplayModelAttributes> GetAllModelData()
+        {
+            return GetAllProductEntities().ConvertAll(e => e as DisplayModelAttributes);
+        }
     }
 }

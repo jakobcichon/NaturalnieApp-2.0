@@ -21,6 +21,8 @@ using System.Windows.Interop;
 using Windows.System;
 using System.Data.Entity.Core.EntityClient;
 using NaturalnieApp2.Models;
+using System.IO;
+using NaturalnieApp2.Attributes;
 
 namespace NaturalnieApp2
 {
@@ -38,6 +40,11 @@ namespace NaturalnieApp2
 
         public App()
         {
+
+            //!!!!!!!!!!!!!!!!!!!To be replaced with singleton class!!!!!!!!!!!!!!!!1
+            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+            "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");
+
 
             IServiceCollection services = new ServiceCollection();
 
@@ -71,6 +78,10 @@ namespace NaturalnieApp2
             services.AddSingleton(s => new NavigationDispatcher());
             #endregion
 
+            #region Database
+            services.AddTransient<ProductProvider>(s => new ProductProvider(connectionString));
+            #endregion
+
             //Build service provider
             _serviceProvider = services.BuildServiceProvider();
 
@@ -96,10 +107,16 @@ namespace NaturalnieApp2
 
             CreateSubMenuButtons_Sandbox(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
 
+            //Execute inventory
+            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider = 
+                _serviceProvider.GetRequiredService<ProductProvider>();
+
             //Show window
             MainWindow.Show();
 
             base.OnStartup(e);
+
+            //Sandbox();
         }
 
         private List<MainButtonViewModel> CreateMenuBarMainButtons()
@@ -148,6 +165,36 @@ namespace NaturalnieApp2
             public static string Sandbox = "Piaskownica";
         }
 
+
+        public void Sandbox()
+        {
+            string directory = Environment.CurrentDirectory;
+            DirectoryInfo mainDirectory = null;
+
+            while (true) 
+            {
+                DirectoryInfo _directory = Directory.GetParent(directory);
+                if (_directory == null) throw new DirectoryNotFoundException();
+
+
+                if (_directory.Name == "NaturalnieApp-2.0" )
+                {
+                    mainDirectory = _directory;
+                    break;
+                }
+
+                directory = _directory.FullName;
+            }
+
+            string fullPath = System.IO.Path.Combine(mainDirectory.FullName, @"AzureDB\DigiCertGlobalRootCA.crt.pem");
+
+            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+                    "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");
+
+            ProductProvider productProvider = new ProductProvider(connectionString);
+            List<DisplayModelAttributes> test = productProvider.GetAllModelData();
+            ;
+        }
     }
 
 }

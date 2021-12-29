@@ -9,7 +9,7 @@ namespace NaturalnieApp2.Attributes
     public class DisplayModelAttributes
     {
         [AttributeUsage(AttributeTargets.Property)]
-        internal class DisplayName: Attribute
+        internal sealed class DisplayName: Attribute
         {
             private string _name;
             public string Name { get; }
@@ -21,7 +21,7 @@ namespace NaturalnieApp2.Attributes
         }
 
         [AttributeUsage(AttributeTargets.Property)]
-        internal class VisibilityProperties : Attribute
+        internal sealed class VisibilityProperties : Attribute
         {
             public bool Visible { get;}
             public bool HiddenByDefault { get;}

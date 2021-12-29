@@ -17,6 +17,22 @@ namespace NaturalnieApp2.Services.Database.Providers
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB all Tax ents
+        //====================================================================================================
+        public List<TaxDTO> GetAllTaxEnts()
+        {
+            List<TaxDTO> localTax = new List<TaxDTO>();
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from t in contextDB.Tax
+                            select t;
+
+                localTax = query.ToList<TaxDTO>();
+            }
+            return localTax;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Tax value by Id
         //====================================================================================================
         public int GetTaxValueById(int id)
