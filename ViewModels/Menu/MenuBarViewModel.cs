@@ -15,7 +15,10 @@ namespace NaturalnieApp2.ViewModels.Menu
 {
     internal class MenuBarViewModel: ViewModelBase, ICommand
     {
+        public MenuBarCollapseCommand ButtonCommand { get; set; }
+
         public ViewModelBase LogoClickScreen { get; }
+
         private INavigateToScreen ScreenDispatcher { get; }
 
         private ObservableCollection<MainButtonViewModel> _menuBarViews;
@@ -33,6 +36,7 @@ namespace NaturalnieApp2.ViewModels.Menu
             _menuBarViews = new ObservableCollection<MainButtonViewModel>();  
             LogoClickScreen = logoClickScreen;
             ScreenDispatcher = screenDispatcher;
+            ButtonCommand = new MenuBarCollapseCommand(); 
         }
 
         public void AddMenuBarMainButton(MainButtonViewModel menuBarMainButton)

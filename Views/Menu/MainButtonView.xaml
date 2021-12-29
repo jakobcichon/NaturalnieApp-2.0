@@ -3,27 +3,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" >
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="100"
+             >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" FontSize="22" Padding="3" 
-                Content="{Binding Name}" 
-                Command="{Binding}" 
-                CommandParameter="{Binding}" 
-                Background="#FF2D9877" BorderBrush="#FF2D9877"/>
+        
+        <!-- Main button-->
+        <Grid Background="#FF2D9877">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" FontSize="22" Padding="3" Height="40"
+                    Content="{Binding Name}" 
+                    Command="{Binding}" 
+                    CommandParameter="{Binding}" 
+                    HorizontalAlignment="Left"
+                    Background="#FF2D9877" BorderBrush="#FF2D9877"/>
+        </Grid>
+
+        <!-- Sub buttons-->
         <ItemsControl Grid.Row="1" ItemsSource="{Binding SubButtonCollection}"
                       Visibility="{Binding Visibility}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button FontSize="16" Padding="3" Content="{Binding Path=DisplayText}"
-                            Background="#FF5FA992" BorderBrush="Black"
-                            Command="{Binding}" 
-                            CommandParameter="{Binding}">
-                    </Button>
+                    <Grid Background="#FF5FA992">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" FontSize="16" Padding="3" Height="30"
+                                Content="{Binding Path=DisplayText}"
+                                Command="{Binding}" 
+                                CommandParameter="{Binding}" 
+                                HorizontalAlignment="Left"
+                                BorderThickness="1,1,1,1" BorderBrush="#FF5FA992">
+                            <Button.Background>
+                                <SolidColorBrush Color="#FF5FA992"/>
+                            </Button.Background>
+                        </Button>
+                    </Grid>
+
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

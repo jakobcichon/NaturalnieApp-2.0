@@ -10,15 +10,20 @@ using System.Windows.Controls;
 using NaturalnieApp2.Attributes;
 using NaturalnieApp2.Commands;
 using NaturalnieApp2.Interfaces.Barcode;
+using NaturalnieApp2.Interfaces.Database;
 using NaturalnieApp2.Interfaces.DataGrid;
 using NaturalnieApp2.Models;
 using NaturalnieApp2.Models.MenuScreens.Inventory;
+using NaturalnieApp2.Services.Database.Providers;
 using NaturalnieApp2.Services.DataGrid;
+using NaturalnieApp2.Services.DTOs;
 
 namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 {
     internal class ExecuteInventoryViewModel: ViewModelBase, IBarcodeListner, IColumnEventHandler
     {
+        public InventoryModel ModelProvider { get; set; }
+
         private ObservableCollection<InventoryModel> _actualState;
 
         public ObservableCollection<InventoryModel> ActualState
@@ -40,6 +45,8 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
         {
             ActualState = new ObservableCollection<InventoryModel>() { new InventoryModel() { ProductName = "test1" } };
             ToDateState = new ObservableCollection<InventoryModel>() { new InventoryModel() { ProductName = "FromDB" } };
+
+            ModelProvider = new InventoryModel();
         }
 
         public void OnBarcodeValidAction(string barcode)

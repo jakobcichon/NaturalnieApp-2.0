@@ -7,32 +7,38 @@
              xmlns:vm="clr-namespace:NaturalnieApp2.ViewModels.Menu"
              xmlns:controls="clr-namespace:NaturalnieApp2.Views.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="400" Background="#FFEADFCB">
-
+             d:DesignHeight="400" d:DesignWidth="300" MaxWidth="300"
+             Style="{StaticResource GeneralBackgroundColor}">
 
     <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" MinHeight="50"/>
+            <RowDefinition Height="100" MinHeight="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <!--Logo image-->
-        <Button Command="{Binding}">
-            <Image>
+        <Button Grid.ColumnSpan="2" Command="{Binding}" 
+                    Style="{StaticResource GeneralButtonStyle}" BorderBrush="{x:Null}" >
+            <Image Stretch="Fill">
                 <Image.Source>
-                    <BitmapImage UriSource="/Images/Naturalnielogo.png"/>
+                    <BitmapImage UriSource="/Images/Naturalnielogo.png" />
                 </Image.Source>
             </Image>
         </Button>
-
         <!--Buttons-->
-        <ItemsControl Grid.Row="1"  ItemsSource="{Binding MenuBarViews}">
+        <ItemsControl x:Name="ScreensButtons" Grid.Row="1"  ItemsSource="{Binding MenuBarViews}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <local:MainButtonView/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
     </Grid>
+
 
 </UserControl>

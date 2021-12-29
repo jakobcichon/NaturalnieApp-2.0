@@ -10,8 +10,8 @@
     <Grid>
         <!-- Column and row definition-->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="250" Width="*"/>
-            <ColumnDefinition Width="2" />
+            <ColumnDefinition MinWidth="40" Width="auto" MaxWidth="300"/>
+            <ColumnDefinition Width="3" />
             <ColumnDefinition MinWidth="400" Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -25,6 +25,10 @@
                         Content="{Binding MenuBarView}"/>
         <ContentControl Grid.Row="1" Grid.Column="2" 
                         Content="{Binding CurrentView}"/>
+        
+        <!-- Slider -->
+        <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" ResizeDirection="Columns" 
+                HorizontalAlignment="Stretch" Padding="0"/>
 
     </Grid>
 

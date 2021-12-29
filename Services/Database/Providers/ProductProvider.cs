@@ -11,7 +11,7 @@ using System.Data.Entity;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class ProductProvider: DatabaseBase, IProductProvider
+    internal class ProductProvider: DatabaseBase, IProductProvider, IGetModelProvider<ProductModel>
     {
         public ProductProvider(string connectionStrng): base(connectionStrng)
         {
@@ -69,6 +69,41 @@ namespace NaturalnieApp2.Services.Database.Providers
             return GetProductFromProductDTO(entity);
         }
 
+        //====================================================================================================
+        //Method used to retrieve from DB all product entries
+        //====================================================================================================
+        public List<ProductModel> GetAllProductEntities()
+        {
+            List<ProductModel> localProduct = new List<ProductModel>();
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            select p;
+
+                localProduct = GetProductFromProductDTO(query.ToList<ProductDTO>());
+            }
+            return localProduct;
+        }
+
+        public List<ProductModel> GetAllModelData()
+        {
+            return GetAllProductEntities();
+        }
+
+        public List<ProductModel> GetProductFromProductDTO(List<ProductDTO> productsDTO)
+        {
+            if (productsDTO == null) return null;
+            List<ProductModel> localProduct = new List<ProductModel>();
+
+            foreach (ProductDTO productDTO in productsDTO)
+            {
+                ProductModel? _product = GetProductFromProductDTO(productDTO);
+                if(_product != null) localProduct.Add(_product);
+            }
+
+            return localProduct;
+        }
+
         public ProductModel? GetProductFromProductDTO(ProductDTO productDTO)
         {
             if (productDTO == null) return null;
@@ -91,5 +126,6 @@ namespace NaturalnieApp2.Services.Database.Providers
                 TaxValue = new TaxProvider(ConnectionString).GetTaxValueById(productDTO.Id)
             };
         }
+
     }
 }

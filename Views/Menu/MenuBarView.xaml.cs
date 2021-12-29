@@ -22,7 +22,10 @@ namespace NaturalnieApp2.Views.Menu
         public MenuBarView()
         {
             InitializeComponent();
+
         }
 
     }
+
+
 }

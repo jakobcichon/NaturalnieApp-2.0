@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="NaturalnieApp2.Views.Controls.ShopProductSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NaturalnieApp2.Views.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="800"
+             Style="{StaticResource GeneralBackgroundColor}"
+             >
+    <Grid>
+
+        <!-- Basic grid definition-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <!-- Selected product details-->
+        <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource HeaderStyle}" Margin="2">
+            <Border.Effect>
+                <DropShadowEffect Color="#FFB1A88E" Direction="270" ShadowDepth="1" />
+            </Border.Effect>
+
+        </Border>
+        
+        <!-- Product attributes-->
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <ItemsControl>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border>
+                            
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+        
+        <!-- Collapse button-->
+        <Button Grid.Row="2" Style="{StaticResource GeneralButtonStyle}"/>
+    </Grid>
+</UserControl>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Attributes
 {
-    internal class DataGridAttributes
+    public class DisplayModelAttributes
     {
         [AttributeUsage(AttributeTargets.Property)]
         internal class DisplayName: Attribute
@@ -21,11 +21,11 @@ namespace NaturalnieApp2.Attributes
         }
 
         [AttributeUsage(AttributeTargets.Property)]
-        internal class ColumnProperties : Attribute
+        internal class VisibilityProperties : Attribute
         {
             public bool Visible { get;}
             public bool HiddenByDefault { get;}
-            public ColumnProperties(bool visible=true, bool hiddenByDefault=false)
+            public VisibilityProperties(bool visible=true, bool hiddenByDefault=false)
             {
                 Visible = visible;
                 HiddenByDefault = hiddenByDefault;

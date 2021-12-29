@@ -12,12 +12,12 @@ namespace NaturalnieApp2.Services.DataGrid
     {
         public static void ApllyColumnProperties(Attribute attribute, DataGridColumn column)
         {
-            if (attribute.GetType() == typeof(DataGridAttributes.DisplayName))
+            if (attribute.GetType() == typeof(DisplayModelAttributes.DisplayName))
             {
                 ColumnHeaderNameFromAttribute(attribute, column);
             }
 
-            if (attribute.GetType() == typeof(DataGridAttributes.ColumnProperties))
+            if (attribute.GetType() == typeof(DisplayModelAttributes.VisibilityProperties))
             {
                 ColumnDefaultVisibilityFromAttribute(attribute, column);
 
@@ -26,12 +26,12 @@ namespace NaturalnieApp2.Services.DataGrid
 
         public static void ColumnHeaderNameFromAttribute(Attribute attribute, DataGridColumn column)
         {
-            column.Header = (attribute as DataGridAttributes.DisplayName).Name;
+            column.Header = (attribute as DisplayModelAttributes.DisplayName).Name;
         }
 
         public static void ColumnDefaultVisibilityFromAttribute(Attribute attribute, DataGridColumn column)
         {
-            if ((attribute as DataGridAttributes.ColumnProperties).HiddenByDefault == true)
+            if ((attribute as DisplayModelAttributes.VisibilityProperties).HiddenByDefault == true)
             {
                 column.Visibility = System.Windows.Visibility.Hidden;
                 return;
