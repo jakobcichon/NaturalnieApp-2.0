@@ -71,8 +71,7 @@
                           />
         </Grid>
 
-        <c:ShopProductSelector x:Name="ProductSelektor" Grid.Row="0" 
-                               ModelProvider="{Binding ModelProvider}"/>
+        <c:ShopProductSelector x:Name="ProductSelektor" Grid.Row="0"/>
 
     </Grid>
 </UserControl>

@@ -50,7 +50,7 @@
                         <Border BorderThickness="1" BorderBrush="Black" Background="Aqua">
                             <StackPanel Orientation="Vertical">
                                 <Label Content="{Binding Name}"/>
-                                <ComboBox ItemsSource="{Binding Values}">
+                                <ComboBox ItemsSource="{Binding Values}" MaxWidth="200" IsManipulationEnabled="True" >
                                     <ComboBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <VirtualizingStackPanel />
