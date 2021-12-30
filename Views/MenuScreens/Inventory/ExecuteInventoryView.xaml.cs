@@ -26,7 +26,6 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
             InitializeComponent();
             DataGridSettingsActualState.AddDataGridReference(DataGridActualState);
             DataGridSettingsToDateState.AddDataGridReference(DataGridToDateState);
-
         }
 
         private void ActualData_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)

@@ -24,19 +24,50 @@
             </Border.Effect>
 
         </Border>
-        
-        <!-- Product attributes-->
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <ItemsControl>
+
+        <Grid Grid.Row="1">
+            <!-- Basic grid definition-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+
+            <!-- Product attributes-->
+            <ItemsControl Grid.Column="0" Grid.RowSpan="3" ItemsSource="{Binding RelativeSource={RelativeSource  AncestorType=UserControl}, Path=Items}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border>
-                            
+                        <Border BorderThickness="1" BorderBrush="Black" Background="Aqua">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="{Binding Name}"/>
+                                <ComboBox ItemsSource="{Binding Values}">
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                </ComboBox>
+                            </StackPanel>
+
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+
+            <!-- Update button-->
+            <Button Grid.Column="1" Grid.Row="1" Click="Button_Click"/>
+        </Grid>
+
         
         <!-- Collapse button-->
         <Button Grid.Row="2" Style="{StaticResource GeneralButtonStyle}"/>

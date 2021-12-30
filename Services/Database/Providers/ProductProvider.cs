@@ -137,9 +137,9 @@ namespace NaturalnieApp2.Services.Database.Providers
             return typeof(ProductModel);
         }
 
-        public List<DisplayModelAttributes> GetAllModelData()
+        public List<object> GetAllModelData()
         {
-            return GetAllProductEntities().ConvertAll(e => e as DisplayModelAttributes);
+            return GetAllProductEntities().ConvertAll(e => e as object);
         }
     }
 }
