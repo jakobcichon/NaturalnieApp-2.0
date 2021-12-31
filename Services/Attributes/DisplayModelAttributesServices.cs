@@ -11,6 +11,54 @@ namespace NaturalnieApp2.Services.Attributes
     public static class DisplayModelAttributesServices
     {
 
+        public static object? GetPropertyValueByDisplayName(string propertyName, object instance)
+        {
+            PropertyDescriptor? property = GetPropertyToBeDisplayed(instance.GetType(), propertyName);
+
+            if (property == null) return null;
+
+            return property.GetValue(instance);
+        }
+
+        public static List<string> GetPropertiesNamesToBeDisplayed(Type examinedObjectType)
+        {
+            List<string> returnList = new List<string>();
+
+            List<PropertyDescriptor> propertiesWithVisibilityAttributes =
+                GetPropertiesOfClass(examinedObjectType, typeof(DisplayModelAttributes.VisibilityProperties));
+
+            foreach (PropertyDescriptor property in propertiesWithVisibilityAttributes)
+            {
+                if (property.Attributes.OfType<DisplayModelAttributes.VisibilityProperties>()?.FirstOrDefault()?.Visible == true)
+                {
+                    returnList.Add(GetPropertyDisplayName(property));
+                }
+            }
+
+            return returnList;
+        }
+
+        public static PropertyDescriptor? GetPropertyToBeDisplayed(Type examinedObjectType, string propertyDisplayName)
+        {
+            List<PropertyDescriptor> returnList = new List<PropertyDescriptor>();
+
+            List<PropertyDescriptor> propertiesWithVisibilityAttributes =
+                GetPropertiesOfClass(examinedObjectType, typeof(DisplayModelAttributes.VisibilityProperties));
+
+            foreach (PropertyDescriptor property in propertiesWithVisibilityAttributes)
+            {
+                if (property.Attributes.OfType<DisplayModelAttributes.VisibilityProperties>()?.FirstOrDefault()?.Visible == true)
+                {
+                    if (property.Attributes.OfType<DisplayModelAttributes.DisplayName>()?.FirstOrDefault()?.Name == propertyDisplayName)
+                    {
+                        return property;
+                    }    
+                }
+            }
+
+            return null;
+        }
+
         public static List<PropertyDescriptor> GetPropertiesToBeDisplayed(Type examinedObjectType)
         {
             List<PropertyDescriptor> returnList = new List<PropertyDescriptor>();

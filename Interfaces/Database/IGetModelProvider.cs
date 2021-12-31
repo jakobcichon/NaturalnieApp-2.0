@@ -10,7 +10,8 @@ namespace NaturalnieApp2.Interfaces.Database
 {
     public interface IGetModelProvider
     {
-        public List<object> GetAllModelData();
-        public Type GetModelType();
+        public List<string> GetElementsNames();
+        public Dictionary<string, object> GetElementsValues();
+        public Task<Dictionary<string, object>> GetElementsValuesAsync();
     }
 }

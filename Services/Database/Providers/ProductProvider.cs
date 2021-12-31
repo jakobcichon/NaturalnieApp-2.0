@@ -9,11 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using NaturalnieApp2.Attributes;
+using NaturalnieApp2.Services.Attributes;
+using System.ComponentModel;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class ProductProvider: DatabaseBase, IProductProvider, IGetModelProvider
     {
+
         public ProductProvider(string connectionStrng): base(connectionStrng)
         {
 
@@ -89,6 +92,78 @@ namespace NaturalnieApp2.Services.Database.Providers
             return localProduct;
         }
 
+        //====================================================================================================
+        //Method used to retrieve from DB all product entries
+        //====================================================================================================
+        public async Task<List<ProductModel>> GetAllProductEntitiesAsync()
+        {
+            List<ProductModel> localProduct = new List<ProductModel>();
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            select p;
+
+                var test = query;
+                List<ProductDTO> productDTOs = await query.ToListAsync();
+
+                localProduct = GetProductFromProductDTO(productDTOs);
+            }
+            return localProduct;
+        }
+
+
+        #region Interface elements
+        public List<string> GetElementsNames()
+        {
+            List<PropertyDescriptor> propertiesList = DisplayModelAttributesServices.GetPropertiesToBeDisplayed(typeof(ProductModel));
+            List<string> returnList = propertiesList.Select(p => DisplayModelAttributesServices.GetPropertyDisplayName(p)).ToList();
+
+            return returnList;
+        }
+
+        public Dictionary<string, object> GetElementsValues()
+        {
+            List<ProductModel> productModels = GetAllProductEntities();
+            Dictionary<string, object> _returnDict = new Dictionary<string, object>();
+
+            foreach (string propertyName in GetElementsNames())
+            {
+                List<object> allPropertyValues = new List<object>();
+                foreach (ProductModel model in productModels)
+                {
+                    allPropertyValues.Add(DisplayModelAttributesServices.GetPropertyValueByDisplayName(propertyName, model));
+                }
+                allPropertyValues = allPropertyValues.Distinct().ToList();
+                _returnDict.Add(propertyName, allPropertyValues);
+            }
+
+            return _returnDict;
+
+        }
+
+        public async Task<Dictionary<string, object>> GetElementsValuesAsync()
+        {
+            List<ProductModel> productModels = await GetAllProductEntitiesAsync();
+
+            Dictionary<string, object> _returnDict = new Dictionary<string, object>();
+
+            foreach (string propertyName in GetElementsNames())
+            {
+                List<object> allPropertyValues = new List<object>();
+                foreach (ProductModel model in productModels)
+                {
+                    allPropertyValues.Add(DisplayModelAttributesServices.GetPropertyValueByDisplayName(propertyName, model));
+                }
+                allPropertyValues = allPropertyValues.Distinct().ToList();
+                _returnDict.Add(propertyName, allPropertyValues);
+            }
+
+            return _returnDict;
+
+        }
+        #endregion
+
+
         public List<ProductModel> GetProductFromProductDTO(List<ProductDTO> productsDTO)
         {
             if (productsDTO == null) return null;
@@ -132,14 +207,5 @@ namespace NaturalnieApp2.Services.Database.Providers
             };
         }
 
-        public Type GetModelType()
-        {
-            return typeof(ProductModel);
-        }
-
-        public List<object> GetAllModelData()
-        {
-            return GetAllProductEntities().ConvertAll(e => e as object);
-        }
     }
 }

@@ -42,8 +42,8 @@ namespace NaturalnieApp2
         {
 
             //!!!!!!!!!!!!!!!!!!!To be replaced with singleton class!!!!!!!!!!!!!!!!1
-            /*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-                        "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");*/
+/*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+            "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");*/
             string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
                         "uid = admin; password = admin; Connection Timeout = 10", "desktop-l2l4v68");
 
@@ -194,7 +194,7 @@ namespace NaturalnieApp2
                     "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");
 
             ProductProvider productProvider = new ProductProvider(connectionString);
-            List<object> test = productProvider.GetAllModelData();
+            //List<object> test = productProvider.GetAllModelData();
             ;
         }
     }

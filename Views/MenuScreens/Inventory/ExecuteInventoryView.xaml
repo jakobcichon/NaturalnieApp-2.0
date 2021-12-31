@@ -13,8 +13,8 @@
     <Grid>
         <!-- Basic grid definition-->
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
         <!-- Grid layout for the DataGrid views-->
@@ -71,8 +71,11 @@
                           />
         </Grid>
 
-        <c:ShopProductSelector x:Name="ProductSelektor" Grid.Row="0" 
+        <Border BorderBrush="#FFB1A88E" BorderThickness="1">
+            <c:ShopProductSelector x:Name="ProductSelektor" Grid.Row="0" 
                                ModelProvider="{Binding ModelProvider}"/>
+        </Border>
+
 
     </Grid>
 </UserControl>
