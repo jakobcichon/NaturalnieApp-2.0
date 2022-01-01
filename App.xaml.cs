@@ -23,6 +23,7 @@ using System.Data.Entity.Core.EntityClient;
 using NaturalnieApp2.Models;
 using System.IO;
 using NaturalnieApp2.Attributes;
+using NaturalnieApp2.Views.Controls.Models;
 
 namespace NaturalnieApp2
 {
@@ -84,6 +85,10 @@ namespace NaturalnieApp2
             services.AddTransient<ProductProvider>(s => new ProductProvider(connectionString));
             #endregion
 
+            #region Controls Data Models
+            services.AddTransient<ShopProductSelectorDataModel>();
+            #endregion
+
             //Build service provider
             _serviceProvider = services.BuildServiceProvider();
 
@@ -109,9 +114,10 @@ namespace NaturalnieApp2
 
             CreateSubMenuButtons_Sandbox(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
 
-            //Execute inventory
-            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider = 
+            #region Execute inventory
+            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider =
                 _serviceProvider.GetRequiredService<ProductProvider>();
+            #endregion
 
             //Show window
             MainWindow.Show();

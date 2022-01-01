@@ -2,6 +2,7 @@
 using NaturalnieApp2.Interfaces.Barcode;
 using NaturalnieApp2.Services.BarcodeReaderServices;
 using System;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace NaturalnieApp2.ViewModels
@@ -49,6 +50,7 @@ namespace NaturalnieApp2.ViewModels
         #region Barcode actions
         private void BarcodeListner_BarcodeValid(object sender, BarcodeReader.BarcodeValidEventArgs e)
         {
+            Debug.WriteLine($"Barcode with value {e.RecognizedBarcodeValue} has been recognized");
             (CurrentView as IBarcodeListner)?.OnBarcodeValidAction(e.RecognizedBarcodeValue);
 
         }

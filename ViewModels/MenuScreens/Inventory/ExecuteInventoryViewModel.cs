@@ -14,15 +14,45 @@ using NaturalnieApp2.Interfaces.Database;
 using NaturalnieApp2.Interfaces.DataGrid;
 using NaturalnieApp2.Models;
 using NaturalnieApp2.Models.MenuScreens.Inventory;
+using NaturalnieApp2.Services.Attributes;
 using NaturalnieApp2.Services.Database.Providers;
 using NaturalnieApp2.Services.DataGrid;
 using NaturalnieApp2.Services.DTOs;
+using NaturalnieApp2.Services.DTOs.DataModelToUserControlModel;
+using NaturalnieApp2.Views.Controls.Models;
 
 namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 {
-    internal class ExecuteInventoryViewModel: ViewModelBase, IBarcodeListner, IColumnEventHandler
+    internal class ExecuteInventoryViewModel: ViewModelBase, IBarcodeListner, IColumnEventHandler, IProductSelectorHandler
     {
-        public ProductProvider ModelProvider { get; set; }
+        private ProductProvider _modelProvider;
+
+        public ProductProvider ModelProvider
+        {
+            get { return _modelProvider; }
+            set 
+            { 
+                _modelProvider = value;
+                OnModelProviderChange();
+            }
+        }
+
+        private ProductModel _actualSelectedProductModel;
+
+        public ProductModel ActualSelectedProductModel
+        {
+            get { return _actualSelectedProductModel; }
+            set { _actualSelectedProductModel = value; }
+        }
+        private List<ProductModel> _listOfAllProductModels;
+
+        public List<ProductModel> ListOfAllProductModels
+        {
+            get { return _listOfAllProductModels; }
+            set { _listOfAllProductModels = value; }
+        }
+
+        public ShopProductSelectorDataModel ProductSelectorDataModel { get; set; }
 
         private ObservableCollection<InventoryModel> _actualState;
 
@@ -40,9 +70,13 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             set { _toDateState = value; }
         }
 
-
         public ExecuteInventoryViewModel()
         {
+            //Instance of the ProductSelectorDataModel
+            ProductSelectorDataModel = new ShopProductSelectorDataModel();
+            ActualSelectedProductModel = new ProductModel();
+            ListOfAllProductModels = new List<ProductModel>();
+
             ActualState = new ObservableCollection<InventoryModel>() { new InventoryModel() { ProductName = "test1" } };
             ToDateState = new ObservableCollection<InventoryModel>() { new InventoryModel() { ProductName = "FromDB" } };
         }
@@ -61,6 +95,45 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             }
         }
 
+        public void OnModelProviderChange()
+        {
+            //Get all products
+            ListOfAllProductModels = ModelProvider.GetAllProductEntities();
 
+            ProductSelectorDataModel = DataModelToShopSelectorModel.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+
+            foreach(ShopProductSelectorDataSingleElement displayElement in ProductSelectorDataModel.Elements)
+            {
+
+                List<object> value = new List<object>();
+
+                foreach (ProductModel element in ListOfAllProductModels)
+                {
+                    object? _value = DisplayModelAttributesServices.GetPropertyValueByDisplayName(displayElement.Name, element);
+
+                    if (_value == null) continue;
+                    if (value.Exists(e => e.ToString() == _value.ToString())) continue;
+
+                    value.Add(_value);
+                }
+
+                displayElement.Value = value;
+            }
+        }
+
+        public void OnFilterRequest()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnElementSelected()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnClearFilterRequest()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

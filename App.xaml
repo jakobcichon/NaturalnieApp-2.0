@@ -16,8 +16,9 @@
 
             <!-- Recourses dictionaries-->
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Views\Resourses\UserControlResourses.xaml"/>
-                <ResourceDictionary Source="Views\Resourses\ButtonsResourses.xaml"/>
+                <ResourceDictionary Source="Views\Resources\UserControlResources.xaml"/>
+                <ResourceDictionary Source="Views\Resources\ButtonsResources.xaml"/>
+                <ResourceDictionary Source="Views\Resources\ImageResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
 

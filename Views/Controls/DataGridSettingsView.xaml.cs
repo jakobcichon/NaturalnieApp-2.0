@@ -100,7 +100,9 @@ namespace NaturalnieApp2.Views.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private class MenuButtonCommandClass : ICommand
+
+
+        private class MenuButtonCommandClass: ICommand
         {
             public event EventHandler? CanExecuteChanged;
 

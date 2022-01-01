@@ -73,7 +73,7 @@
 
         <Border BorderBrush="#FFB1A88E" BorderThickness="1">
             <c:ShopProductSelector x:Name="ProductSelektor" Grid.Row="0" 
-                               ModelProvider="{Binding ModelProvider}"/>
+                               DataContext="{Binding ProductSelectorDataModel}"/>
         </Border>
 
 

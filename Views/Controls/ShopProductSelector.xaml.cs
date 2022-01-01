@@ -27,8 +27,45 @@ namespace NaturalnieApp2.Views.Controls
     /// </summary>
     public partial class ShopProductSelector : UserControl, INotifyPropertyChanged
     {
-        private bool collapsiblePanelVisible;
+        #region Events args
+        public class ElementSelectedEventArgs: EventArgs
+        {
+        }
 
+        public class CancelFilterEventArgs : EventArgs
+        {
+        }
+        public class FilterRequestEventArgs : EventArgs
+        {
+            public string ElementName { get; set; }
+            public object ElementValue { get; set; }
+        }
+        #endregion
+
+        #region Events
+        public delegate void ElementSelectedHandler(ElementSelectedEventArgs e);
+        public event ElementSelectedHandler ElementSelected;
+        private void OnElementSelected()
+        {
+            ElementSelected?.Invoke(new ElementSelectedEventArgs());
+        }
+
+        public delegate void CancelFilterEventHandler(CancelFilterEventArgs e);
+        public event CancelFilterEventHandler FilterCancel;
+        private void OnCancelFilter()
+        {
+            FilterCancel?.Invoke(new CancelFilterEventArgs());
+        }
+
+        public delegate void FilterRequestEventHandler(FilterRequestEventArgs e);
+        public event FilterRequestEventHandler FilterRequest;
+        private void OnFilterRequest(string elementName, object elementValue)
+        {
+            FilterRequest?.Invoke(new FilterRequestEventArgs() { ElementName=elementName, ElementValue=elementValue});
+        }
+        #endregion
+
+        private bool collapsiblePanelVisible;
         public bool CollapsiblePanelVisible
         {
             get { return collapsiblePanelVisible; }
@@ -37,45 +74,34 @@ namespace NaturalnieApp2.Views.Controls
                 collapsiblePanelVisible = value;
                 OnPropertyChanged(nameof(CollapsiblePanelVisible));
             }
-
         }
- 
+
+        private Visibility _clearFilterButtonVisibility;
+
+        public Visibility ClearFilterButtonVisibility
+        {
+            get { return _clearFilterButtonVisibility; }
+            set 
+            { 
+                _clearFilterButtonVisibility = value; 
+                OnPropertyChanged(nameof(ClearFilterButtonVisibility));
+            }
+        }
+
+
         public ShopProductSelector()
         {
             this.InitializeComponent();
             CollapsiblePanelVisible = true;
+            ClearFilterButtonVisibility = Visibility.Collapsed;
         }
-
-        public static readonly DependencyProperty ModelProviderProperty =
-            DependencyProperty.Register("ModelProvider", typeof(IGetModelProvider), typeof(ShopProductSelector), 
-                new PropertyMetadata(new PropertyChangedCallback(OnModelProviderChanged)));
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ShopProductSelectorDataModel ModelProvider
-        {
-            get { return (ShopProductSelectorDataModel)GetValue(ModelProviderProperty); }
-            set { SetValue(ModelProviderProperty, value); } 
-        }
-
-        private static void OnModelProviderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            (d as ShopProductSelector)?.OnModelProviderChanged();
-        }
-
-        public void OnModelProviderChanged()
-        {
-
-        }
-
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
+            string elementName = GetComboBoxElementName(sender);
+            if (elementName != null) OnFilterRequest(elementName, e.AddedItems);
         }
 
         private void CollapseButton_Click(object sender, RoutedEventArgs e)
@@ -95,10 +121,51 @@ namespace NaturalnieApp2.Views.Controls
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #region Public methods
+        public void ShowFilterCancelButton()
+        {
+            ClearFilterButtonVisibility = Visibility.Visible;
+        }
+
+        public void HideFilterCancelButton()
+        {
+            ClearFilterButtonVisibility = Visibility.Collapsed;
+        }
+        #endregion
+
+        private string? GetComboBoxElementName(object sender)
+        {
+            FrameworkElement frameworkElement = sender as FrameworkElement;
+            if (frameworkElement == null) return null;
+
+            StackPanel? stackPanel = frameworkElement.Parent as StackPanel;
+            if (stackPanel == null) return null;
+
+            foreach (UIElement child in stackPanel.Children)
+            {
+                if (child as Label != null)
+                {
+                    return (child as Label).Content.ToString();
+                }
+            }
+
+            return null;
+        }
+
+        private void SelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            OnElementSelected();
+        }
+
+        private void ClearFilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            OnCancelFilter();
+        }
     }
 
-    
-   
+
+
 
 
 }
