@@ -11,6 +11,12 @@ namespace NaturalnieApp2.Services.Attributes
     public static class DisplayModelAttributesServices
     {
 
+        public static string? GetPropertyNameByDisplayName(string propertyName, Type examinedObjectType)
+        {
+            PropertyDescriptor? property = GetPropertyToBeDisplayed(examinedObjectType, propertyName);
+            return property?.Name;
+        }
+
         public static object? GetPropertyValueByDisplayName(string propertyName, object instance)
         {
             PropertyDescriptor? property = GetPropertyToBeDisplayed(instance.GetType(), propertyName);
@@ -75,6 +81,48 @@ namespace NaturalnieApp2.Services.Attributes
             }
 
             return returnList;
+        }
+
+        public static bool CheckIfPropertyVisiable(string propertyName, Type examinedObjectType)
+        {
+            List<PropertyDescriptor> propertiesWithVisibilityAttributes =
+                GetPropertiesOfClass(examinedObjectType, typeof(DisplayModelAttributes.VisibilityProperties));
+
+            foreach (PropertyDescriptor property in propertiesWithVisibilityAttributes)
+            {
+                if (property.Name == propertyName)
+                {
+                    if (property.Attributes.OfType<DisplayModelAttributes.VisibilityProperties>()?.FirstOrDefault()?.Visible == true)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+
+            }
+
+            return false;
+        }
+
+        public static bool CheckIfPropertyVisiableByDefault(string propertyName, Type examinedObjectType)
+        {
+            List<PropertyDescriptor> propertiesWithVisibilityAttributes =
+                GetPropertiesOfClass(examinedObjectType, typeof(DisplayModelAttributes.VisibilityProperties));
+
+            foreach (PropertyDescriptor property in propertiesWithVisibilityAttributes)
+            {
+                if (property.Name == propertyName)
+                {
+                    if (property.Attributes.OfType<DisplayModelAttributes.VisibilityProperties>()?.FirstOrDefault()?.Visible == true &&
+                        property.Attributes.OfType<DisplayModelAttributes.VisibilityProperties>()?.FirstOrDefault()?.HiddenByDefault == false)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+
+            return false;
         }
 
         public static string? GetPropertyDisplayName(PropertyDescriptor property)

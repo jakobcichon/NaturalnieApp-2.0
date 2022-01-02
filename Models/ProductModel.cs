@@ -5,29 +5,30 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using NaturalnieApp2.Services.DataModel;
 
 namespace NaturalnieApp2.Models
 {
-    internal class ProductModel: DisplayModelAttributes
+    internal class ProductModel: ModelBase
     {
         [DisplayName("Nazwa dostawcy")]
         [VisibilityProperties(true, true)]
         public string SupplierName { get; set; }
 
         [DisplayName("Numer w kasie elzab")]
-        [VisibilityProperties(true, true)]
+        [VisibilityProperties(true, false)]
         public int ElzabProductId { get; set; }
 
         [DisplayName("Nazwa producenta")]
-        [VisibilityProperties(true, true)]
+        [VisibilityProperties(true, false)]
         public string ManufacturerName { get; set; }
 
         [DisplayName("Nazwa produktu")]
-        [VisibilityProperties(true, true)]
+        [VisibilityProperties(true, false)]
         public string ProductName { get; set; }
 
-        [DisplayName("NAzwa produktu w kasie Elzab")]
-        [VisibilityProperties(true, true)]
+        [DisplayName("Nazwa produktu w kasie Elzab")]
+        [VisibilityProperties(true, false)]
         public string ElzabProductName { get; set; }
 
         [DisplayName("Cena netto")]
@@ -55,11 +56,11 @@ namespace NaturalnieApp2.Models
         public float FinalPrice { get; set; }
 
         [DisplayName("Kode kreskowy")]
-        [VisibilityProperties(true, true)]
+        [VisibilityProperties(true, false)]
         public string BarCode { get; set; }
 
         [DisplayName("Kod kreskowy własny")]
-        [VisibilityProperties(true, true)]
+        [VisibilityProperties(true, false)]
         public string BarCodeShort { get; set; }
 
         [DisplayName("Kod dostawcy")]
@@ -107,5 +108,6 @@ namespace NaturalnieApp2.Models
             SupplierCode = supplierCode;
             ProductInfo = productInfo;
         }
+
     }
 }

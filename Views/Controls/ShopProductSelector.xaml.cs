@@ -59,11 +59,14 @@ namespace NaturalnieApp2.Views.Controls
 
         public delegate void FilterRequestEventHandler(FilterRequestEventArgs e);
         public event FilterRequestEventHandler FilterRequest;
-        private void OnFilterRequest(string elementName, object elementValue)
+        private void OnFilterRequest(string elementName, object? elementValue)
         {
             FilterRequest?.Invoke(new FilterRequestEventArgs() { ElementName=elementName, ElementValue=elementValue});
         }
         #endregion
+
+        private ComboBox LastElementSelected { get; set; }
+        private bool FilteringSource { get; set; }
 
         private bool collapsiblePanelVisible;
         public bool CollapsiblePanelVisible
@@ -88,10 +91,10 @@ namespace NaturalnieApp2.Views.Controls
             }
         }
 
-
         public ShopProductSelector()
         {
             this.InitializeComponent();
+            FilteringSource = false;
             CollapsiblePanelVisible = true;
             ClearFilterButtonVisibility = Visibility.Collapsed;
         }
@@ -100,8 +103,25 @@ namespace NaturalnieApp2.Views.Controls
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string elementName = GetComboBoxElementName(sender);
-            if (elementName != null) OnFilterRequest(elementName, e.AddedItems);
+            ComboBox? localSender = (sender as ComboBox);
+            if (localSender == null) return;
+
+            LastElementSelected = localSender;
+
+            var originalSource = localSender.ItemsSource;
+
+            localSender.ItemsSource = null;
+
+            if (!FilteringSource)
+            {
+                object selectedItem = localSender?.SelectedItem;
+                FilteringSource = true;
+
+                string elementName = GetComboBoxElementName(localSender);
+                if (elementName != null) OnFilterRequest(elementName, selectedItem);
+                FilteringSource = false;
+                localSender.ItemsSource = originalSource;
+            }
         }
 
         private void CollapseButton_Click(object sender, RoutedEventArgs e)
@@ -134,9 +154,9 @@ namespace NaturalnieApp2.Views.Controls
         }
         #endregion
 
-        private string? GetComboBoxElementName(object sender)
+        private string? GetComboBoxElementName(ComboBox comboBox)
         {
-            FrameworkElement frameworkElement = sender as FrameworkElement;
+            FrameworkElement frameworkElement = comboBox as FrameworkElement;
             if (frameworkElement == null) return null;
 
             StackPanel? stackPanel = frameworkElement.Parent as StackPanel;
@@ -156,12 +176,15 @@ namespace NaturalnieApp2.Views.Controls
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
             OnElementSelected();
+            HeaderButton.Focus();
         }
 
         private void ClearFilterButton_Click(object sender, RoutedEventArgs e)
         {
+            LastElementSelected.SelectedIndex = 0;
             OnCancelFilter();
         }
+
     }
 
 

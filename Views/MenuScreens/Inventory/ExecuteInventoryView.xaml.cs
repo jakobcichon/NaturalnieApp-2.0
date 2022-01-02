@@ -31,6 +31,21 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
             ProductSelektor.FilterRequest += ProductSelektor_FilterRequest;
             ProductSelektor.ElementSelected += ProductSelektor_ElementSelected;
             ProductSelektor.FilterCancel += ProductSelektor_FilterCancel;
+
+            DataContextChanged += ExecuteInventoryView_DataContextChanged;
+        }
+
+        private void ExecuteInventoryView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            IProductSelectorHandler? viewModelAsSelectorHandler = e.NewValue as IProductSelectorHandler;
+            if (viewModelAsSelectorHandler != null)
+            {
+                viewModelAsSelectorHandler.OnDataFiltered = ((obj) =>
+                {
+                    if (obj == true) ProductSelektor.ShowFilterCancelButton();
+                    else ProductSelektor.HideFilterCancelButton();
+                });
+            }
         }
 
         private void ProductSelektor_FilterCancel(Controls.ShopProductSelector.CancelFilterEventArgs e)
@@ -47,7 +62,7 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
             IProductSelectorHandler productSelectorHndler = this.DataContext as IProductSelectorHandler;
             if (productSelectorHndler != null)
             {
-                productSelectorHndler.OnFilterRequest();
+                productSelectorHndler.OnFilterRequest(e.ElementName, e.ElementValue);
             }
         }
 

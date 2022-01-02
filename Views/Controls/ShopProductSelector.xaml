@@ -23,7 +23,8 @@
         </Grid.RowDefinitions>
 
         <!-- Selected product details-->
-        <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource HeaderStyle}" Margin="2">
+        <Border x:Name="Header" Grid.Column="0" Grid.Row="0" Style="{StaticResource HeaderStyle}" Margin="2">
+            <Button x:Name="HeaderButton" BorderThickness="0" Opacity="1.0" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}"/>
             <Border.Effect>
                 <DropShadowEffect Color="#FFB1A88E" Direction="270" ShadowDepth="1" />
             </Border.Effect>
@@ -33,6 +34,7 @@
             <Grid >
                 <!-- Basic grid definition-->
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="auto"/>
@@ -43,11 +45,24 @@
                     <RowDefinition Height="2"/>
                 </Grid.RowDefinitions>
 
+                <Button Name="ClearFilterButton" Grid.Column="0" Grid.Row="1"
+                        Visibility="{Binding RelativeSource={RelativeSource  AncestorType={x:Type UserControl}}, Path=ClearFilterButtonVisibility}"
+                        MinWidth="50" MinHeight="50" 
+                        MaxWidth="50" MaxHeight="50"
+                        Margin="2" BorderThickness="0"
+                        Click="ClearFilterButton_Click">
+                    <Image>
+                        <Image.Source>
+                            <BitmapImage UriSource="/Images/clear-filter.png" />
+                        </Image.Source>
+                    </Image>
+                </Button>
+
                 <!-- Product attributes-->
-                <ScrollViewer Grid.Column="0" Grid.RowSpan="3" 
+                <ScrollViewer Grid.Column="1" Grid.RowSpan="3" 
                               HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" 
                               CanContentScroll="True">
-                    <ItemsControl 
+                    <ItemsControl x:Name="ItemsControls"
                           ItemsSource="{Binding Elements}">
 
                         <ItemsControl.ItemsPanel>
@@ -58,14 +73,15 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderThickness="1" BorderBrush="Black" Margin="2">
+                                <Border BorderThickness="1" BorderBrush="Black" Margin="2" Visibility="{Binding ElementVisible}">
                                     <StackPanel Orientation="Vertical">
                                         <Label Content="{Binding Name}" FontSize="20" HorizontalAlignment="Center"/>
                                         <ComboBox ItemsSource="{Binding Value}" 
-                                          SelectionChanged="ComboBox_SelectionChanged" 
-                                          MaxDropDownHeight="200" MaxWidth="200"
-                                          IsEditable="True" Margin="5"
-                                          IsTextSearchEnabled="True">
+                                                  SelectionChanged="ComboBox_SelectionChanged"
+                                                  IsSynchronizedWithCurrentItem="True"
+                                                  MaxDropDownHeight="200" MaxWidth="200"
+                                                  Margin="5"
+                                                  IsTextSearchEnabled="True">
                                             <ComboBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <VirtualizingStackPanel />
@@ -80,9 +96,9 @@
                 </ScrollViewer>
 
                 <!-- Border divider-->
-                <Border Grid.Column="1" Grid.RowSpan="3"/>
+                <Border Grid.Column="2" Grid.RowSpan="3"/>
 
-                <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+                <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal">
                     <!-- Select button-->
                     <Button Name="SelectButton"   
                         MinWidth="50" MinHeight="50" 
@@ -92,18 +108,6 @@
                         <Image>
                             <Image.Source>
                                 <BitmapImage UriSource="/Images/select.png" />
-                            </Image.Source>
-                        </Image>
-                    </Button>
-
-                    <Button Name="ClearFilterButton" Visibility="{Binding RelativeSource={RelativeSource  AncestorType={x:Type UserControl}}, Path=ClearFilterButtonVisibility}"
-                        MinWidth="50" MinHeight="50" 
-                        MaxWidth="50" MaxHeight="50"
-                        Margin="2" BorderThickness="0"
-                        Click="ClearFilterButton_Click">
-                        <Image>
-                            <Image.Source>
-                                <BitmapImage UriSource="/Images/clear-filter.png" />
                             </Image.Source>
                         </Image>
                     </Button>

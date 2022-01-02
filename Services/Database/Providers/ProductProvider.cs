@@ -75,6 +75,78 @@ namespace NaturalnieApp2.Services.Database.Providers
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB Product entity
+        //====================================================================================================
+        public ProductModel GetProductEntityByProductId(int productId)
+        {
+            ProductModel localProduct = new ProductModel();
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.Id == productId
+                            select p;
+
+                ProductDTO productDTOs = query.SingleOrDefault();
+
+                localProduct = GetProductFromProductDTO(productDTOs);
+            }
+            return localProduct;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product id by product Name
+        //====================================================================================================
+        public int GetProductIdByProductName(string productName)
+        {
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.ProductName == productName
+                            select p;
+
+                ProductDTO productDTOs = query.SingleOrDefault();
+
+                return productDTOs.Id;
+            }
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product Name by product id
+        //====================================================================================================
+        public string GetProductNameByProductId(int productId)
+        {
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.Id == productId
+                            select p;
+
+                ProductDTO productDTOs = query.SingleOrDefault();
+
+                return productDTOs.ProductName;
+            }
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product entity
+        //====================================================================================================
+        public ProductModel GetProductEntityByProductName(string productName)
+        {
+            ProductModel localProduct = new ProductModel();
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.ProductName == productName
+                            select p;
+
+                ProductDTO productDTO = query.SingleOrDefault();
+
+                localProduct = GetProductFromProductDTO(productDTO);
+            }
+            return localProduct;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB all product entries
         //====================================================================================================
         public List<ProductModel> GetAllProductEntities()
@@ -175,9 +247,24 @@ namespace NaturalnieApp2.Services.Database.Providers
             foreach (ProductDTO productDTO in productsDTO)
             {
                 ProductModel? _product = GetProductFromProductDTO(productDTO, manufacturerDTOs, supplierDTOs, taxDTOs);
+                _product.RegenerateHashOnPropertyChange();
                 if(_product != null) localProduct.Add(_product);
             }
               
+            return localProduct;
+        }
+
+        public ProductModel GetProductFromProductDTO(ProductDTO productDTO)
+        {
+            if (productDTO == null) return null;
+            ProductModel localProduct = new ProductModel();
+            List<ManufacturerDTO> manufacturerDTOs = new ManufacturerProvider(ConnectionString).GetAllManufacturersEnts();
+            List<SupplierDTO> supplierDTOs = new SupplierProvider(ConnectionString).GetAllSupplierEnts();
+            List<TaxDTO> taxDTOs = new TaxProvider(ConnectionString).GetAllTaxEnts();
+            
+            ProductModel? _product = GetProductFromProductDTO(productDTO, manufacturerDTOs, supplierDTOs, taxDTOs);
+            _product.RegenerateHashOnPropertyChange();          
+
             return localProduct;
         }
 

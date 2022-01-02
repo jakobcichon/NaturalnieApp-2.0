@@ -8,8 +8,13 @@ namespace NaturalnieApp2.Views.Controls.Models
 {
     internal interface IProductSelectorHandler
     {
-        public void OnFilterRequest();
+        public void OnFilterRequest(string elementName, object elementValue);
         public void OnElementSelected();
         public void OnClearFilterRequest();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Action<bool> OnDataFiltered { get; set; }
     }
 }

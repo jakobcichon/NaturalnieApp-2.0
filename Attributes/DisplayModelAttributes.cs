@@ -32,6 +32,16 @@ namespace NaturalnieApp2.Attributes
             }
         }
 
+        [AttributeUsage(AttributeTargets.Property)]
+        internal sealed class ModificationProperties : Attribute
+        {
+            public bool CanBeModified { get; }
+            public ModificationProperties(bool canBeModified=false)
+            {
+                CanBeModified = canBeModified;
+            }
+        }
+
 
     }
 }

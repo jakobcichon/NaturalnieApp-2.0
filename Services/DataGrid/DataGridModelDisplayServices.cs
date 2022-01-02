@@ -20,7 +20,7 @@ namespace NaturalnieApp2.Services.DataGrid
             if (attribute.GetType() == typeof(DisplayModelAttributes.VisibilityProperties))
             {
                 ColumnDefaultVisibilityFromAttribute(attribute, column);
-
+                return;
             }
         }
 
@@ -31,13 +31,24 @@ namespace NaturalnieApp2.Services.DataGrid
 
         public static void ColumnDefaultVisibilityFromAttribute(Attribute attribute, DataGridColumn column)
         {
-            if ((attribute as DisplayModelAttributes.VisibilityProperties).HiddenByDefault == true)
+            if ((attribute as DisplayModelAttributes.VisibilityProperties)?.HiddenByDefault == false)
             {
-                column.Visibility = System.Windows.Visibility.Hidden;
+                column.Visibility = System.Windows.Visibility.Visible;
                 return;
             }
 
-            column.Visibility = System.Windows.Visibility.Visible;
+            column.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        public static void ColumnModificationPropertiesFromAttribute(Attribute attribute, DataGridColumn column)
+        {
+            if ((attribute as DisplayModelAttributes.ModificationProperties)?.CanBeModified == true)
+            {
+                column.IsReadOnly = false;
+                return;
+            }
+
+            column.IsReadOnly = true;
         }
 
     }

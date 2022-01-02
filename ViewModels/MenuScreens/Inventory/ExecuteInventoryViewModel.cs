@@ -17,6 +17,7 @@ using NaturalnieApp2.Models.MenuScreens.Inventory;
 using NaturalnieApp2.Services.Attributes;
 using NaturalnieApp2.Services.Database.Providers;
 using NaturalnieApp2.Services.DataGrid;
+using NaturalnieApp2.Services.DataModel;
 using NaturalnieApp2.Services.DTOs;
 using NaturalnieApp2.Services.DTOs.DataModelToUserControlModel;
 using NaturalnieApp2.Views.Controls.Models;
@@ -26,6 +27,17 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
     internal class ExecuteInventoryViewModel: ViewModelBase, IBarcodeListner, IColumnEventHandler, IProductSelectorHandler
     {
         private ProductProvider _modelProvider;
+
+        public Action<bool> OnDataFiltered { get; set; }
+
+        private StockProvider _stockProvider;
+
+        public StockProvider StockProvider
+        {
+            get { return _stockProvider; }
+            set { _stockProvider = value; }
+        }
+
 
         public ProductProvider ModelProvider
         {
@@ -52,6 +64,9 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             set { _listOfAllProductModels = value; }
         }
 
+        private ShopProductSelectorDataModel AllValuesProductSelectorDataModel { get; set; }
+        private ShopProductSelectorDataModel FilteredProductSelectorDataModel { get; set; }
+
         public ShopProductSelectorDataModel ProductSelectorDataModel { get; set; }
 
         private ObservableCollection<InventoryModel> _actualState;
@@ -62,9 +77,9 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             set { _actualState = value; }
         }
 
-        private ObservableCollection<InventoryModel> _toDateState;
+        private ObservableCollection<InventoryModelDataFromDB> _toDateState;
 
-        public ObservableCollection<InventoryModel> ToDateState
+        public ObservableCollection<InventoryModelDataFromDB> ToDateState
         {
             get { return _toDateState; }
             set { _toDateState = value; }
@@ -77,13 +92,48 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             ActualSelectedProductModel = new ProductModel();
             ListOfAllProductModels = new List<ProductModel>();
 
-            ActualState = new ObservableCollection<InventoryModel>() { new InventoryModel() { ProductName = "test1" } };
-            ToDateState = new ObservableCollection<InventoryModel>() { new InventoryModel() { ProductName = "FromDB" } };
+            ActualState = new ObservableCollection<InventoryModel>();
+            ToDateState = new ObservableCollection<InventoryModelDataFromDB>();
+
+            ActualState.CollectionChanged += ActualState_CollectionChanged;
+        }
+
+        private void ActualState_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IEnumerable<InventoryModel> localSender = sender as IEnumerable<InventoryModel>;
+            if (localSender == null) return;
+
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                for (int i = e.NewStartingIndex; i < e.NewItems.Count + e.NewStartingIndex; i++)
+                {
+                    InventoryModel inventoryModel = localSender.ToList<InventoryModel>()[i];
+                    if (localSender.ToList()[i] == null) return;
+
+                    int quantity = StockProvider.GetProductQuantityInStock(inventoryModel.ProductName);
+
+                    InventoryModelDataFromDB inventoryModelWithStock = ModelConvertions<InventoryModel, InventoryModelDataFromDB>.ConvertModels(inventoryModel);
+                    inventoryModelWithStock.ProductQuantity = quantity;
+
+                    ToDateState.Add(inventoryModelWithStock);
+                }
+            }
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                for (int i = e.OldStartingIndex; i < e.OldItems.Count + e.OldStartingIndex; i++)
+                {
+                    ToDateState.RemoveAt(i);
+                }
+            }
         }
 
         public void OnBarcodeValidAction(string barcode)
         {
-            throw new NotImplementedException();
+            ProductModel? product = ListOfAllProductModels?.FirstOrDefault(e => e.BarCode == barcode || e.BarCodeShort == barcode, null);
+            
+            if (product != null) IncrementQuantityIfExistInCollection(ModelConvertions<ProductModel, InventoryModel>.ConvertModels(product));
         }
 
         public void OnAutomaticColumnGenerating(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -92,6 +142,7 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             foreach (Attribute attribute in attributes)
             {
                 DataGridModelDisplayServices.ApllyColumnProperties(attribute, e.Column);
+                DataGridModelDisplayServices.ColumnModificationPropertiesFromAttribute(attribute, e.Column);
             }
         }
 
@@ -100,40 +151,70 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             //Get all products
             ListOfAllProductModels = ModelProvider.GetAllProductEntities();
 
-            ProductSelectorDataModel = DataModelToShopSelectorModel.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+            AllValuesProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+            FilteredProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+            ProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
 
-            foreach(ShopProductSelectorDataSingleElement displayElement in ProductSelectorDataModel.Elements)
-            {
+            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(AllValuesProductSelectorDataModel, ListOfAllProductModels);
 
-                List<object> value = new List<object>();
+            ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
 
-                foreach (ProductModel element in ListOfAllProductModels)
-                {
-                    object? _value = DisplayModelAttributesServices.GetPropertyValueByDisplayName(displayElement.Name, element);
+            ActualSelectedProductModel = ListOfAllProductModels.First();
 
-                    if (_value == null) continue;
-                    if (value.Exists(e => e.ToString() == _value.ToString())) continue;
-
-                    value.Add(_value);
-                }
-
-                displayElement.Value = value;
-            }
         }
 
-        public void OnFilterRequest()
+        public void OnFilterRequest(string elementName, object elementValue)
         {
-            throw new NotImplementedException();
+            string? propertyName = DisplayModelAttributesServices.GetPropertyNameByDisplayName(elementName, typeof(ProductModel));
+            if (propertyName == null) return;
+
+            List<ProductModel> filteredModel = DataModelServices<ProductModel>.FitlerModelByPropertyName(propertyName, elementValue, ListOfAllProductModels);
+            FilteredProductSelectorDataModel.ClearAllValues();
+            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(FilteredProductSelectorDataModel, filteredModel);
+            
+            ProductSelectorDataModel.Elements = FilteredProductSelectorDataModel.Elements;
+
+            ActualSelectedProductModel = filteredModel.First();
+
+            DataFiltered();
+        }
+
+        public void IncrementQuantityIfExistInCollection(InventoryModel inventoryModel)
+        {
+            InventoryModel? existingModel = ActualState.FirstOrDefault(e => e.ProductName == inventoryModel.ProductName, null);
+
+            if (existingModel != null)
+            {
+                existingModel.ProductQuantity += 1;
+                return;
+            }
+
+            inventoryModel.ProductQuantity += 1;
+            ActualState.Add(inventoryModel);
+
         }
 
         public void OnElementSelected()
         {
-            throw new NotImplementedException();
+            IncrementQuantityIfExistInCollection(ModelConvertions<ProductModel, InventoryModel>.
+                ConvertModels(ActualSelectedProductModel));
         }
 
         public void OnClearFilterRequest()
         {
-            throw new NotImplementedException();
+            ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+            
+            ClearDataFilter();
+        }
+
+        public void DataFiltered()
+        {
+            OnDataFiltered?.Invoke(true);
+        }
+
+        public void ClearDataFilter()
+        {
+            OnDataFiltered?.Invoke(false);
         }
     }
 }

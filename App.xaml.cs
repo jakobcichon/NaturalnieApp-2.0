@@ -83,6 +83,7 @@ namespace NaturalnieApp2
 
             #region Database
             services.AddTransient<ProductProvider>(s => new ProductProvider(connectionString));
+            services.AddTransient<StockProvider>(s => new StockProvider(connectionString));
             #endregion
 
             #region Controls Data Models
@@ -117,6 +118,9 @@ namespace NaturalnieApp2
             #region Execute inventory
             _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider =
                 _serviceProvider.GetRequiredService<ProductProvider>();
+            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().StockProvider =
+                _serviceProvider.GetRequiredService<StockProvider>();
+
             #endregion
 
             //Show window

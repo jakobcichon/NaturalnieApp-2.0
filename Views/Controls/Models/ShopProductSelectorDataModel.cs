@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace NaturalnieApp2.Views.Controls.Models
 {
@@ -46,6 +47,14 @@ namespace NaturalnieApp2.Views.Controls.Models
             return GetElementByName(name)?.Value;
         }
 
+        public void ClearAllValues()
+        {
+            foreach(ShopProductSelectorDataSingleElement element in Elements)
+            {
+                element.Value = null;
+            }
+        }
+
     }
 
     public class ShopProductSelectorDataSingleElement : ShopProductSelectorDataModelBase
@@ -71,6 +80,27 @@ namespace NaturalnieApp2.Views.Controls.Models
                 _value = value;
                 OnPropertyChanged(nameof(Value));
             }
+        }
+
+        private Visibility elementVisible = Visibility.Collapsed;
+
+        public Visibility ElementVisible
+        {
+            get { return elementVisible; }
+            set 
+            { 
+                elementVisible = value; 
+            }
+        }
+
+        public void MakeElementVisiable()
+        {
+            ElementVisible = Visibility.Visible;
+        }
+
+        public void MakeElementHidden()
+        {
+            ElementVisible = Visibility.Collapsed;
         }
 
     }
