@@ -11,6 +11,7 @@ namespace NaturalnieApp2.Views.Controls.Models
         public void OnFilterRequest(string elementName, object elementValue);
         public void OnElementSelected();
         public void OnClearFilterRequest();
+        public void OnProductSelectorLoaded();
 
         /// <summary>
         /// 

@@ -19,15 +19,20 @@
             <Setter Property="AlternatingRowBackground" Value="#FF84B1D8"/>
         </Style>
     </UserControl.Resources>
+
     <Grid>
         <!-- Basic grid definition-->
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
+     
+
 
         <!-- Grid layout for the DataGrid views-->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="*"/>
@@ -52,10 +57,12 @@
                                     Panel.ZIndex="1000"/>
 
             <DataGrid x:Name="DataGridActualState" Grid.Row="1" Grid.Column="0" 
-                    ItemsSource="{Binding ActualState}" Margin="2,0,0,0"
+                    ItemsSource="{Binding ActualState}" Margin="2,0,0,2"
                     Style="{StaticResource GridViewStyle}"
-                    ScrollViewer.CanContentScroll="True" 
-                    AutoGeneratingColumn="ActualData_AutoGeneratingColumn"
+                    ScrollViewer.CanContentScroll="True"
+                    ScrollViewer.ScrollChanged="DataGridActualState_ScrollChanged"
+                    AutoGeneratingColumn="ActualData_AutoGeneratingColumn" 
+                      IsSynchronizedWithCurrentItem="True"
                   >
             </DataGrid>
 
@@ -65,9 +72,10 @@
                                     Panel.ZIndex="1000"/>
 
             <DataGrid x:Name="DataGridToDateState" Grid.Row="1" Grid.Column="2" 
-                      ItemsSource="{Binding ToDateState}" Background="#FFD0CFCF" Margin="0,0,2,0"
+                      ItemsSource="{Binding ToDateState}" Background="#FFD0CFCF" Margin="0,0,2,2"
                       Style="{StaticResource GridViewStyle}"
                       ScrollViewer.CanContentScroll="True" 
+                      ScrollViewer.ScrollChanged="DataGridToDateState_ScrollChanged"
                       AutoGeneratingColumn="ActualData_AutoGeneratingColumn"                      
                   >
             </DataGrid>
@@ -82,8 +90,11 @@
 
         <Border BorderBrush="#FFB1A88E" BorderThickness="1">
             <c:ShopProductSelector x:Name="ProductSelektor" Grid.Row="0" 
-                               DataContext="{Binding ProductSelectorDataModel}"/>
+                               DataContext="{Binding ProductSelectorDataModel}" />
         </Border>
+
+        <c:BottomButtonBarView Grid.Row="3" x:Name="BottomButtonBar"
+                               DataContext="{Binding BottomButtonPanel}"/>
 
 
     </Grid>

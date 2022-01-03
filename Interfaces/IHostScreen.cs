@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Interfaces
 {
-    internal interface IHostScreen
+    public interface IHostScreen
     {
         public void ShowScreen(ViewModelBase screenToShow);
+        public void CloseViewModel(ViewModelBase screenToClose);
     }
 }

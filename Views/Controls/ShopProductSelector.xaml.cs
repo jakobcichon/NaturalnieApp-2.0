@@ -63,9 +63,9 @@ namespace NaturalnieApp2.Views.Controls
         {
             FilterRequest?.Invoke(new FilterRequestEventArgs() { ElementName=elementName, ElementValue=elementValue});
         }
-        #endregion
 
-        private ComboBox LastElementSelected { get; set; }
+       #endregion
+
         private bool FilteringSource { get; set; }
 
         private bool collapsiblePanelVisible;
@@ -105,8 +105,6 @@ namespace NaturalnieApp2.Views.Controls
         {
             ComboBox? localSender = (sender as ComboBox);
             if (localSender == null) return;
-
-            LastElementSelected = localSender;
 
             var originalSource = localSender.ItemsSource;
 
@@ -181,7 +179,6 @@ namespace NaturalnieApp2.Views.Controls
 
         private void ClearFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            LastElementSelected.SelectedIndex = 0;
             OnCancelFilter();
         }
 

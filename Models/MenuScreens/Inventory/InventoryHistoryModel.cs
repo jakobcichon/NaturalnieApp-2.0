@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Models.MenuScreens.Inventory
 {
-    internal class InventoryModel: ModelBase
+    internal class InventoryHistoryModel: ModelBase
     {
+        [DisplayName("Data dodania do historii")]
+        [VisibilityProperties(true, true)]
+        public DateTime OperationDateTime { get; set; }
+
         [DisplayName("Nazwa inwentaryzacji")]
         [VisibilityProperties(true, true)]
         public string InventoryName { get; set; }
 
         [DisplayName("Data ostatniej modyfikacji")]
         [VisibilityProperties(true, true)]
-        public DateTime LastModificationDate { get; set; }
+        public DateTime LastModifficationDate { get; set; }
 
         [DisplayName("Nazwa dostawcy")]
         [VisibilityProperties(true, true)]
@@ -90,5 +94,9 @@ namespace NaturalnieApp2.Models.MenuScreens.Inventory
         [DisplayName("Informacje o produkcie")]
         [VisibilityProperties(true, true)]
         public string ProductInfo { get; set; }
+
+        [DisplayName("Typ operacji")]
+        [VisibilityProperties(true, true)]
+        public string OperationType { get; set; }
     }
 }

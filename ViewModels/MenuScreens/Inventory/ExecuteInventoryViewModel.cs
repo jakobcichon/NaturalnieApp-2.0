@@ -4,11 +4,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using NaturalnieApp2.Attributes;
 using NaturalnieApp2.Commands;
+using NaturalnieApp2.Commands.MenuScreens.Inventory;
+using NaturalnieApp2.Interfaces;
 using NaturalnieApp2.Interfaces.Barcode;
 using NaturalnieApp2.Interfaces.Database;
 using NaturalnieApp2.Interfaces.DataGrid;
@@ -24,67 +28,8 @@ using NaturalnieApp2.Views.Controls.Models;
 
 namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 {
-    internal class ExecuteInventoryViewModel: ViewModelBase, IBarcodeListner, IColumnEventHandler, IProductSelectorHandler
+    internal class ExecuteInventoryViewModel: ViewModelBase, IBarcodeListner, IProductSelectorHandler, IDataGridAdditionalActionsEventHandler
     {
-        private ProductProvider _modelProvider;
-
-        public Action<bool> OnDataFiltered { get; set; }
-
-        private StockProvider _stockProvider;
-
-        public StockProvider StockProvider
-        {
-            get { return _stockProvider; }
-            set { _stockProvider = value; }
-        }
-
-
-        public ProductProvider ModelProvider
-        {
-            get { return _modelProvider; }
-            set 
-            { 
-                _modelProvider = value;
-                OnModelProviderChange();
-            }
-        }
-
-        private ProductModel _actualSelectedProductModel;
-
-        public ProductModel ActualSelectedProductModel
-        {
-            get { return _actualSelectedProductModel; }
-            set { _actualSelectedProductModel = value; }
-        }
-        private List<ProductModel> _listOfAllProductModels;
-
-        public List<ProductModel> ListOfAllProductModels
-        {
-            get { return _listOfAllProductModels; }
-            set { _listOfAllProductModels = value; }
-        }
-
-        private ShopProductSelectorDataModel AllValuesProductSelectorDataModel { get; set; }
-        private ShopProductSelectorDataModel FilteredProductSelectorDataModel { get; set; }
-
-        public ShopProductSelectorDataModel ProductSelectorDataModel { get; set; }
-
-        private ObservableCollection<InventoryModel> _actualState;
-
-        public ObservableCollection<InventoryModel> ActualState
-        {
-            get { return _actualState; }
-            set { _actualState = value; }
-        }
-
-        private ObservableCollection<InventoryModelDataFromDB> _toDateState;
-
-        public ObservableCollection<InventoryModelDataFromDB> ToDateState
-        {
-            get { return _toDateState; }
-            set { _toDateState = value; }
-        }
-
         public ExecuteInventoryViewModel()
         {
             //Instance of the ProductSelectorDataModel
@@ -96,13 +41,94 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             ToDateState = new ObservableCollection<InventoryModelDataFromDB>();
 
             ActualState.CollectionChanged += ActualState_CollectionChanged;
+
+            BottomButtonPanel = new BottomButtonBarModel();
+            BottomButtonPanel.LeftButtons.Add(new SignleButtonModel("Zamknij", 
+                new BottomButtonPanelCommands(), OnCloseViewAction));
+
+            BottomButtonPanel.RightButtons.Add(new SignleButtonModel("Pobierz inwentaryzację z bazy danych",
+                new BottomButtonPanelCommands(), OnGetInventoryFromDB));
+            BottomButtonPanel.RightButtons.Add(new SignleButtonModel("Wyczyść listę produktów",
+                new BottomButtonPanelCommands(), OnClearList));
+            BottomButtonPanel.RightButtons.Add(new SignleButtonModel("Zapisz do bazy danych",
+                new BottomButtonPanelCommands(), OnSaveToDatabase));
+            BottomButtonPanel.RightButtons.Add(new SignleButtonModel("Odśwież dane produktu",
+                new BottomButtonPanelCommands(), OnRefreshProductData));
         }
+
+        public BottomButtonBarModel BottomButtonPanel { get;}
+
+        public IMessageServer MessageServer { get; }
+
+        public Action<bool> OnDataFiltered { get; set; }
+
+        public string? ActualInventoryName { get => "Inwentaryzacja 2021"; }
+
+        private StockProvider _stockProvider;
+        public StockProvider StockProvider
+        {
+            get { return _stockProvider; }
+            set { _stockProvider = value; }
+        }
+
+        private ProductProvider _modelProvider;
+        public ProductProvider ModelProvider
+        {
+            get { return _modelProvider; }
+            set 
+            { 
+                _modelProvider = value;
+                OnModelProviderChange();
+            }
+        }
+
+        private InventoryProvider _inventoryProvider;
+        public InventoryProvider InventoryProvider
+        {
+            get { return _inventoryProvider; }
+            set { _inventoryProvider = value; }
+        }
+
+        private ProductModel _actualSelectedProductModel;
+        public ProductModel ActualSelectedProductModel
+        {
+            get { return _actualSelectedProductModel; }
+            set { _actualSelectedProductModel = value; }
+        }
+
+        private List<ProductModel> _listOfAllProductModels;
+        public List<ProductModel> ListOfAllProductModels
+        {
+            get { return _listOfAllProductModels; }
+            set { _listOfAllProductModels = value; }
+        }
+
+        private ShopProductSelectorDataModel EmptyModel { get; set; }
+        private ShopProductSelectorDataModel AllValuesProductSelectorDataModel { get; set; }
+        private ShopProductSelectorDataModel FilteredProductSelectorDataModel { get; set; }
+
+        public ShopProductSelectorDataModel ProductSelectorDataModel { get; set; }
+
+        private ObservableCollection<InventoryModel> _actualState;
+        public ObservableCollection<InventoryModel> ActualState
+        {
+            get { return _actualState; }
+            set { _actualState = value; }
+        }
+
+        private ObservableCollection<InventoryModelDataFromDB> _toDateState;
+        public ObservableCollection<InventoryModelDataFromDB> ToDateState
+        {
+            get { return _toDateState; }
+            set { _toDateState = value; }
+        }
+
+        public Action<int> OnCollectionElementChange { get; set; }
 
         private void ActualState_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IEnumerable<InventoryModel> localSender = sender as IEnumerable<InventoryModel>;
             if (localSender == null) return;
-
 
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
@@ -132,8 +158,13 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
         public void OnBarcodeValidAction(string barcode)
         {
             ProductModel? product = ListOfAllProductModels?.FirstOrDefault(e => e.BarCode == barcode || e.BarCodeShort == barcode, null);
-            
-            if (product != null) IncrementQuantityIfExistInCollection(ModelConvertions<ProductModel, InventoryModel>.ConvertModels(product));
+
+            if (product == null)
+            {
+                SystemSounds.Hand.Play();
+                return;
+            }
+            IncrementQuantityIfExistInCollection(ModelConvertions<ProductModel, InventoryModel>.ConvertModels(product));
         }
 
         public void OnAutomaticColumnGenerating(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -148,19 +179,7 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 
         public void OnModelProviderChange()
         {
-            //Get all products
-            ListOfAllProductModels = ModelProvider.GetAllProductEntities();
-
-            AllValuesProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
-            FilteredProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
-            ProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
-
-            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(AllValuesProductSelectorDataModel, ListOfAllProductModels);
-
-            ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
-
-            ActualSelectedProductModel = ListOfAllProductModels.First();
-
+            CreateModelProvider();
         }
 
         public void OnFilterRequest(string elementName, object elementValue)
@@ -179,32 +198,114 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             DataFiltered();
         }
 
+        public InventoryModel? GetInventoryModelFromList(IEnumerable<InventoryModel> inventoryList, InventoryModel inventoryModelToSearch)
+        {
+            InventoryModel? existingModel = inventoryList.FirstOrDefault(e => e.ProductName == inventoryModelToSearch.ProductName, null);
+
+            return existingModel;
+        }
+
         public void IncrementQuantityIfExistInCollection(InventoryModel inventoryModel)
         {
-            InventoryModel? existingModel = ActualState.FirstOrDefault(e => e.ProductName == inventoryModel.ProductName, null);
+            InventoryModel? existingModel = GetInventoryModelFromList(ActualState, inventoryModel);
+            int modifiedIndex = -1;
 
             if (existingModel != null)
             {
                 existingModel.ProductQuantity += 1;
+                modifiedIndex = ActualState.IndexOf(existingModel);
+                OnCollectionElementChange.Invoke(modifiedIndex);
                 return;
             }
 
             inventoryModel.ProductQuantity += 1;
             ActualState.Add(inventoryModel);
 
+            modifiedIndex = ActualState.IndexOf(inventoryModel);
+            OnCollectionElementChange.Invoke(modifiedIndex);
+
         }
 
         public void OnElementSelected()
         {
-            IncrementQuantityIfExistInCollection(ModelConvertions<ProductModel, InventoryModel>.
-                ConvertModels(ActualSelectedProductModel));
+            InventoryModel inventoryModel = ModelConvertions<ProductModel, InventoryModel>.ConvertModels(ActualSelectedProductModel);
+
+            //Check if inventory model already exist in the list. if yes, do not check state from DB
+            InventoryModel? existingModel = GetInventoryModelFromList(ActualState, inventoryModel);
+
+            if(existingModel != null)
+            {
+                IncrementQuantityIfExistInCollection(existingModel);
+                return;
+            }
+
+            inventoryModel.InventoryName = ActualInventoryName;
+            //Check if product exist in Inventory database
+            InventoryModel? inventoryFromDB = InventoryProvider.CheckIfInventoryModelExist(inventoryModel);
+
+            if (inventoryFromDB != null)
+            {
+                IncrementQuantityIfExistInCollection(inventoryFromDB);
+                return;
+            }
+            IncrementQuantityIfExistInCollection(inventoryModel);
+
         }
 
         public void OnClearFilterRequest()
         {
+            ProductSelectorDataModel.Elements = EmptyModel.Elements;
             ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
             
             ClearDataFilter();
+        }
+
+        public void OnProductSelectorLoaded()
+        {
+            if(ProductSelectorDataModel?.Elements == FilteredProductSelectorDataModel?.Elements)
+            {
+                DataFiltered();
+                return;
+            }
+
+            ClearDataFilter();
+        }
+
+        public void CreateModelProvider()
+        {
+            //Get all products
+            ListOfAllProductModels = ModelProvider.GetAllProductEntities();
+
+            EmptyModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+            AllValuesProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+            FilteredProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+            ProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+
+            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(AllValuesProductSelectorDataModel, ListOfAllProductModels);
+            List<ProductModel> firstElement = new List<ProductModel>();
+            firstElement.Add(ListOfAllProductModels.First());
+            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(EmptyModel, firstElement);
+
+            ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+
+            ActualSelectedProductModel = ListOfAllProductModels.First();
+        }
+        public void UpdateModelProvider()
+        {
+            //Get all products
+            ListOfAllProductModels = ModelProvider.GetAllProductEntities();
+
+            AllValuesProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+            FilteredProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+
+            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(AllValuesProductSelectorDataModel, ListOfAllProductModels);
+            List<ProductModel> firstElement = new List<ProductModel>();
+            firstElement.Add(ListOfAllProductModels.First());
+            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(EmptyModel, firstElement);
+
+            ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+
+            ActualSelectedProductModel = ListOfAllProductModels.First();
         }
 
         public void DataFiltered()
@@ -215,6 +316,100 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
         public void ClearDataFilter()
         {
             OnDataFiltered?.Invoke(false);
+        }
+
+        public void OnCloseViewAction()
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zamknąc okno?", "Zamknięcie okna", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) CloseScreen(this);
+        }
+
+        public void OnRefreshProductData()
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz odświeżyć dane?", "Odświeżenie danych", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearDataFilter();
+                UpdateModelProvider();
+            }
+
+        }
+
+        public void OnClearList()
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz wyczyścić listę produktów?", "Czyszczenie listy produktów", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                ActualState.Clear();
+                ToDateState.Clear();
+            }
+        }
+
+        public void OnGetInventoryFromDB()
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz pobrać pełną listę inwentaryzacji z bazy danych?\nObecna lista zostanie utracona...", "Czyszczenie listy produktów", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                ActualState.Clear();
+                ToDateState.Clear();
+
+                List<InventoryModel> inventoryModelsFromDb = InventoryProvider.GetAllInventoryEntitiesByInventoryName(ActualInventoryName);
+
+                inventoryModelsFromDb.ForEach(x => ActualState.Add(x));
+            }
+        }
+
+        public void OnSaveToDatabase()
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zapisać produkty do bazy danych?", "Zapis do bazy danych", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                int errors = 0;
+                int success = 0;
+
+                foreach(InventoryModel inventoryModel in ActualState)
+                {
+                    //Check if exist
+                    InventoryModel? inventoryFromDB = InventoryProvider.CheckIfInventoryModelExist(inventoryModel);
+                    if (inventoryFromDB != null)
+                    {
+                        try
+                        {
+                            InventoryProvider.EditInInventory(inventoryModel);
+                            success++;
+                            continue;
+                        }
+                        catch (Exception ex)
+                        {
+                            errors++;
+                            MessageServer.AddMessage(this, ex.Message);
+                            continue;
+                        }
+                    }
+
+                    try
+                    {
+                        InventoryProvider.AddToInventory(inventoryModel);
+                        success++;
+                        continue;
+                    }
+                    catch (Exception ex)
+                    {
+                        errors++;
+                        MessageServer.AddMessage(this, ex.Message);
+                        continue;
+                    }
+                }
+
+                if (errors > 0 )
+                {
+                    MessageBox.Show($"Uwaga! Nie wszystkie elementy zostały pomyślnie zapisane do bazy danych!" +
+                        $" \nPomyślnie zapisane elementy: {success}\nBłędnie zapisane elementy: {errors}." +
+                        $"\nWięcej informacji w dzienniku zdarzeń.");
+                }
+
+                MessageBox.Show($"Wszystkie elementy zostały pomyślnie zapisane do bazy danych.\nLiczba zapisanych elementów: {success}");
+            }
         }
     }
 }

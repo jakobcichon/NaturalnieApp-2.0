@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NaturalnieApp2.Views.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="400" Style="{StaticResource BottomButtonBarStyle}">
+             d:DesignHeight="50" d:DesignWidth="400" Style="{StaticResource BottomButtonBarStyle}"
+             DataContextChanged="UserControl_DataContextChanged">
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -13,25 +14,54 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-            <ItemsControl ItemsSource="{Binding LeftAlignedButtons}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding Path=Name}" Command="{Binding Path=Command}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <ItemsControl ItemsSource="{Binding RightAlignedButtons}">
+        <ScrollViewer Grid.Column="0" 
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" 
+                      CanContentScroll="True">
+
+            <ItemsControl Grid.Column="0" ItemsSource="{Binding LeftButtons}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Content="{Binding Path=Name}" Command="{Binding Path=Command}"/>
+                        <Button Command="{Binding Path=Command}" CommandParameter="{Binding}" Style="{StaticResource BottomButtonBarButtonStyle}">
+                            <TextBlock Text="{Binding Path=Name}" Style="{StaticResource BottomButtonBarButtonTextStyle}"/>
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Column="1" 
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" 
+                      CanContentScroll="True">
+            <ItemsControl Grid.Column="1" ItemsSource="{Binding RightButtons}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Command="{Binding Path=Command}" CommandParameter="{Binding}" Style="{StaticResource BottomButtonBarButtonStyle}">
+                            <TextBlock Text="{Binding Path=Name}" Style="{StaticResource BottomButtonBarButtonTextStyle}"/>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+         
+
+            
 
     </Grid>
 </UserControl>

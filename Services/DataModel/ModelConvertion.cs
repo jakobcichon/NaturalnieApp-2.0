@@ -30,5 +30,19 @@ namespace NaturalnieApp2.Services.DataModel
 
             return outputModel;
         }
+
+        public static void OverwriteModels(TInputModel inputModel, TOutputModel targetModel)
+        {
+            Type inputModelType = typeof(TInputModel);
+            Type outputModelType = typeof(TOutputModel);
+
+            foreach (PropertyInfo property in inputModelType.GetProperties().ToList())
+            {
+                if (outputModelType.GetProperty(property.Name) != null)
+                {
+                    outputModelType.GetProperty(property.Name).SetValue(targetModel, property.GetValue(inputModel));
+                }
+            }
+        }
     }
 }

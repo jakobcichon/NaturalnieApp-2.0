@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Interfaces
 {
-    public interface INavigateToScreen
+    public interface IViewScreen
     {
-        public IHostScreen HostScreen { get; set; }
-        public void Navigate(ViewModelBase screenToNavigate);
+        public INavigateToScreen ScreenDipatcher { get; }
         public void CloseScreen(ViewModelBase screenToClose);
-        public void AddHostScreen(IHostScreen hostScreen);
     }
 }

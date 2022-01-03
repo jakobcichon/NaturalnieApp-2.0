@@ -227,7 +227,7 @@ namespace NaturalnieApp2.Services.BarcodeReaderServices
         /// It should be placed in object KEyDown event.
         /// </summary>
         /// <param name="key"></param>
-        public void CheckIfBarcodeFromReader(Key key)
+        public bool CheckIfBarcodeFromReader(Key key)
         {
 
             //Make initialization after first call
@@ -292,11 +292,14 @@ namespace NaturalnieApp2.Services.BarcodeReaderServices
                 {
                     this.Valid = true;
                     CallBarcodeValidEvent(this.Ready, this.Valid, this.BarcodeToReturn);
+                    return true;
                 }
                 else this.Valid = false;
             }
 
             this.debugList[debugList.Count - 1] += key;
+
+            return false;
         }
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e)

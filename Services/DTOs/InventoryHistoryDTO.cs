@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.DTOs
 {
-    [Table("inventory")]
-    public class InventoryDTO
+    [Table("inventory_history")]
+    public class InventoryHistoryDTO
     {
         [Key]
         public int Id { get; set; }
+        public DateTime OperationDateTime { get; set; }
         public string InventoryName { get; set; }
         public DateTime LastModificationDate { get; set; }
         public int ProductQuantity { get; set; }
@@ -31,5 +32,6 @@ namespace NaturalnieApp2.Services.DTOs
         public string BarCode { get; set; }
         public string BarCodeShort { get; set; }
         public string SupplierCode { get; set; }
-    }      
+        public string OperationType { get; set; }
+    }
 }

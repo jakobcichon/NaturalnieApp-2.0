@@ -37,7 +37,7 @@ namespace NaturalnieApp2.ViewModels
             CurrentView = initialScreen;
 
             //Create BarcodeReader instance
-            BarcodeListner = new BarcodeReader(1000.0);
+            BarcodeListner = new BarcodeReader(100.0);
             BarcodeListner.BarcodeValid += BarcodeListner_BarcodeValid;
             
         }
@@ -45,6 +45,11 @@ namespace NaturalnieApp2.ViewModels
         public void ShowScreen(ViewModelBase screenToShow)
         {
             CurrentView = screenToShow;
+        }
+
+        public void CloseViewModel(ViewModelBase screenToClose)
+        {
+
         }
 
         #region Barcode actions
@@ -57,8 +62,13 @@ namespace NaturalnieApp2.ViewModels
 
         public void OnKeyDown(object sender, KeyEventArgs e)
         {
-            BarcodeListner.CheckIfBarcodeFromReader(e.Key);
+            bool result = BarcodeListner.CheckIfBarcodeFromReader(e.Key);
+            if (result)
+            {
+                e.Handled = true;
+            }
         }
+
 
         #endregion
     }

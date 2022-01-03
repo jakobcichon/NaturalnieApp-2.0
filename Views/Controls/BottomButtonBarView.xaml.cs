@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NaturalnieApp2.Views.Controls.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,12 @@ namespace NaturalnieApp2.Views.Controls
         public BottomButtonBarView()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null && e.NewValue as BottomButtonBarModel == null)
+                throw new InvalidDataException($"Wrong data type. DataContex for the BottomButtonBarView must be of type BottomButtonBarModel");
         }
     }
 }

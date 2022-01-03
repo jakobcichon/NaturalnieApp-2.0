@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Interfaces
 {
-    public interface IHashableModel
+    internal interface IMessageServer
     {
-        public string GetHashCodeFromModel();
+        public void AddMessage(object sourceObject, string message);
     }
 }

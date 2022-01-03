@@ -12,12 +12,12 @@ namespace NaturalnieApp2.Stores
 {
     internal class NavigationDispatcher: INavigateToScreen
     {
-        private IHostScreen _HostScreen;
+        private IHostScreen _hostScreen;
 
         public IHostScreen HostScreen
         {
-            get { return _HostScreen; }
-            set { _HostScreen = value; }
+            get { return _hostScreen; }
+            set { _hostScreen = value; }
         }
 
         public NavigationDispatcher()
@@ -28,7 +28,7 @@ namespace NaturalnieApp2.Stores
  
         public void Navigate(ViewModelBase screenToShow)
         {
-            _HostScreen.ShowScreen(screenToShow);
+            _hostScreen.ShowScreen(screenToShow);
         }
 
         public void AddHostScreen(IHostScreen hostScreen)
@@ -39,6 +39,11 @@ namespace NaturalnieApp2.Stores
         public void OnKeyDown(Key key)
         {
             throw new NotImplementedException();
+        }
+
+        public void CloseScreen(ViewModelBase screenToClose)
+        {
+            _hostScreen.CloseViewModel(screenToClose);
         }
     }
 }

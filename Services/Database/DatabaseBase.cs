@@ -15,5 +15,12 @@ namespace NaturalnieApp2.Services.Database
         {
             ConnectionString = connectionString;
         }
+
+        public enum HistoryOperationType
+        {
+            AddedNew,
+            Deleted,
+            Modified
+        }
     }
 }
