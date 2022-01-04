@@ -103,7 +103,7 @@ namespace NaturalnieApp2.Views.Controls
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBox? localSender = (sender as ComboBox);
+/*            ComboBox? localSender = (sender as ComboBox);
             if (localSender == null) return;
 
             var originalSource = localSender.ItemsSource;
@@ -119,7 +119,18 @@ namespace NaturalnieApp2.Views.Controls
                 if (elementName != null) OnFilterRequest(elementName, selectedItem);
                 FilteringSource = false;
                 localSender.ItemsSource = originalSource;
-            }
+            }*/
+        }
+
+        private void ComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            ComboBox? localSender = (sender as ComboBox);
+            if (localSender == null) return;
+
+            object selectedItem = localSender?.SelectedItem;
+
+            string elementName = GetComboBoxElementName(localSender);
+            if (elementName != null) OnFilterRequest(elementName, selectedItem);
         }
 
         private void CollapseButton_Click(object sender, RoutedEventArgs e)
@@ -174,14 +185,13 @@ namespace NaturalnieApp2.Views.Controls
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
             OnElementSelected();
-            HeaderButton.Focus();
+            //HeaderButton.Focus();
         }
 
         private void ClearFilterButton_Click(object sender, RoutedEventArgs e)
         {
             OnCancelFilter();
         }
-
     }
 
 

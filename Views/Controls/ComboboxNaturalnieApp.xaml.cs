@@ -13,21 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NaturalnieApp2.Sandbox
+namespace NaturalnieApp2.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for SandboxViewxaml.xaml
+    /// Interaction logic for ComboboxNaturalnieApp.xaml
     /// </summary>
-    public partial class SandboxView : UserControl
+    public partial class ComboboxNaturalnieApp : UserControl
     {
-        public SandboxView()
+        public ComboboxNaturalnieApp()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            (DataContext as SandboxViewModel).OnButtonClick();
-        }
+        #region Dependency Properties
+
+        #endregion
     }
 }

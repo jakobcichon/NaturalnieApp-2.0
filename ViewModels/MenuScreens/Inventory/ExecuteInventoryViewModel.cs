@@ -164,7 +164,7 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
                 SystemSounds.Hand.Play();
                 return;
             }
-            IncrementQuantityIfExistInCollection(ModelConvertions<ProductModel, InventoryModel>.ConvertModels(product));
+            AddModelToList(product);
         }
 
         public void OnAutomaticColumnGenerating(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -180,22 +180,6 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
         public void OnModelProviderChange()
         {
             CreateModelProvider();
-        }
-
-        public void OnFilterRequest(string elementName, object elementValue)
-        {
-            string? propertyName = DisplayModelAttributesServices.GetPropertyNameByDisplayName(elementName, typeof(ProductModel));
-            if (propertyName == null) return;
-
-            List<ProductModel> filteredModel = DataModelServices<ProductModel>.FitlerModelByPropertyName(propertyName, elementValue, ListOfAllProductModels);
-            FilteredProductSelectorDataModel.ClearAllValues();
-            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(FilteredProductSelectorDataModel, filteredModel);
-            
-            ProductSelectorDataModel.Elements = FilteredProductSelectorDataModel.Elements;
-
-            ActualSelectedProductModel = filteredModel.First();
-
-            DataFiltered();
         }
 
         public InventoryModel? GetInventoryModelFromList(IEnumerable<InventoryModel> inventoryList, InventoryModel inventoryModelToSearch)
@@ -214,7 +198,7 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             {
                 existingModel.ProductQuantity += 1;
                 modifiedIndex = ActualState.IndexOf(existingModel);
-                OnCollectionElementChange.Invoke(modifiedIndex);
+                OnCollectionElementChange?.Invoke(modifiedIndex);
                 return;
             }
 
@@ -222,13 +206,13 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             ActualState.Add(inventoryModel);
 
             modifiedIndex = ActualState.IndexOf(inventoryModel);
-            OnCollectionElementChange.Invoke(modifiedIndex);
+            OnCollectionElementChange?.Invoke(modifiedIndex);
 
         }
 
-        public void OnElementSelected()
+        public void AddModelToList(ProductModel productModel)
         {
-            InventoryModel inventoryModel = ModelConvertions<ProductModel, InventoryModel>.ConvertModels(ActualSelectedProductModel);
+            InventoryModel inventoryModel = ModelConvertions<ProductModel, InventoryModel>.ConvertModels(productModel);
 
             //Check if inventory model already exist in the list. if yes, do not check state from DB
             InventoryModel? existingModel = GetInventoryModelFromList(ActualState, inventoryModel);
@@ -249,15 +233,39 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
                 return;
             }
             IncrementQuantityIfExistInCollection(inventoryModel);
+        }
+
+        public void OnElementSelected()
+        {
+            AddModelToList(ActualSelectedProductModel);
 
         }
 
         public void OnClearFilterRequest()
         {
-            ProductSelectorDataModel.Elements = EmptyModel.Elements;
-            ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
-            
+            //ProductSelectorDataModel.Elements = EmptyModel.Elements;
+            //ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+            ProductSelectorDataModel.AddElementsValues(AllValuesProductSelectorDataModel.Elements);
+
             ClearDataFilter();
+        }
+
+        public void OnFilterRequest(string elementName, object elementValue)
+        {
+            string? propertyName = DisplayModelAttributesServices.GetPropertyNameByDisplayName(elementName, typeof(ProductModel));
+            if (propertyName == null) return;
+
+            List<ProductModel> filteredModel = DataModelServices<ProductModel>.FitlerModelByPropertyName(propertyName, elementValue, ListOfAllProductModels);
+            FilteredProductSelectorDataModel.ClearAllValues();
+            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(FilteredProductSelectorDataModel, filteredModel);
+
+            //ProductSelectorDataModel.Elements = FilteredProductSelectorDataModel.Elements;
+            ProductSelectorDataModel.ClearAllValues();
+            ProductSelectorDataModel.AddElementsValues(FilteredProductSelectorDataModel.Elements);
+
+            ActualSelectedProductModel = filteredModel.First();
+
+            DataFiltered();
         }
 
         public void OnProductSelectorLoaded()
@@ -286,7 +294,9 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             firstElement.Add(ListOfAllProductModels.First());
             DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(EmptyModel, firstElement);
 
-            ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+            //ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+            ProductSelectorDataModel.ClearAllValues();
+            ProductSelectorDataModel.AddElementsValues(AllValuesProductSelectorDataModel.Elements);
 
             ActualSelectedProductModel = ListOfAllProductModels.First();
         }
@@ -303,7 +313,9 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             firstElement.Add(ListOfAllProductModels.First());
             DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(EmptyModel, firstElement);
 
-            ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+            //ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+            ProductSelectorDataModel.ClearAllValues();
+            ProductSelectorDataModel.AddElementsValues(AllValuesProductSelectorDataModel.Elements);
 
             ActualSelectedProductModel = ListOfAllProductModels.First();
         }
@@ -367,7 +379,8 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
                 int errors = 0;
                 int success = 0;
 
-                foreach(InventoryModel inventoryModel in ActualState)
+
+                foreach (InventoryModel inventoryModel in ActualState)
                 {
                     //Check if exist
                     InventoryModel? inventoryFromDB = InventoryProvider.CheckIfInventoryModelExist(inventoryModel);
@@ -382,7 +395,7 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
                         catch (Exception ex)
                         {
                             errors++;
-                            MessageServer.AddMessage(this, ex.Message);
+                            MessageServer?.AddMessage(this, ex.Message);
                             continue;
                         }
                     }
@@ -396,12 +409,12 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
                     catch (Exception ex)
                     {
                         errors++;
-                        MessageServer.AddMessage(this, ex.Message);
+                        MessageServer?.AddMessage(this, ex.Message);
                         continue;
                     }
                 }
 
-                if (errors > 0 )
+                if (errors > 0)
                 {
                     MessageBox.Show($"Uwaga! Nie wszystkie elementy zostały pomyślnie zapisane do bazy danych!" +
                         $" \nPomyślnie zapisane elementy: {success}\nBłędnie zapisane elementy: {errors}." +
@@ -409,6 +422,8 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
                 }
 
                 MessageBox.Show($"Wszystkie elementy zostały pomyślnie zapisane do bazy danych.\nLiczba zapisanych elementów: {success}");
+
+
             }
         }
     }

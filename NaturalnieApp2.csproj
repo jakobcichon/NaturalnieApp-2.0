@@ -11,6 +11,8 @@
     <StartupObject>NaturalnieApp2.App</StartupObject>
     <ApplicationIcon>Images\mainIcon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyVersion>2.0.6</AssemblyVersion>
+    <FileVersion>2.0.6</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

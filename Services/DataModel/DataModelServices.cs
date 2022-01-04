@@ -16,7 +16,7 @@ namespace NaturalnieApp2.Services.DataModel
             foreach (T model in listToFilter)
             {
                 PropertyInfo? property = model.GetType().GetProperty(propertyName);
-                if (property != null && property.GetValue(model).ToString() == propertyValue.ToString())
+                if (property != null && property.GetValue(model)?.ToString() == propertyValue?.ToString())
                 {
                     resultList.Add(model);
                 }

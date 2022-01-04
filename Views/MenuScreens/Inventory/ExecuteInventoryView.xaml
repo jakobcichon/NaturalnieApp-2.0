@@ -57,13 +57,12 @@
                                     Panel.ZIndex="1000"/>
 
             <DataGrid x:Name="DataGridActualState" Grid.Row="1" Grid.Column="0" 
-                    ItemsSource="{Binding ActualState}" Margin="2,0,0,2"
-                    Style="{StaticResource GridViewStyle}"
-                    ScrollViewer.CanContentScroll="True"
-                    ScrollViewer.ScrollChanged="DataGridActualState_ScrollChanged"
-                    AutoGeneratingColumn="ActualData_AutoGeneratingColumn" 
-                      IsSynchronizedWithCurrentItem="True"
-                  >
+                      ItemsSource="{Binding ActualState}" Margin="2,0,0,2"
+                      Style="{StaticResource GridViewStyle}"
+                      ScrollViewer.CanContentScroll="True"
+                      ScrollViewer.ScrollChanged="DataGridActualState_ScrollChanged"
+                      AutoGeneratingColumn="ActualData_AutoGeneratingColumn" 
+                      IsSynchronizedWithCurrentItem="True">
             </DataGrid>
 
             <c:DataGridSettingsView x:Name="DataGridSettingsToDateState" Grid.Row="0" Grid.Column="2" 
@@ -76,8 +75,7 @@
                       Style="{StaticResource GridViewStyle}"
                       ScrollViewer.CanContentScroll="True" 
                       ScrollViewer.ScrollChanged="DataGridToDateState_ScrollChanged"
-                      AutoGeneratingColumn="ActualData_AutoGeneratingColumn"                      
-                  >
+                      AutoGeneratingColumn="ActualData_AutoGeneratingColumn" CanUserSortColumns="False">
             </DataGrid>
 
             <GridSplitter Grid.Column="1" Grid.Row="1" 

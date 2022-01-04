@@ -72,7 +72,6 @@ namespace NaturalnieApp2.Services.Database.Providers
                             select i;
 
                 inventoryDTO = query.FirstOrDefault();
-
             }
 
             if (inventoryDTO == null) return null;

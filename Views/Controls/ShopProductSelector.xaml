@@ -78,6 +78,7 @@
                                         <Label Content="{Binding Name}" FontSize="20" HorizontalAlignment="Center"/>
                                         <ComboBox ItemsSource="{Binding Value}" 
                                                   SelectionChanged="ComboBox_SelectionChanged"
+                                                  DropDownClosed="ComboBox_DropDownClosed"
                                                   IsSynchronizedWithCurrentItem="True"
                                                   MaxDropDownHeight="200" MaxWidth="200"
                                                   Margin="5"

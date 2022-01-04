@@ -51,7 +51,22 @@ namespace NaturalnieApp2.Views.Controls.Models
         {
             foreach(ShopProductSelectorDataSingleElement element in Elements)
             {
-                element.Value = null;
+                element.Value = "";
+            }
+        }
+
+        public void AddElementsValues(ObservableCollection<ShopProductSelectorDataSingleElement> elements)
+        {
+            foreach (ShopProductSelectorDataSingleElement element in Elements)
+            {
+                ShopProductSelectorDataSingleElement? elementToAdd = elements.FirstOrDefault(e => e.Name == element.Name);
+                if (elementToAdd != null)
+                {
+                    if(element.GetType() == elementToAdd.GetType())
+                    {
+                        element.Value = elementToAdd.Value;
+                    }
+                }
             }
         }
 
