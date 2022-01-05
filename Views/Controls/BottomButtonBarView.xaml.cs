@@ -32,5 +32,6 @@ namespace NaturalnieApp2.Views.Controls
             if (e.NewValue != null && e.NewValue as BottomButtonBarModel == null)
                 throw new InvalidDataException($"Wrong data type. DataContex for the BottomButtonBarView must be of type BottomButtonBarModel");
         }
+
     }
 }

@@ -47,8 +47,8 @@ namespace NaturalnieApp2
                         "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");*/
             string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
                         "uid = admin; password = admin; Connection Timeout = 10", "desktop-l2l4v68");
-/*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-            "uid = admin; password = admin; Connection Timeout = 10", "localhost");*/
+            /*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+                        "uid = admin; password = admin; Connection Timeout = 10", "localhost");*/
 
 
             IServiceCollection services = new ServiceCollection();
@@ -159,7 +159,7 @@ namespace NaturalnieApp2
             menuBar.MenuBarViews.Where(m => m.Name == MenuButtonNames.InventoryButton).
                 FirstOrDefault()?.AddSubButton(new List<ISubMenuButton>()
             {
-                new SubButtonViewModel("Wykonaj inwentaryację",
+                new SubButtonViewModel("Wykonaj inwentaryzację",
                 service.GetRequiredService<ExecuteInventoryViewModel>(),
                 service.GetRequiredService<NavigationDispatcher>()
                 )

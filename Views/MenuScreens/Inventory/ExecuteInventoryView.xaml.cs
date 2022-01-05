@@ -25,9 +25,10 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
     /// <summary>
     /// Interaction logic for ExecuteInventarizationView.xaml
     /// </summary>
-    public partial class ExecuteInventoryView : UserControl
+    public partial class ExecuteInventoryView: UserControl
     {
         private ToolTip _lastToolTip { get; set; }
+        private ViewBaseHelper ViewBaseHelperClass { get; set; }
 
         public ExecuteInventoryView()
         {
@@ -47,8 +48,10 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
 
             (DataGridActualState.Items as ICollectionView).CollectionChanged += DataGridActualState_CollectionChanged;
             (DataGridToDateState.Items as ICollectionView).CollectionChanged += DataGridToDateState_CollectionChanged;
-        }
 
+            ViewBaseHelper ViewBaseHelperClass = new ViewBaseHelper(this);
+
+        }
         private void DataGridActualState_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             ICollectionView? _localSender = sender as ICollectionView;
@@ -263,4 +266,6 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
         }
 
     }
+
+
 }

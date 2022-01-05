@@ -6,58 +6,70 @@
              xmlns:local="clr-namespace:NaturalnieApp2.Views.Controls.Models"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="100">
-    <Grid>
+    <Grid VerticalAlignment="Top">
         <!-- Basic grid definition-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*"/>
-            <ColumnDefinition Width="*" MinWidth="20" MaxWidth="50"/>
+            <ColumnDefinition Width="*" MinWidth="20" MaxWidth="100"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" MinHeight="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
+            <RowDefinition Height="*" MinHeight="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"/>
         </Grid.RowDefinitions>
         
         <!-- Search box field-->
-        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1">
+        <Border x:Name="TextBoxBorder" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" VerticalAlignment="Top">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="0.1" Color="Black"/>
             </Border.Effect>
-            <TextBox VerticalAlignment="Center" FontSize="20" 
-                 BorderThickness="0" Grid.Row="0" Grid.Column="0" 
+            <TextBox x:Name="InputField" VerticalAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"
+                 BorderThickness="0,0,0,1" BorderBrush="Blue" Grid.Row="0" Grid.Column="0" 
                  CaretBrush="White"
-                 Background="White">
-
+                 Background="White"
+                     TextChanged="InputField_TextChanged">
             </TextBox>
-            
-        </Border>
+
+        </Border >
+        
         <!-- Hint items button -->
-        <Button x:Name="OpenCloseHintItemsButton" Height="20" 
-                Grid.Row="0" Grid.Column="1" BorderThickness="0"
-                Margin="5">
+        <Button Grid.Row="0" Grid.Column="1" x:Name="OpenCloseHintItemsButton" 
+                Height="{Binding ActualHeight, ElementName=InputField}"
+                VerticalAlignment="Top"
+                    BorderThickness="0"
+                    Margin="1">
             
         </Button>
         
         <!-- Hint Items panel -->
-        <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Panel.ZIndex="1000">
-            <ContentControl>
-                <ItemsControl>
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                Panel.ZIndex="1000" Height="auto">
+            <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" 
+                          HorizontalScrollBarVisibility="Hidden">
+                <ItemsControl 
+                    ItemsSource="{Binding RelativeSource=
+                    {RelativeSource AncestorType={x:Type UserControl}}, 
+                    Path=HintItems}" 
+                              >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel>
-                                
-                            </StackPanel>
+                            <StackPanel/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock>
-                                
-                            </TextBlock>
+                            <Button x:Name="HintItemButton" Click="HintItemButton_Click">
+                                <TextBlock Text="{Binding DisplayText}" 
+                                           FontSize="{Binding RelativeSource=
+                                    {RelativeSource AncestorType=UserControl}, 
+                                    Path=FontSize}"/>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </ContentControl>
+
+            </ScrollViewer>
+            
         </Border>
     </Grid>
 </UserControl>

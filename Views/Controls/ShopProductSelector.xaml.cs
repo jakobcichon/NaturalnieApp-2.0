@@ -97,6 +97,7 @@ namespace NaturalnieApp2.Views.Controls
             FilteringSource = false;
             CollapsiblePanelVisible = true;
             ClearFilterButtonVisibility = Visibility.Collapsed;
+
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -185,7 +186,6 @@ namespace NaturalnieApp2.Views.Controls
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
             OnElementSelected();
-            //HeaderButton.Focus();
         }
 
         private void ClearFilterButton_Click(object sender, RoutedEventArgs e)
