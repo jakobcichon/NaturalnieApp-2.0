@@ -48,8 +48,8 @@ namespace NaturalnieApp2
             string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
                         "uid = admin; password = admin; Connection Timeout = 10", "desktop-l2l4v68");
             /*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-                        "uid = admin; password = admin; Connection Timeout = 10", "localhost");*/
-
+                        "uid = admin; password = admin; Connection Timeout = 10", "localhost");
+            */
 
             IServiceCollection services = new ServiceCollection();
 
@@ -76,6 +76,7 @@ namespace NaturalnieApp2
 
             //Inventory
             services.AddSingleton<ExecuteInventoryViewModel>();
+            services.AddSingleton<ShowInventoryViewModel>();
             services.AddSingleton<SandboxViewModel>();
             #endregion
 
@@ -121,15 +122,19 @@ namespace NaturalnieApp2
             CreateSubMenuButtons_Sandbox(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
 
             #region Execute inventory
-/*            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider =
+            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider =
                 _serviceProvider.GetRequiredService<ProductProvider>();
             _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().StockProvider =
                 _serviceProvider.GetRequiredService<StockProvider>();
             _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().InventoryProvider =
                 _serviceProvider.GetRequiredService<InventoryProvider>();
             _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ScreenDipatcher =
-                _serviceProvider.GetRequiredService<NavigationDispatcher>();*/
+                _serviceProvider.GetRequiredService<NavigationDispatcher>();
+            #endregion
 
+            #region Show inventory
+            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().InventoryProvider =
+                _serviceProvider.GetRequiredService<InventoryProvider>();
             #endregion
 
             //Show window
@@ -161,6 +166,15 @@ namespace NaturalnieApp2
             {
                 new SubButtonViewModel("Wykonaj inwentaryzację",
                 service.GetRequiredService<ExecuteInventoryViewModel>(),
+                service.GetRequiredService<NavigationDispatcher>()
+                )
+            });
+
+            menuBar.MenuBarViews.Where(m => m.Name == MenuButtonNames.InventoryButton).
+                FirstOrDefault()?.AddSubButton(new List<ISubMenuButton>()
+            {
+                new SubButtonViewModel("Pokaż inwentaryzację",
+                service.GetRequiredService<ShowInventoryViewModel>(),
                 service.GetRequiredService<NavigationDispatcher>()
                 )
             });

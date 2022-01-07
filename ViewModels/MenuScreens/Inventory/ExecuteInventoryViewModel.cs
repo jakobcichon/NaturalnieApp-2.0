@@ -167,16 +167,6 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             AddModelToList(product);
         }
 
-        public void OnAutomaticColumnGenerating(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-            AttributeCollection attributes = (e.PropertyDescriptor as PropertyDescriptor).Attributes;
-            foreach (Attribute attribute in attributes)
-            {
-                DataGridModelDisplayServices.ApllyColumnProperties(attribute, e.Column);
-                DataGridModelDisplayServices.ColumnModificationPropertiesFromAttribute(attribute, e.Column);
-            }
-        }
-
         public void OnModelProviderChange()
         {
             CreateModelProvider();

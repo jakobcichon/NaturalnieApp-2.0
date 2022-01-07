@@ -24,6 +24,6 @@
                   ItemsSource="{Binding ComboBoxDataSource}"
                   MaxWidth="200"/>
 
-        <c:ComboboxNaturalnieApp Grid.Row="1" Height="100" Width="200" FontSize="30"/>
+        <c:ComboboxNaturalnieApp Grid.Row="1" Height="100" Width="300" FontSize="30"/>
     </Grid>
 </UserControl>

@@ -27,14 +27,13 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
     /// </summary>
     public partial class ExecuteInventoryView: UserControl
     {
-        private ToolTip _lastToolTip { get; set; }
         private ViewBaseHelper ViewBaseHelperClass { get; set; }
 
         public ExecuteInventoryView()
         {
             InitializeComponent();
-            DataGridSettingsActualState.AddDataGridReference(DataGridActualState);
-            DataGridSettingsToDateState.AddDataGridReference(DataGridToDateState);
+/*            DataGridSettingsActualState.AddDataGridReference(DataGridActualState);
+            DataGridSettingsToDateState.AddDataGridReference(DataGridToDateState);*/
 
             ProductSelektor.FilterRequest += ProductSelektor_FilterRequest;
             ProductSelektor.ElementSelected += ProductSelektor_ElementSelected;
@@ -42,14 +41,11 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
             ProductSelektor.Loaded += ProductSelektor_Loaded;
 
             DataContextChanged += ExecuteInventoryView_DataContextChanged;
-
-            DataGridActualState.MouseRightButtonUp += DataGridActualState_MouseRightButtonUp;
-            DataGridActualState.MouseMove += DataGridActualState_MouseMove;
-
+            
             (DataGridActualState.Items as ICollectionView).CollectionChanged += DataGridActualState_CollectionChanged;
             (DataGridToDateState.Items as ICollectionView).CollectionChanged += DataGridToDateState_CollectionChanged;
 
-            ViewBaseHelper ViewBaseHelperClass = new ViewBaseHelper(this);
+            ViewBaseHelperClass = new ViewBaseHelper(this);
 
         }
         private void DataGridActualState_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -70,91 +66,6 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
         private void DataGridToDateState_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             ;
-        }
-
-        #region General methods
-        private string? GetAllColumnValuesTillGivenCell(DataGrid? dataGrid, DataGridCell referenceCell)
-        {
-            if (dataGrid == null || referenceCell == null) return null;
-
-            int currentItemIndex = dataGrid.SelectedIndex;
-            string? propertyName = referenceCell.Column.SortMemberPath;
-;
-            ItemCollection items = dataGrid.Items;
-
-            //Check if item is numeric
-            PropertyInfo? propertyInfo = items[0].GetType()?.GetProperty(propertyName);
-            Type itemType = propertyInfo.PropertyType;
-            if(itemType == null) return null;
-            try
-            {
-                if (itemType.IsValueType)
-                {
-                    dynamic itemValue = 0;
-                    foreach (var item in items)
-                    {
-                        if (dataGrid.Items.IndexOf(item) > currentItemIndex) break;
-                        dynamic currentValue = item.GetType().GetProperty(propertyName).GetValue(item);
-                        if (currentValue != null) itemValue = itemValue + currentValue;
-                    }
-                    return $"Suma elementów kolumny '{referenceCell.Column.Header.ToString()}': " + itemValue;
-                }
-                else
-                {
-                    int itemCount = 0;
-                    foreach (var item in items)
-                    {
-                        if (dataGrid.Items.IndexOf(item) > currentItemIndex) break;
-                        itemCount += 1;
-                    }
-                    return $"Liczba elementów kolumny '{referenceCell.Column.Header.ToString()}': " + itemCount;
-                }
-            }
-            catch
-            {
-                return null;
-            }
-
-            return null;
-        }
-        #endregion
-
-        private void DataGridActualState_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_lastToolTip != null)
-            {
-                _lastToolTip.IsOpen = false;
-                _lastToolTip.UpdateLayout();
-                _lastToolTip = null;
-            }
-
-        }
-
-        private void DataGridActualState_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            var hit = VisualTreeHelper.HitTest((Visual)sender, e.GetPosition((IInputElement)sender));
-            DependencyObject cell = VisualTreeHelper.GetParent(hit.VisualHit);
-            while (cell != null && !(cell is DataGridCell)) cell = VisualTreeHelper.GetParent(cell);
-            DataGridCell targetCell = cell as DataGridCell;
-
-            if (targetCell == null) return;
-
-            object? valueToDisplay = GetAllColumnValuesTillGivenCell(sender as DataGrid, targetCell);
-
-            ToolTip? targetCellToolTip = targetCell.ToolTip as ToolTip;
-            if (targetCellToolTip == null) targetCellToolTip = new ToolTip();
-
-            if (_lastToolTip != null)
-            {
-                _lastToolTip.IsOpen = false;
-                _lastToolTip.UpdateLayout();
-                _lastToolTip = null;
-            }
-
-
-            targetCellToolTip.Content = valueToDisplay?.ToString();
-            targetCellToolTip.IsOpen = true;
-            _lastToolTip = targetCellToolTip;
         }
 
         private void ExecuteInventoryView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -226,14 +137,6 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
 
         #endregion
 
-        private void ActualData_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-            DataGrid dataGrid = sender as DataGrid;
-            if (dataGrid?.DataContext != null && dataGrid?.DataContext is IDataGridAdditionalActionsEventHandler)
-            {
-                (dataGrid?.DataContext as IDataGridAdditionalActionsEventHandler).OnAutomaticColumnGenerating(sender, e);
-            }
-        }
 
         private void DataGridActualState_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {

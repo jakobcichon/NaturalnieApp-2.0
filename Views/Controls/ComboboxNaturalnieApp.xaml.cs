@@ -144,13 +144,20 @@ namespace NaturalnieApp2.Views.Controls
 
         private ObservableCollection<SearchListObject> SearchInHintList(string searchText)
         {
-            ObservableCollection <SearchListObject> searchList = FullList.Where(e =>
+            IEnumerable<SearchListObject> searchList = FullList.Where(e =>
             {
                 bool? result = e?.DisplayText?.ToString()?.ToLower()?.Contains(searchText.ToLower());
                 return result ?? true;
             });
 
-            return new ObservableCollection<SearchListObject>();
+            ObservableCollection<SearchListObject> returnList = new ObservableCollection<SearchListObject>();
+
+            foreach (SearchListObject search in searchList)
+            {
+                returnList.Add(search);
+            }
+
+            return returnList;
         }
 
         #endregion
@@ -163,10 +170,55 @@ namespace NaturalnieApp2.Views.Controls
 
         private void InputField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox? localSender = e.Source as TextBox;
-            if (localSender == null) return;
-            HintItems = SearchInHintList(localSender.Text);
+            RichTextBox? localSender = e.Source as RichTextBox;
+            string text = StringFromRichTextBox(localSender).Trim();
 
+            if (localSender == null) return;
+
+            if (StringFromRichTextBox(localSender) == "")
+            {
+                HintItems = FullList;
+                return;
+            }
+
+            HintItems = SearchInHintList(text);
+
+            if (HintItems == null || HintItems.Count == 0)
+            {
+                HintItems = FullList;
+                return;
+            }
+
+            string? searchedText = HintItems.First().DisplayText;
+            if (string.IsNullOrEmpty(searchedText)) return;
+
+            int firstIndex, lastIndex;
+
+            (firstIndex, lastIndex) = GetIndexcesStringInString(text, searchedText);
+            ;
+
+        }
+
+        private (int, int) GetIndexcesStringInString(string searchingString, string searchedString)
+        {
+            int firstIndex = searchedString.IndexOf(searchingString);
+            int lastIndex = firstIndex + searchingString.Length;
+
+            return (firstIndex, lastIndex);
+        }
+
+        string StringFromRichTextBox(RichTextBox rtb)
+        {
+            TextRange textRange = new TextRange(
+                // TextPointer to the start of content in the RichTextBox.
+                rtb.Document.ContentStart,
+                // TextPointer to the end of content in the RichTextBox.
+                rtb.Document.ContentEnd
+            );
+
+            // The Text property on a TextRange object returns a string
+            // representing the plain text content of the TextRange.
+            return textRange.Text;
         }
         #endregion
 

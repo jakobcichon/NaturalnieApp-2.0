@@ -22,12 +22,12 @@
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="0.1" Color="Black"/>
             </Border.Effect>
-            <TextBox x:Name="InputField" VerticalAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"
+            <RichTextBox x:Name="InputField" VerticalAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"
                  BorderThickness="0,0,0,1" BorderBrush="Blue" Grid.Row="0" Grid.Column="0" 
                  CaretBrush="White"
                  Background="White"
                      TextChanged="InputField_TextChanged">
-            </TextBox>
+            </RichTextBox>
 
         </Border >
         
@@ -35,8 +35,14 @@
         <Button Grid.Row="0" Grid.Column="1" x:Name="OpenCloseHintItemsButton" 
                 Height="{Binding ActualHeight, ElementName=InputField}"
                 VerticalAlignment="Top"
+                Background="White"
                     BorderThickness="0"
-                    Margin="1">
+                    Margin="2">
+            <Image>
+                <Image.Source>
+                    <BitmapImage UriSource="/Images/right-arrow.png"/>
+                </Image.Source>
+            </Image>
             
         </Button>
         
@@ -44,7 +50,7 @@
         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                 Panel.ZIndex="1000" Height="auto">
             <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" 
-                          HorizontalScrollBarVisibility="Hidden">
+                          HorizontalScrollBarVisibility="Hidden" >
                 <ItemsControl 
                     ItemsSource="{Binding RelativeSource=
                     {RelativeSource AncestorType={x:Type UserControl}}, 
@@ -60,9 +66,7 @@
                         <DataTemplate>
                             <Button x:Name="HintItemButton" Click="HintItemButton_Click">
                                 <TextBlock Text="{Binding DisplayText}" 
-                                           FontSize="{Binding RelativeSource=
-                                    {RelativeSource AncestorType=UserControl}, 
-                                    Path=FontSize}"/>
+                                           FontSize="16"/>
                             </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

@@ -34,8 +34,11 @@
             <DataTemplate DataType="{x:Type vm_ms_i:ExecuteInventoryViewModel}">
                 <v_ms_i:ExecuteInventoryView/>
             </DataTemplate>
-            
-            
+            <DataTemplate DataType="{x:Type vm_ms_i:ShowInventoryViewModel}">
+                <v_ms_i:ShowInventoryView/>
+            </DataTemplate>
+
+
             <!-- Sandbox -->
             <DataTemplate DataType="{x:Type sb:SandboxViewModel}">
                 <sb:SandboxView/>

@@ -11,8 +11,8 @@
     <StartupObject>NaturalnieApp2.App</StartupObject>
     <ApplicationIcon>Images\mainIcon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
-    <AssemblyVersion>2.0.7</AssemblyVersion>
-    <FileVersion>2.0.7</FileVersion>
+    <AssemblyVersion>2.0.8</AssemblyVersion>
+    <FileVersion>2.0.8</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +27,7 @@
     <None Remove="Images\clear-filter.png" />
     <None Remove="Images\down-arrow.png" />
     <None Remove="Images\Naturalnielogo.png" />
+    <None Remove="Images\right-arrow.png" />
     <None Remove="Images\select.png" />
     <None Remove="Images\settings_icon.png" />
     <None Remove="Images\up-arrow.png" />
@@ -34,10 +35,12 @@
 
   <ItemGroup>
     <Content Include="Images\mainIcon.ico" />
+    <Resource Include="Images\right-arrow.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controls\" />
+    <Folder Include="Services\ExcelServices\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +49,7 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="MySql.Data" Version="8.0.27" />
     <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.27" />
+    <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +60,12 @@
     <Resource Include="Images\select.png" />
     <Resource Include="Images\settings_icon.png" />
     <Resource Include="Images\up-arrow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\MenuScreens\Inventory\ShowInventoryView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 
 </Project>
