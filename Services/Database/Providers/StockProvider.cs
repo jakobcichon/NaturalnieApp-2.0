@@ -16,6 +16,20 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
         }
 
+        #region Exceptions
+        public class NotFoundInStockException : Exception
+        {
+            public NotFoundInStockException()
+            {
+
+            }
+
+            public NotFoundInStockException(string? message) : base(message)
+            {
+            }
+        }
+        #endregion
+
         //====================================================================================================
         //Method used to retrieve from DB quantity of given product in stock
         //====================================================================================================
@@ -165,9 +179,37 @@ namespace NaturalnieApp2.Services.Database.Providers
         }
 
         //====================================================================================================
+        //Method used to overwrite stock quantity
+        //====================================================================================================
+        public void OverwriteStockQuantityForGivenProduct(string productName, int newQuantity, StockOperationType operationType, 
+            string? salesUniqueIdForAutomaticUpdate = null)
+        {
+            //Get product id first
+            int? productId = new ProductProvider(ConnectionString).GetProductIdByProductName(productName);
+            if (!productId.HasValue) throw new Exception($"Produkt o nazwie {productName} nie został znaleziony w bazie danych!");
+
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                var query = from s in contextDB.Stock
+                            where s.ProductId == productId
+                            select s;
+
+                StockDTO? stockDTO = query.FirstOrDefault();
+
+                if (stockDTO == null) throw new NotFoundInStockException($"Produkt o nazwie {productName} nie został znaleziony w magazynie!");
+
+                stockDTO.LastQuantity = stockDTO.ActualQuantity;
+                stockDTO.ActualQuantity = newQuantity;
+
+                EditInStock(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
+            }
+        }
+
+        //====================================================================================================
         //Method used to add to stock
         //====================================================================================================
-        public void AddToStock(StockModel stockPiece)
+        public void AddToStock(StockModel stockPiece, StockOperationType operationType = StockOperationType.AddNew, 
+            string? salesUniqueIdForAutomaticUpdate = null)
         {
             StockDTO stockDTO = GetStockDTOFromStockModel(stockPiece);
 
@@ -176,19 +218,40 @@ namespace NaturalnieApp2.Services.Database.Providers
                 contextDB.Stock.Add(stockDTO);
                 int retVal = contextDB.SaveChanges();
             }
+
+            //Add item to stock history
+            new StockHistoryProvider(ConnectionString).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
         }
 
         //====================================================================================================
         //Method used to edit product product in stock
         //====================================================================================================
-        public void EditInStock(StockModel stockProduct)
+        public void EditInStock(StockModel stockProduct, StockOperationType operationType, 
+            string? salesUniqueIdForAutomaticUpdate = null)
         {
+            StockDTO stockDTO = GetStockDTOFromStockModel(stockProduct);
             using (ShopContext contextDB = new ShopContext(ConnectionString))
             {
-                contextDB.Stock.Add(GetStockDTOFromStockModel(stockProduct));
+                contextDB.Stock.Add(stockDTO);
                 contextDB.Entry(stockProduct).State = EntityState.Modified;
                 int retVal = contextDB.SaveChanges();
             }
+
+            //Add item to stock history
+            new StockHistoryProvider(ConnectionString).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
+        }
+        public void EditInStock(StockDTO stockDTO, StockOperationType operationType,
+            string? salesUniqueIdForAutomaticUpdate = null)
+        {
+            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            {
+                contextDB.Stock.Add(stockDTO);
+                contextDB.Entry(stockDTO).State = EntityState.Modified;
+                int retVal = contextDB.SaveChanges();
+            }
+
+            //Add item to stock history
+            new StockHistoryProvider(ConnectionString).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
         }
 
 
@@ -248,7 +311,7 @@ namespace NaturalnieApp2.Services.Database.Providers
                 ExpirationDate = stockModel.ExpirationDate,
                 LastQuantity = stockModel.LastQuantity,
                 ModificationDate = stockModel.ModificationDate,
-                ProductId = new ProductProvider(ConnectionString).GetProductIdByProductName(stockModel.ProductName)
+                ProductId = (int) new ProductProvider(ConnectionString).GetProductIdByProductName(stockModel.ProductName)
                 };
         }
     }

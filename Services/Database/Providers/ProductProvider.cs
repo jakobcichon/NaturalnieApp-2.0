@@ -96,7 +96,7 @@ namespace NaturalnieApp2.Services.Database.Providers
         //====================================================================================================
         //Method used to retrieve from DB Product id by product Name
         //====================================================================================================
-        public int GetProductIdByProductName(string productName)
+        public int? GetProductIdByProductName(string productName)
         {
             using (ShopContext contextDB = new ShopContext(ConnectionString))
             {
@@ -104,9 +104,10 @@ namespace NaturalnieApp2.Services.Database.Providers
                             where p.ProductName == productName
                             select p;
 
-                ProductDTO productDTOs = query.SingleOrDefault();
+                ProductDTO? productDTOs = query.SingleOrDefault();
+                if (productDTOs == null) return null;
 
-                return productDTOs.Id;
+                return productDTOs?.Id;
             }
         }
 

@@ -64,7 +64,8 @@ namespace NaturalnieApp2.Services.DTOs
         Update,
         Delete,
         AutomaticUpdate,
-        AutomaticAddedNew
+        AutomaticAddedNew,
+        InventoryData
     }
 
 }

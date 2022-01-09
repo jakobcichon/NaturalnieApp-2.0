@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using NaturalnieApp2.Commands.MenuScreens.Inventory;
+using NaturalnieApp2.Models;
 using NaturalnieApp2.Models.MenuScreens.Inventory;
 using NaturalnieApp2.Services.Database.Providers;
 using NaturalnieApp2.Services.ExcelServices;
@@ -23,6 +24,8 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             BottomButtonPanel = new BottomButtonBarModel();
             BottomButtonPanel.LeftButtons.Add(new SignleButtonModel("Zamknij",
                 new BottomButtonPanelCommands(), OnCloseViewAction));
+            BottomButtonPanel.LeftButtons.Add(new SignleButtonModel("Zakceptuj inwentaryzację",
+                new BottomButtonPanelCommands(), OnInvetoryApply));
 
             BottomButtonPanel.RightButtons.Add(new SignleButtonModel("Pobierz inwentaryzację z bazy danych",
                 new BottomButtonPanelCommands(), OnGetInventoryFromDB));
@@ -38,7 +41,6 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             InventoryModelList = new ObservableCollection<InventoryModel>();
 
         }
-
         public BottomButtonBarModel BottomButtonPanel { get; }
 
         private InventoryProvider _inventoryProvider;
@@ -46,6 +48,13 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
         {
             get { return _inventoryProvider; }
             set { _inventoryProvider = value; }
+        }
+
+        private StockProvider _stockProvider;
+        public StockProvider StockProvider
+        {
+            get { return _stockProvider; }
+            set { _stockProvider = value; }
         }
 
         private ObservableCollection<InventoryModel> _inventoryModelList;
@@ -124,6 +133,51 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 
             _inventoryModels.ToList().ForEach(x => InventoryModelList.Add(x));
             ;
+        }
+
+
+        private void OnInvetoryApply()
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zaakceptować aktualną inwentaryzajcję? " +
+                "Akceptacja spowoduje nadpisanie wszystkich ilości produktów w magazynie!","Akceptacja inwentaryzacji", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No) return;
+
+            List<InventoryModel> addedNew = new List<InventoryModel>();
+            List<InventoryModel> modified = new List<InventoryModel>();
+            List<InventoryModel> error = new List<InventoryModel>();
+
+
+            foreach (InventoryModel invetoryModel in InventoryModelList)
+            {
+                try
+                {
+                    StockProvider.OverwriteStockQuantityForGivenProduct(invetoryModel.ProductName, invetoryModel.ProductQuantity,
+                    Services.DTOs.StockOperationType.InventoryData);
+                    modified.Add(invetoryModel);
+                }
+                catch (StockProvider.NotFoundInStockException)
+                {
+
+                    StockModel stockModel = new StockModel();
+                    stockModel.ProductName = invetoryModel.ProductName;
+                    stockModel.LastQuantity = 0;
+                    stockModel.ActualQuantity = invetoryModel.ProductQuantity;
+                    stockModel.ModificationDate = DateTime.Now;
+
+                    StockProvider.AddToStock(stockModel, Services.DTOs.StockOperationType.InventoryData);
+                    addedNew.Add(invetoryModel);
+                }
+                catch
+                {
+                    error.Add(invetoryModel);
+                }
+
+            }
+
+            MessageBox.Show($"Zakończono!" +
+                $"\nLiczba zmodyfikowanych produktów {modified.Count}." +
+                $"\nLiczba dodanych nowych produktów {addedNew.Count}" +
+                $"\nLiczba błędów {error.Count}");
         }
 
         private void OnCloseViewAction()

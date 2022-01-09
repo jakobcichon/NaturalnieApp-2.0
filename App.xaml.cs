@@ -45,11 +45,11 @@ namespace NaturalnieApp2
             //!!!!!!!!!!!!!!!!!!!To be replaced with singleton class!!!!!!!!!!!!!!!!1
             /*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
                         "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");*/
+/*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+                        "uid = admin; password = admin; Connection Timeout = 10", "desktop-l2l4v68");*/
             string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-                        "uid = admin; password = admin; Connection Timeout = 10", "desktop-l2l4v68");
-            /*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-                        "uid = admin; password = admin; Connection Timeout = 10", "localhost");
-            */
+            "uid = admin; password = admin; Connection Timeout = 10", "localhost");
+
 
             IServiceCollection services = new ServiceCollection();
 
@@ -135,6 +135,8 @@ namespace NaturalnieApp2
             #region Show inventory
             _serviceProvider.GetRequiredService<ShowInventoryViewModel>().InventoryProvider =
                 _serviceProvider.GetRequiredService<InventoryProvider>();
+            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().StockProvider =
+                _serviceProvider.GetRequiredService<StockProvider>();
             #endregion
 
             //Show window
