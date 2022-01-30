@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,14 +25,29 @@ namespace NaturalnieApp2.Views.Controls
     {
         internal class SearchListObject
         {
-            public string? DisplayText { get; set; }
+            public string? FullText { get; set; }
             public object? SourceObject { get; set; }
+            public TextBlock TextBlock { get; set; }
+
+            public SearchListObject()
+            {
+                TextBlock = new TextBlock();
+                TextBlock.FontSize = 16.0;
+            }
 
             internal void AddFromObject(object elementToAdd)
             {
-                DisplayText = elementToAdd?.ToString();
-                if (DisplayText == null) DisplayText = nameof(DisplayText);
+                FullText = elementToAdd?.ToString();
+                if (FullText == null) FullText = nameof(FullText);
                 SourceObject = elementToAdd;
+                TextBlock.Inlines.Add(new Run(FullText));
+            }
+
+            internal void FillFromOtherObject(SearchListObject referenceObject)
+            {
+                FullText = referenceObject.FullText;
+                SourceObject = referenceObject.SourceObject;
+
             }
         }
 
@@ -142,11 +158,32 @@ namespace NaturalnieApp2.Views.Controls
 
         }
 
+        private void ShowHintItemsPanel()
+        {
+            HintItemsPanel.Visibility = Visibility.Visible;
+        }
+
+        private void HideHintItemsPanel()
+        {
+            HintItemsPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void ToggleHintItemsPanel()
+        {
+            if (HintItemsPanel.Visibility == Visibility.Collapsed)
+            {
+                HintItemsPanel.Visibility = Visibility.Visible;
+                return;
+            }
+            HintItemsPanel.Visibility = Visibility.Collapsed;
+
+        }
+
         private ObservableCollection<SearchListObject> SearchInHintList(string searchText)
         {
             IEnumerable<SearchListObject> searchList = FullList.Where(e =>
             {
-                bool? result = e?.DisplayText?.ToString()?.ToLower()?.Contains(searchText.ToLower());
+                bool? result = e?.FullText?.ToString()?.ToLower()?.Contains(searchText.ToLower());
                 return result ?? true;
             });
 
@@ -154,10 +191,66 @@ namespace NaturalnieApp2.Views.Controls
 
             foreach (SearchListObject search in searchList)
             {
-                returnList.Add(search);
+                SearchListObject searchObject = new SearchListObject();
+                searchObject.FillFromOtherObject(search);
+
+                //Get parts of a text
+                List<Run> inlines = SplitStringBySearchedTextBolded(searchObject.FullText, searchText);
+                searchObject.TextBlock.Inlines.Clear();
+                searchObject.TextBlock.Inlines.AddRange(inlines);
+                returnList.Add(searchObject);
             }
 
             return returnList;
+        }
+
+        private List<Run> SplitStringBySearchedTextBolded(string fullText, string searchedText)
+        {
+            List<Run> retList = new List<Run>();
+            Regex reg = new Regex(searchedText.ToLower());
+            var matches = reg.Matches(fullText.ToLower());
+
+            int lastIndex = -1;
+            int endIndexOfString = fullText.Length - 1;
+            foreach (Match match in matches)
+            {
+                int startIndex = match.Index;
+                int endIndex = match.Index + match.Length - 1;
+
+                Run run = new Run();
+
+                // Not bolded part
+                if (startIndex > lastIndex)
+                {
+
+                    run.Text = fullText.Substring(lastIndex, startIndex - lastIndex);
+                    retList.Add(run);
+
+                    lastIndex += run.Text.Length;
+                    continue;
+                }
+                
+                // Bolded part
+                run.Text = fullText.Substring(match.Index, match.Length);
+                run.FontWeight = FontWeights.Bold;
+                retList.Add(run);
+
+                lastIndex += run.Text.Length;
+                continue;
+
+
+            }
+
+            //Add not bolded part at the end
+            if (lastIndex < endIndexOfString)
+            {
+                Run run = new Run();
+                run.Text = fullText.Substring(lastIndex + 1, endIndexOfString - lastIndex);
+                retList.Add(run);
+            }
+
+
+            return retList;
         }
 
         #endregion
@@ -165,7 +258,12 @@ namespace NaturalnieApp2.Views.Controls
         #region Private events
         private void HintItemButton_Click(object sender, RoutedEventArgs e)
         {
-            ;
+
+        }
+
+        private void OpenCloseHintItemsButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleHintItemsPanel();
         }
 
         private void InputField_TextChanged(object sender, TextChangedEventArgs e)
@@ -178,6 +276,7 @@ namespace NaturalnieApp2.Views.Controls
             if (StringFromRichTextBox(localSender) == "")
             {
                 HintItems = FullList;
+                HideHintItemsPanel();
                 return;
             }
 
@@ -186,10 +285,14 @@ namespace NaturalnieApp2.Views.Controls
             if (HintItems == null || HintItems.Count == 0)
             {
                 HintItems = FullList;
+                HideHintItemsPanel();
                 return;
             }
 
-            string? searchedText = HintItems.First().DisplayText;
+            //Show hint items panel
+            ShowHintItemsPanel();
+
+            string? searchedText = HintItems.First().FullText;
             if (string.IsNullOrEmpty(searchedText)) return;
 
             int firstIndex, lastIndex;
@@ -218,8 +321,9 @@ namespace NaturalnieApp2.Views.Controls
 
             // The Text property on a TextRange object returns a string
             // representing the plain text content of the TextRange.
-            return textRange.Text;
+            return textRange.Text.Trim();
         }
+
         #endregion
 
 

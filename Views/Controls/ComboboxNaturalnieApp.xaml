@@ -34,6 +34,7 @@
         <!-- Hint items button -->
         <Button Grid.Row="0" Grid.Column="1" x:Name="OpenCloseHintItemsButton" 
                 Height="{Binding ActualHeight, ElementName=InputField}"
+                Click="OpenCloseHintItemsButton_Click"
                 VerticalAlignment="Center"
                 Background="White"
                     BorderThickness="0"
@@ -47,8 +48,8 @@
         </Button>
         
         <!-- Hint Items panel -->
-        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                Panel.ZIndex="1000" Height="auto">
+        <Border x:Name="HintItemsPanel" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                Panel.ZIndex="1000" Height="auto" Visibility="Collapsed">
             <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" 
                           HorizontalScrollBarVisibility="Hidden" >
                 <ItemsControl 
@@ -64,9 +65,8 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button x:Name="HintItemButton" Click="HintItemButton_Click">
-                                <TextBlock Text="{Binding DisplayText}" 
-                                           FontSize="16"/>
+                            <Button x:Name="HintItemButton" Click="HintItemButton_Click" Background="White">
+                                <ContentControl Content="{Binding TextBlock}"/>
                             </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
