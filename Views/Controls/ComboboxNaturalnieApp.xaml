@@ -34,11 +34,11 @@
         <!-- Hint items button -->
         <Button Grid.Row="0" Grid.Column="1" x:Name="OpenCloseHintItemsButton" 
                 Height="{Binding ActualHeight, ElementName=InputField}"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 Background="White"
                     BorderThickness="0"
-                    Margin="2">
-            <Image>
+                    Margin="0 2 0 2" HorizontalAlignment="Stretch">
+            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stretch="Uniform">
                 <Image.Source>
                     <BitmapImage UriSource="/Images/right-arrow.png"/>
                 </Image.Source>

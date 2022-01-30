@@ -43,12 +43,12 @@ namespace NaturalnieApp2
         {
 
             //!!!!!!!!!!!!!!!!!!!To be replaced with singleton class!!!!!!!!!!!!!!!!1
-            /*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-                        "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");*/
-/*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-                        "uid = admin; password = admin; Connection Timeout = 10", "desktop-l2l4v68");*/
             string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-            "uid = admin; password = admin; Connection Timeout = 10", "localhost");
+            "uid = naturalnie_admin; password = Tojestnajlepszaaplikacja2.0; Connection Timeout = 10", "naturalnieapp.mysql.database.azure.com");
+            /*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+                                    "uid = admin; password = admin; Connection Timeout = 10", "desktop-l2l4v68");*/
+/*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+            "uid = admin; password = admin; Connection Timeout = 10", "localhost");*/
 
 
             IServiceCollection services = new ServiceCollection();
@@ -121,7 +121,7 @@ namespace NaturalnieApp2
 
             CreateSubMenuButtons_Sandbox(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
 
-            #region Execute inventory
+/*            #region Execute inventory
             _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider =
                 _serviceProvider.GetRequiredService<ProductProvider>();
             _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().StockProvider =
@@ -137,7 +137,7 @@ namespace NaturalnieApp2
                 _serviceProvider.GetRequiredService<InventoryProvider>();
             _serviceProvider.GetRequiredService<ShowInventoryViewModel>().StockProvider =
                 _serviceProvider.GetRequiredService<StockProvider>();
-            #endregion
+            #endregion*/
 
             //Show window
             MainWindow.Show();
