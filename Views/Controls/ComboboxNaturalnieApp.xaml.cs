@@ -58,7 +58,7 @@ namespace NaturalnieApp2.Views.Controls
         {
             InitializeComponent();
             ObservableCollection<object> test = new ObservableCollection<object>()
-            { "Zima pada deszcz" , "test2", "SZCZE"};
+            { "aabcc", "Zima pada deszcz" , "test2", "SZCZE"};
 
             ObservableCollection<SearchListObject> testList = new ObservableCollection<SearchListObject>();
             foreach(var item in test)
@@ -70,7 +70,6 @@ namespace NaturalnieApp2.Views.Controls
             HintItemsSource = test;
             HintItems = testList;
             FullList = testList;
-            ;
 
         }
         #endregion
@@ -161,6 +160,7 @@ namespace NaturalnieApp2.Views.Controls
         private void ShowHintItemsPanel()
         {
             HintItemsPanel.Visibility = Visibility.Visible;
+
         }
 
         private void HideHintItemsPanel()
@@ -204,51 +204,59 @@ namespace NaturalnieApp2.Views.Controls
             return returnList;
         }
 
+        /// <summary>
+        /// Method returns same text, but projected into Run list, where search text is bold
+        /// </summary>
+        /// <param name="fullText"></param>
+        /// <param name="searchedText"></param>
+        /// <returns></returns>
         private List<Run> SplitStringBySearchedTextBolded(string fullText, string searchedText)
         {
             List<Run> retList = new List<Run>();
-            Regex reg = new Regex(searchedText.ToLower());
-            var matches = reg.Matches(fullText.ToLower());
+            
+            Regex regex = new Regex(@searchedText.ToLower());
+            Match match = regex.Match(fullText.ToLower());
 
-            int lastIndex = -1;
-            int endIndexOfString = fullText.Length - 1;
-            foreach (Match match in matches)
+            if (match.Success)
             {
-                int startIndex = match.Index;
-                int endIndex = match.Index + match.Length - 1;
+                int searchPartStartIndex = match.Index;
+                int searchPartLength = match.Length;
 
-                Run run = new Run();
+                int prePartStartIndex;
+                int prePartLength;
 
-                // Not bolded part
-                if (startIndex > lastIndex)
+                int posPartStartIndex;
+                int postPartLength;
+
+                //If exist, add pre part
+                if (searchPartStartIndex > 0)
                 {
+                    prePartStartIndex = 0;
+                    prePartLength = searchPartStartIndex;
 
-                    run.Text = fullText.Substring(lastIndex, startIndex - lastIndex);
-                    retList.Add(run);
-
-                    lastIndex += run.Text.Length;
-                    continue;
+                    retList.Add(new Run(fullText.Substring(prePartStartIndex, prePartLength)));
                 }
-                
-                // Bolded part
-                run.Text = fullText.Substring(match.Index, match.Length);
-                run.FontWeight = FontWeights.Bold;
-                retList.Add(run);
 
-                lastIndex += run.Text.Length;
-                continue;
+                //Add bold part
+                retList.Add(new Run(fullText.Substring(searchPartStartIndex, searchPartLength)));
+                retList.Last().FontWeight = FontWeights.Bold;
 
+                //If any post text exist, use recurrence to search string
+                if (searchPartStartIndex + searchPartLength < fullText.Length - 1)
+                {
+                    posPartStartIndex = searchPartStartIndex + searchPartLength;
+                    postPartLength = fullText.Length - posPartStartIndex;
 
+                    string postText = fullText.Substring(posPartStartIndex, postPartLength);
+
+                    retList.AddRange(SplitStringBySearchedTextBolded(postText, searchedText));
+                }
+
+                return retList;
             }
 
-            //Add not bolded part at the end
-            if (lastIndex < endIndexOfString)
-            {
-                Run run = new Run();
-                run.Text = fullText.Substring(lastIndex + 1, endIndexOfString - lastIndex);
-                retList.Add(run);
-            }
-
+            // If does not found anything, return full text
+            retList.Add(new Run(fullText));
 
             return retList;
         }
@@ -258,7 +266,30 @@ namespace NaturalnieApp2.Views.Controls
         #region Private events
         private void HintItemButton_Click(object sender, RoutedEventArgs e)
         {
+            Button localSender = sender as Button;
+            if (localSender == null) return;
 
+            ContentControl localContent = localSender.Content as ContentControl;
+            if (localContent == null) return;
+
+            if (localContent.Content.GetType() == typeof(TextBlock))
+            {
+                TextBlock local = localContent.Content as TextBlock;
+                if (local == null) return;
+
+                InputField.Document.Blocks.Clear();
+                string text = "";
+                foreach(Inline inline in local.Inlines)
+                {
+                    Run temp = inline as Run;
+                    if (temp == null) continue;
+
+                    text += temp.Text;
+                }
+                InputField.Document.Blocks.Add(new Paragraph(new Run(text)));
+            }
+
+            HideHintItemsPanel();
         }
 
         private void OpenCloseHintItemsButton_Click(object sender, RoutedEventArgs e)
@@ -292,22 +323,6 @@ namespace NaturalnieApp2.Views.Controls
             //Show hint items panel
             ShowHintItemsPanel();
 
-            string? searchedText = HintItems.First().FullText;
-            if (string.IsNullOrEmpty(searchedText)) return;
-
-            int firstIndex, lastIndex;
-
-            (firstIndex, lastIndex) = GetIndexcesStringInString(text, searchedText);
-            ;
-
-        }
-
-        private (int, int) GetIndexcesStringInString(string searchingString, string searchedString)
-        {
-            int firstIndex = searchedString.IndexOf(searchingString);
-            int lastIndex = firstIndex + searchingString.Length;
-
-            return (firstIndex, lastIndex);
         }
 
         string StringFromRichTextBox(RichTextBox rtb)

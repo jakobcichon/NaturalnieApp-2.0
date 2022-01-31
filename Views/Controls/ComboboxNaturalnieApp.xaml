@@ -14,31 +14,48 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" MinHeight="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
+            <RowDefinition Height="2"/>
             <RowDefinition Height="*" MinHeight="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"/>
         </Grid.RowDefinitions>
         
         <!-- Search box field-->
-        <Border x:Name="TextBoxBorder" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" VerticalAlignment="Top">
-            <Border.Effect>
-                <DropShadowEffect ShadowDepth="0.1" Color="Black"/>
-            </Border.Effect>
-            <RichTextBox x:Name="InputField" VerticalAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"
-                 BorderThickness="0,0,0,1" BorderBrush="Blue" Grid.Row="0" Grid.Column="0" 
-                 CaretBrush="White"
-                 Background="White"
-                     TextChanged="InputField_TextChanged">
+        <Border x:Name="TextBoxBorder" Grid.Row="0" Grid.Column="0" BorderThickness="0"
+             VerticalAlignment="Top">
+            <RichTextBox x:Name="InputField" VerticalAlignment="Center" BorderThickness="0"
+                         FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"
+                         Grid.Row="0" Grid.Column="0" 
+                         Background="White"
+                        TextChanged="InputField_TextChanged">
+                
             </RichTextBox>
 
         </Border >
+
+        <Border x:Name="UnderlineBorder" Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0 2 0 0" 
+                Panel.ZIndex="2">
+            <Border.Effect>
+                <BlurEffect/>
+            </Border.Effect>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Gray"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=InputField, Path=IsFocused}" Value="True">
+                            <Setter Property="BorderBrush" Value="Blue"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
         
         <!-- Hint items button -->
-        <Button Grid.Row="0" Grid.Column="1" x:Name="OpenCloseHintItemsButton" 
+        <Button Grid.Row="0" Grid.Column="1" x:Name="OpenCloseHintItemsButton"
                 Height="{Binding ActualHeight, ElementName=InputField}"
                 Click="OpenCloseHintItemsButton_Click"
                 VerticalAlignment="Center"
                 Background="White"
                     BorderThickness="0"
-                    Margin="0 2 0 2" HorizontalAlignment="Stretch">
+                    HorizontalAlignment="Stretch">
             <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stretch="Uniform">
                 <Image.Source>
                     <BitmapImage UriSource="/Images/right-arrow.png"/>
@@ -48,10 +65,11 @@
         </Button>
         
         <!-- Hint Items panel -->
-        <Border x:Name="HintItemsPanel" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+        <Border x:Name="HintItemsPanel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="Black" 
                 Panel.ZIndex="1000" Height="auto" Visibility="Collapsed">
+
             <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" 
-                          HorizontalScrollBarVisibility="Hidden" >
+                          HorizontalScrollBarVisibility="Hidden">
                 <ItemsControl 
                     ItemsSource="{Binding RelativeSource=
                     {RelativeSource AncestorType={x:Type UserControl}}, 
@@ -65,7 +83,7 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button x:Name="HintItemButton" Click="HintItemButton_Click" Background="White">
+                            <Button x:Name="HintItemButton" Click="HintItemButton_Click" Background="White" BorderThickness="0" Margin="1">
                                 <ContentControl Content="{Binding TextBlock}"/>
                             </Button>
                         </DataTemplate>
