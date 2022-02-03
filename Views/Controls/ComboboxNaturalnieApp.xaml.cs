@@ -57,19 +57,6 @@ namespace NaturalnieApp2.Views.Controls
         public ComboboxNaturalnieApp()
         {
             InitializeComponent();
-            ObservableCollection<object> test = new ObservableCollection<object>()
-            { "aabcc", "Zima pada deszcz" , "test2", "SZCZE"};
-
-            ObservableCollection<SearchListObject> testList = new ObservableCollection<SearchListObject>();
-            foreach(var item in test)
-            {
-                testList.Add(new SearchListObject());
-                testList.Last().AddFromObject(item);
-            }
-
-            HintItemsSource = test;
-            HintItems = testList;
-            FullList = testList;
 
         }
         #endregion
@@ -79,9 +66,22 @@ namespace NaturalnieApp2.Views.Controls
         /// 
         /// </summary>
         static readonly DependencyProperty HintItemsSourceProperty = DependencyProperty.Register("HintItemsSource",
-        typeof(IEnumerable<object>), typeof(ComboboxNaturalnieApp));
+        typeof(IEnumerable<object>), typeof(ComboboxNaturalnieApp),
+        new PropertyMetadata(null, new PropertyChangedCallback(HintItemsSourceChanged)));
 
-        private IEnumerable<object> HintItemsSource
+        private static void HintItemsSourceChanged(DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        {
+            ComboboxNaturalnieApp local = d as ComboboxNaturalnieApp;
+            local.HintItemsSourceChanged(e);
+        }
+
+        private void HintItemsSourceChanged(DependencyPropertyChangedEventArgs e)
+        {
+            OnHintItemsSourceChange();
+        }
+
+        public IEnumerable<object>? HintItemsSource
         {
             get
             {
@@ -90,7 +90,6 @@ namespace NaturalnieApp2.Views.Controls
             set
             {
                 SetValue(HintItemsSourceProperty, value);
-                OnPropertyChanged(nameof(HintItemsSource));
             }
         }
 
@@ -100,7 +99,7 @@ namespace NaturalnieApp2.Views.Controls
         static readonly DependencyProperty HintItemsProperty = DependencyProperty.Register("HintItems",
             typeof(ObservableCollection<SearchListObject>), typeof(ComboboxNaturalnieApp));
         
-        private ObservableCollection<SearchListObject> HintItems
+        private ObservableCollection<SearchListObject>? HintItems
         {
             get
             {
@@ -109,7 +108,6 @@ namespace NaturalnieApp2.Views.Controls
             set
             {
                 SetValue(HintItemsProperty, value);
-                OnPropertyChanged(nameof(HintItems));
             }
         }
 
@@ -134,22 +132,25 @@ namespace NaturalnieApp2.Views.Controls
             set
             {
                 SetValue(SelectedItemProperty, value);
-                OnPropertyChanged(nameof(SelectedItem));
             }
         }
         #endregion
 
         #region Private methods
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            if (propertyName == nameof(HintItemsSource)) OnHintItemsSourceChange();
-            if (propertyName == nameof(SelectedItem)) OnSelectedItemChange();
-        }
-
         private void OnHintItemsSourceChange()
         {
+            if (HintItemsSource == null) return;
 
+            ObservableCollection<SearchListObject> convertedList = new ObservableCollection<SearchListObject>();
+
+            foreach (var item in HintItemsSource)
+            {
+                convertedList.Add(new SearchListObject());
+                convertedList.Last().AddFromObject(item);
+            }
+
+            FullList = convertedList;
+            HintItems = FullList;
         }
 
         private void OnSelectedItemChange()
@@ -159,28 +160,34 @@ namespace NaturalnieApp2.Views.Controls
 
         private void ShowHintItemsPanel()
         {
-            HintItemsPanel.Visibility = Visibility.Visible;
+            if (HintItemsPanel == null) return;
+            HintItemsPanel.IsOpen = true;
+            HintItemsPanel.Focus();
 
         }
 
         private void HideHintItemsPanel()
         {
-            HintItemsPanel.Visibility = Visibility.Collapsed;
+            if (HintItemsPanel == null) return;
+            HintItemsPanel.IsOpen = false;
         }
 
         private void ToggleHintItemsPanel()
         {
-            if (HintItemsPanel.Visibility == Visibility.Collapsed)
+            if (HintItemsPanel == null) return;
+            if (HintItemsPanel.IsOpen == false)
             {
-                HintItemsPanel.Visibility = Visibility.Visible;
+                HintItemsPanel.IsOpen = true;
                 return;
             }
-            HintItemsPanel.Visibility = Visibility.Collapsed;
+            HintItemsPanel.IsOpen = false;
 
         }
 
-        private ObservableCollection<SearchListObject> SearchInHintList(string searchText)
+        private ObservableCollection<SearchListObject>? SearchInHintList(string searchText)
         {
+            if (FullList == null) return null;
+
             IEnumerable<SearchListObject> searchList = FullList.Where(e =>
             {
                 bool? result = e?.FullText?.ToString()?.ToLower()?.Contains(searchText.ToLower());
@@ -242,7 +249,7 @@ namespace NaturalnieApp2.Views.Controls
                 retList.Last().FontWeight = FontWeights.Bold;
 
                 //If any post text exist, use recurrence to search string
-                if (searchPartStartIndex + searchPartLength < fullText.Length - 1)
+                if (searchPartStartIndex + searchPartLength < fullText.Length)
                 {
                     posPartStartIndex = searchPartStartIndex + searchPartLength;
                     postPartLength = fullText.Length - posPartStartIndex;
@@ -261,11 +268,26 @@ namespace NaturalnieApp2.Views.Controls
             return retList;
         }
 
+        string StringFromRichTextBox(RichTextBox rtb)
+        {
+            TextRange textRange = new TextRange(
+                // TextPointer to the start of content in the RichTextBox.
+                rtb.Document.ContentStart,
+                // TextPointer to the end of content in the RichTextBox.
+                rtb.Document.ContentEnd
+            );
+
+            // The Text property on a TextRange object returns a string
+            // representing the plain text content of the TextRange.
+            return textRange.Text.Trim();
+        }
+
         #endregion
 
         #region Private events
         private void HintItemButton_Click(object sender, RoutedEventArgs e)
         {
+
             Button localSender = sender as Button;
             if (localSender == null) return;
 
@@ -279,7 +301,7 @@ namespace NaturalnieApp2.Views.Controls
 
                 InputField.Document.Blocks.Clear();
                 string text = "";
-                foreach(Inline inline in local.Inlines)
+                foreach (Inline inline in local.Inlines)
                 {
                     Run temp = inline as Run;
                     if (temp == null) continue;
@@ -292,6 +314,11 @@ namespace NaturalnieApp2.Views.Controls
             HideHintItemsPanel();
         }
 
+        private void HintItemsPanel_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HideHintItemsPanel();
+        }
+
         private void OpenCloseHintItemsButton_Click(object sender, RoutedEventArgs e)
         {
             ToggleHintItemsPanel();
@@ -299,10 +326,14 @@ namespace NaturalnieApp2.Views.Controls
 
         private void InputField_TextChanged(object sender, TextChangedEventArgs e)
         {
+            DebugUtils.DebugTimer timer = new DebugUtils.DebugTimer("Search text changed");
+            timer.StartTimer();
+
             RichTextBox? localSender = e.Source as RichTextBox;
             string text = StringFromRichTextBox(localSender).Trim();
 
-            if (localSender == null) return;
+            if (localSender == null || FullList == null) return;
+
 
             if (StringFromRichTextBox(localSender) == "")
             {
@@ -323,24 +354,22 @@ namespace NaturalnieApp2.Views.Controls
             //Show hint items panel
             ShowHintItemsPanel();
 
+            timer.StopTimer();
+
         }
 
-        string StringFromRichTextBox(RichTextBox rtb)
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
-            TextRange textRange = new TextRange(
-                // TextPointer to the start of content in the RichTextBox.
-                rtb.Document.ContentStart,
-                // TextPointer to the end of content in the RichTextBox.
-                rtb.Document.ContentEnd
-            );
-
-            // The Text property on a TextRange object returns a string
-            // representing the plain text content of the TextRange.
-            return textRange.Text.Trim();
+            if (HintItemsPanel.IsMouseOver) return;
+            HideHintItemsPanel();
         }
 
-        #endregion
 
+        private void HintItemsPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            HideHintItemsPanel();
+        }
+        #endregion
 
     }
 }

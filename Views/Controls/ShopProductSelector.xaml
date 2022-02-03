@@ -76,7 +76,7 @@
                                 <Border BorderThickness="1" BorderBrush="Black" Margin="2" Visibility="{Binding ElementVisible}">
                                     <StackPanel Orientation="Vertical">
                                         <Label Content="{Binding Name}" FontSize="20" HorizontalAlignment="Center"/>
-                                        <ComboBox ItemsSource="{Binding Value}" 
+                                        <!--<ComboBox ItemsSource="{Binding Value}" 
                                                   SelectionChanged="ComboBox_SelectionChanged"
                                                   DropDownClosed="ComboBox_DropDownClosed"
                                                   IsSynchronizedWithCurrentItem="True"
@@ -88,7 +88,8 @@
                                                     <VirtualizingStackPanel />
                                                 </ItemsPanelTemplate>
                                             </ComboBox.ItemsPanel>
-                                        </ComboBox>
+                                        </ComboBox>-->
+                                        <local:ComboboxNaturalnieApp HintItemsSource="{Binding Value}" FontSize="20" Height="30"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

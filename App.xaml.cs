@@ -121,7 +121,7 @@ namespace NaturalnieApp2
 
             CreateSubMenuButtons_Sandbox(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
 
-/*            #region Execute inventory
+            #region Execute inventory
             _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider =
                 _serviceProvider.GetRequiredService<ProductProvider>();
             _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().StockProvider =
@@ -137,7 +137,7 @@ namespace NaturalnieApp2
                 _serviceProvider.GetRequiredService<InventoryProvider>();
             _serviceProvider.GetRequiredService<ShowInventoryViewModel>().StockProvider =
                 _serviceProvider.GetRequiredService<StockProvider>();
-            #endregion*/
+            #endregion
 
             //Show window
             MainWindow.Show();

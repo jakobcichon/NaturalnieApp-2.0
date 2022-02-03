@@ -5,28 +5,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NaturalnieApp2.Views.Controls.Models"
              mc:Ignorable="d" 
-             d:DesignHeight="20" d:DesignWidth="100">
+             d:DesignHeight="20" d:DesignWidth="100" MouseLeave="UserControl_MouseLeave">
     <Grid VerticalAlignment="Top">
         <!-- Basic grid definition-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*"/>
-            <ColumnDefinition Width="*" MinWidth="20" MaxWidth="100"/>
+            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" MinHeight="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
             <RowDefinition Height="2"/>
-            <RowDefinition Height="*" MinHeight="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"/>
         </Grid.RowDefinitions>
-        
+
         <!-- Search box field-->
         <Border x:Name="TextBoxBorder" Grid.Row="0" Grid.Column="0" BorderThickness="0"
              VerticalAlignment="Top">
             <RichTextBox x:Name="InputField" VerticalAlignment="Center" BorderThickness="0"
                          FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"
+                         Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Height}"
                          Grid.Row="0" Grid.Column="0" 
                          Background="White"
-                        TextChanged="InputField_TextChanged">
-                
+                         TextChanged="InputField_TextChanged">
+                <FlowDocument PageWidth="2040"/>
+
             </RichTextBox>
 
         </Border >
@@ -47,7 +48,7 @@
                 </Style>
             </Border.Style>
         </Border>
-        
+
         <!-- Hint items button -->
         <Button Grid.Row="0" Grid.Column="1" x:Name="OpenCloseHintItemsButton"
                 Height="{Binding ActualHeight, ElementName=InputField}"
@@ -60,24 +61,25 @@
                 <Image.Source>
                     <BitmapImage UriSource="/Images/right-arrow.png"/>
                 </Image.Source>
-            </Image>
-            
-        </Button>
-        
-        <!-- Hint Items panel -->
-        <Border x:Name="HintItemsPanel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="Black" 
-                Panel.ZIndex="1000" Height="auto" Visibility="Collapsed">
 
-            <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" 
-                          HorizontalScrollBarVisibility="Hidden">
+            </Image>
+
+        </Button>
+
+        <!-- Hint Items panel -->
+        <!--<Border x:Name="HintItemsPanel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="Black" 
+                Panel.ZIndex="1" Height="auto" Visibility="Collapsed">
+
+            --><!--<ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" 
+                          HorizontalScrollBarVisibility="Hidden" MaxHeight="100">
                 <ItemsControl 
                     ItemsSource="{Binding RelativeSource=
                     {RelativeSource AncestorType={x:Type UserControl}}, 
-                    Path=HintItems}" 
+                    Path=HintItems}"
                               >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel/>
+                            <VirtualizingStackPanel VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
@@ -90,8 +92,30 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-            </ScrollViewer>
-            
-        </Border>
+            </ScrollViewer>--><!--
+        </Border>-->
+
+
+        <!-- Hint Items panel -->
+        <Popup x:Name="HintItemsPanel" 
+               PopupAnimation="Slide" Height="400" Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ActualWidth}"
+               Placement="Bottom" IsOpen="False" MaxHeight="400" MouseLeave="HintItemsPanel_MouseLeave" >
+            <Border>
+                <ListView ItemsSource="{Binding RelativeSource=
+                    {RelativeSource AncestorType={x:Type UserControl}}, 
+                    Path=HintItems}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Button x:Name="HintItemButton" Click="HintItemButton_Click" Background="White" BorderThickness="0" Margin="1">
+                                <ContentControl Content="{Binding TextBlock}"/>
+                            </Button>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+            </Border>
+
+        </Popup>
+
     </Grid>
 </UserControl>
