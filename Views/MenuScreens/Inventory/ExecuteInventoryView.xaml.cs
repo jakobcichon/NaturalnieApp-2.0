@@ -32,8 +32,6 @@ namespace NaturalnieApp2.Views.MenuScreens.Inventory
         public ExecuteInventoryView()
         {
             InitializeComponent();
-/*            DataGridSettingsActualState.AddDataGridReference(DataGridActualState);
-            DataGridSettingsToDateState.AddDataGridReference(DataGridToDateState);*/
 
             ProductSelektor.FilterRequest += ProductSelektor_FilterRequest;
             ProductSelektor.ElementSelected += ProductSelektor_ElementSelected;

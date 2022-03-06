@@ -32,7 +32,6 @@ namespace NaturalnieApp2.Views.Controls
             public SearchListObject()
             {
                 TextBlock = new TextBlock();
-                TextBlock.FontSize = 16.0;
             }
 
             internal void AddFromObject(object elementToAdd)
@@ -288,15 +287,15 @@ namespace NaturalnieApp2.Views.Controls
         private void HintItemButton_Click(object sender, RoutedEventArgs e)
         {
 
-            Button localSender = sender as Button;
+            ListViewItem localSender = sender as ListViewItem;
             if (localSender == null) return;
 
-            ContentControl localContent = localSender.Content as ContentControl;
+            SearchListObject localContent = localSender.Content as SearchListObject;
             if (localContent == null) return;
 
-            if (localContent.Content.GetType() == typeof(TextBlock))
+            if (localContent.TextBlock.GetType() == typeof(TextBlock))
             {
-                TextBlock local = localContent.Content as TextBlock;
+                TextBlock local = localContent.TextBlock;
                 if (local == null) return;
 
                 InputField.Document.Blocks.Clear();

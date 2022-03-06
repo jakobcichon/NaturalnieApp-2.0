@@ -24,6 +24,12 @@
                   ItemsSource="{Binding ComboBoxDataSource}"
                   MaxWidth="200"/>
 
+        <Button Grid.Row="1" Height="50" Width="100">
+            <ContentControl Content="{Binding }"/>
+        </Button>
+
+        <!--
         <c:ComboboxNaturalnieApp Grid.Row="1" Height="100" Width="300" FontSize="30"/>
+        -->
     </Grid>
 </UserControl>

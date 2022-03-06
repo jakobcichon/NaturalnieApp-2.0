@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:NaturalnieApp2.Views.Controls.Models"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="100" MouseLeave="UserControl_MouseLeave">
+
     <Grid VerticalAlignment="Top">
         <!-- Basic grid definition-->
         <Grid.ColumnDefinitions>
@@ -67,36 +68,6 @@
         </Button>
 
         <!-- Hint Items panel -->
-        <!--<Border x:Name="HintItemsPanel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="Black" 
-                Panel.ZIndex="1" Height="auto" Visibility="Collapsed">
-
-            --><!--<ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" 
-                          HorizontalScrollBarVisibility="Hidden" MaxHeight="100">
-                <ItemsControl 
-                    ItemsSource="{Binding RelativeSource=
-                    {RelativeSource AncestorType={x:Type UserControl}}, 
-                    Path=HintItems}"
-                              >
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button x:Name="HintItemButton" Click="HintItemButton_Click" Background="White" BorderThickness="0" Margin="1">
-                                <ContentControl Content="{Binding TextBlock}"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-
-            </ScrollViewer>--><!--
-        </Border>-->
-
-
-        <!-- Hint Items panel -->
         <Popup x:Name="HintItemsPanel" 
                PopupAnimation="Slide" Height="400" Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ActualWidth}"
                Placement="Bottom" IsOpen="False" MaxHeight="400" MouseLeave="HintItemsPanel_MouseLeave" >
@@ -106,11 +77,19 @@
                     Path=HintItems}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Button x:Name="HintItemButton" Click="HintItemButton_Click" Background="White" BorderThickness="0" Margin="1">
-                                <ContentControl Content="{Binding TextBlock}"/>
-                            </Button>
+                            <ContentControl Content="{Binding TextBlock}"/>
+
+
                         </DataTemplate>
                     </ListView.ItemTemplate>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="HintItemButton_Click"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
 
                 </ListView>
             </Border>
