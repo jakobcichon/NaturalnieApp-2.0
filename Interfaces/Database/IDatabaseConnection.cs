@@ -8,6 +8,6 @@ namespace NaturalnieApp2.Interfaces.Database
 {
     internal interface IDatabaseConnection
     {
-        public string ConnectionString { get; set; }
+        string ConnectionString { get; set; }
     }
 }

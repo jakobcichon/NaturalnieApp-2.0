@@ -16,8 +16,7 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class ProductProvider: DatabaseBase, IProductProvider, IGetModelProvider
     {
-
-        public ProductProvider(string connectionStrng): base(connectionStrng)
+        public ProductProvider(ShopContext shopContext): base(shopContext)
         {
 
         }
@@ -32,43 +31,42 @@ namespace NaturalnieApp2.Services.Database.Providers
             ProductDTO entity = new ProductDTO();
             int step = 0;
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+
+            //Check if product name already exist. If not, continue checking
+            if (productName != "")
             {
-                //Check if product name already exist. If not, continue checking
-                if (productName != "")
-                {
-                    //Create query to database
-                    var queryProductName = from p in contextDB.Products
-                                           where p.ProductName == productName
-                                           select p;
+                //Create query to database
+                var queryProductName = from p in ShopContext.Products
+                                        where p.ProductName == productName
+                                        select p;
 
-                    entity = queryProductName.FirstOrDefault();
-                    if ((entity == null) && (barCode != "")) step = 1;
-                    else if ((entity == null) && (supplierCode != "")) step = 2;
-                }
-                //Next check bar code
-                if (barCode != "" && step == 1)
-                {
-                    //Create query to database
-                    var queryBarCode = from p in contextDB.Products
-                                       where p.BarCode == barCode
-                                       select p;
-
-                    entity = queryBarCode.FirstOrDefault();
-                    if ((entity == null) && (barCode != "")) step = 2;
-
-                }
-                //Next check supplier code
-                if (supplierCode != "" && step == 2)
-                {
-                    //Create query to database
-                    var querySupplierCode = from p in contextDB.Products
-                                            where p.SupplierCode == supplierCode
-                                            select p;
-
-                    entity = querySupplierCode.FirstOrDefault();
-                }
+                entity = queryProductName.FirstOrDefault();
+                if ((entity == null) && (barCode != "")) step = 1;
+                else if ((entity == null) && (supplierCode != "")) step = 2;
             }
+            //Next check bar code
+            if (barCode != "" && step == 1)
+            {
+                //Create query to database
+                var queryBarCode = from p in ShopContext.Products
+                                    where p.BarCode == barCode
+                                    select p;
+
+                entity = queryBarCode.FirstOrDefault();
+                if ((entity == null) && (barCode != "")) step = 2;
+
+            }
+            //Next check supplier code
+            if (supplierCode != "" && step == 2)
+            {
+                //Create query to database
+                var querySupplierCode = from p in ShopContext.Products
+                                        where p.SupplierCode == supplierCode
+                                        select p;
+
+                entity = querySupplierCode.FirstOrDefault();
+            }
+            
 
             //return GetProductFromProductDTO(entity);
             return null;
@@ -80,16 +78,15 @@ namespace NaturalnieApp2.Services.Database.Providers
         public ProductModel GetProductEntityByProductId(int productId)
         {
             ProductModel localProduct = new ProductModel();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            where p.Id == productId
-                            select p;
 
-                ProductDTO productDTOs = query.SingleOrDefault();
+            var query = from p in ShopContext.Products
+                        where p.Id == productId
+                        select p;
 
-                localProduct = GetProductFromProductDTO(productDTOs);
-            }
+            ProductDTO productDTOs = query.SingleOrDefault();
+
+            localProduct = GetProductFromProductDTO(productDTOs);
+
             return localProduct;
         }
 
@@ -98,17 +95,16 @@ namespace NaturalnieApp2.Services.Database.Providers
         //====================================================================================================
         public int? GetProductIdByProductName(string productName)
         {
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            where p.ProductName == productName
-                            select p;
 
-                ProductDTO? productDTOs = query.SingleOrDefault();
-                if (productDTOs == null) return null;
+            var query = from p in ShopContext.Products
+                        where p.ProductName == productName
+                        select p;
 
-                return productDTOs?.Id;
-            }
+            ProductDTO? productDTOs = query.SingleOrDefault();
+            if (productDTOs == null) return null;
+
+            return productDTOs?.Id;
+
         }
 
         //====================================================================================================
@@ -116,16 +112,15 @@ namespace NaturalnieApp2.Services.Database.Providers
         //====================================================================================================
         public string GetProductNameByProductId(int productId)
         {
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            where p.Id == productId
-                            select p;
 
-                ProductDTO productDTOs = query.SingleOrDefault();
+            var query = from p in ShopContext.Products
+                        where p.Id == productId
+                        select p;
 
-                return productDTOs.ProductName;
-            }
+            ProductDTO productDTOs = query.SingleOrDefault();
+
+            return productDTOs.ProductName;
+
         }
 
         //====================================================================================================
@@ -134,16 +129,15 @@ namespace NaturalnieApp2.Services.Database.Providers
         public ProductModel GetProductEntityByProductName(string productName)
         {
             ProductModel localProduct = new ProductModel();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            where p.ProductName == productName
-                            select p;
 
-                ProductDTO productDTO = query.SingleOrDefault();
+            var query = from p in ShopContext.Products
+                        where p.ProductName == productName
+                        select p;
 
-                localProduct = GetProductFromProductDTO(productDTO);
-            }
+            ProductDTO productDTO = query.SingleOrDefault();
+
+            localProduct = GetProductFromProductDTO(productDTO);
+
             return localProduct;
         }
 
@@ -153,15 +147,14 @@ namespace NaturalnieApp2.Services.Database.Providers
         public List<ProductModel> GetAllProductEntities()
         {
             List<ProductModel> localProduct = new List<ProductModel>();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            select p;
 
-                List<ProductDTO> productDTOs = query.ToList();
+            var query = from p in ShopContext.Products
+                        select p;
 
-                localProduct = GetProductFromProductDTO(productDTOs);
-            }
+            List<ProductDTO> productDTOs = query.ToList();
+
+            localProduct = GetProductFromProductDTO(productDTOs);
+
             return localProduct;
         }
 
@@ -171,16 +164,15 @@ namespace NaturalnieApp2.Services.Database.Providers
         public async Task<List<ProductModel>> GetAllProductEntitiesAsync()
         {
             List<ProductModel> localProduct = new List<ProductModel>();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            select p;
 
-                var test = query;
-                List<ProductDTO> productDTOs = await query.ToListAsync();
+            var query = from p in ShopContext.Products
+                        select p;
 
-                localProduct = GetProductFromProductDTO(productDTOs);
-            }
+            var test = query;
+            List<ProductDTO> productDTOs = await query.ToListAsync();
+
+            localProduct = GetProductFromProductDTO(productDTOs);
+
             return localProduct;
         }
 
@@ -241,9 +233,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             if (productsDTO == null) return null;
             List<ProductModel> localProduct = new List<ProductModel>();
-            List<ManufacturerDTO> manufacturerDTOs = new ManufacturerProvider(ConnectionString).GetAllManufacturersEnts();
-            List<SupplierDTO> supplierDTOs = new SupplierProvider(ConnectionString).GetAllSupplierEnts();
-            List<TaxDTO> taxDTOs = new TaxProvider(ConnectionString).GetAllTaxEnts();
+            List<ManufacturerDTO> manufacturerDTOs = new ManufacturerProvider(ShopContext).GetAllManufacturersEnts();
+            List<SupplierDTO> supplierDTOs = new SupplierProvider(ShopContext).GetAllSupplierEnts();
+            List<TaxDTO> taxDTOs = new TaxProvider(ShopContext).GetAllTaxEnts();
 
             foreach (ProductDTO productDTO in productsDTO)
             {
@@ -259,9 +251,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             if (productDTO == null) return null;
             ProductModel localProduct = new ProductModel();
-            List<ManufacturerDTO> manufacturerDTOs = new ManufacturerProvider(ConnectionString).GetAllManufacturersEnts();
-            List<SupplierDTO> supplierDTOs = new SupplierProvider(ConnectionString).GetAllSupplierEnts();
-            List<TaxDTO> taxDTOs = new TaxProvider(ConnectionString).GetAllTaxEnts();
+            List<ManufacturerDTO> manufacturerDTOs = new ManufacturerProvider(ShopContext).GetAllManufacturersEnts();
+            List<SupplierDTO> supplierDTOs = new SupplierProvider(ShopContext).GetAllSupplierEnts();
+            List<TaxDTO> taxDTOs = new TaxProvider(ShopContext).GetAllTaxEnts();
             
             ProductModel? _product = GetProductFromProductDTO(productDTO, manufacturerDTOs, supplierDTOs, taxDTOs);
             _product.RegenerateHashOnPropertyChange();          

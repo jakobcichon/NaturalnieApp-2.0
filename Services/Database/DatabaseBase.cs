@@ -1,4 +1,4 @@
-﻿using NaturalnieApp2.Interfaces.Database;
+﻿using NaturalnieApp.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database
 {
-    internal class DatabaseBase : IDatabaseConnection
+    internal class DatabaseBase
     {
-        public string ConnectionString { get; set; }
+        private ShopContext shopContext;
 
-        public DatabaseBase(string connectionString)
+        public ShopContext ShopContext
         {
-            ConnectionString = connectionString;
+            get { return shopContext; }
+            set { shopContext = value; }
+        }
+
+        public DatabaseBase(ShopContext shopContext)
+        {
+            this.shopContext = shopContext;
         }
 
         public enum HistoryOperationType

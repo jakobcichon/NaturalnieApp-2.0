@@ -12,7 +12,7 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class StockProvider: DatabaseBase
     {
-        public StockProvider(string connectionStrng) : base(connectionStrng)
+        public StockProvider(ShopContext shopContext) : base(shopContext)
         {
         }
 
@@ -37,21 +37,19 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             int localQuantity = 0;
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            var query = from s in ShopContext.Stock
+                        join p in ShopContext.Products
+                        on s.ProductId equals p.Id
+                        where p.ProductName == productName
+                        select new
+                        {
+                            s
+                        };
+            foreach (var element in query)
             {
-                var query = from s in contextDB.Stock
-                            join p in contextDB.Products
-                            on s.ProductId equals p.Id
-                            where p.ProductName == productName
-                            select new
-                            {
-                                s
-                            };
-                foreach (var element in query)
-                {
-                    localQuantity += element.s.ActualQuantity;
-                }
+                localQuantity += element.s.ActualQuantity;
             }
+
             return localQuantity;
         }
 
@@ -64,18 +62,16 @@ namespace NaturalnieApp2.Services.Database.Providers
 
             StockDTO stockDTO = GetStockDTOFromStockModel(stockProduct);
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from s in contextDB.Stock
-                            where s.ProductId == stockDTO.ProductId &&
-                            s.ExpirationDate == stockDTO.ExpirationDate &&
-                            s.BarcodeWithDate == stockDTO.BarcodeWithDate
-                            select s;
+            var query = from s in ShopContext.Stock
+                        where s.ProductId == stockDTO.ProductId &&
+                        s.ExpirationDate == stockDTO.ExpirationDate &&
+                        s.BarcodeWithDate == stockDTO.BarcodeWithDate
+                        select s;
 
-                stockDTO = query.FirstOrDefault();
+            stockDTO = query.FirstOrDefault();
 
-                localStock = GetStockModelFromStockDTO(stockDTO);
-            }
+            localStock = GetStockModelFromStockDTO(stockDTO);
+            
             return localStock;
         }
 
@@ -86,18 +82,16 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             int quantity = 0;
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            var query = from s in ShopContext.Stock
+                        where s.ProductId == productId
+                        select s;
+
+            foreach (StockDTO element in query)
             {
-                var query = from s in contextDB.Stock
-                            where s.ProductId == productId
-                            select s;
-
-                foreach (StockDTO element in query)
-                {
-                    quantity += element.ActualQuantity;
-                }
-
+                quantity += element.ActualQuantity;
             }
+
+            
             return quantity;
         }
 
@@ -109,23 +103,21 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
 
             List<StockModel> localStock = new List<StockModel>();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+
+            var query = from s in ShopContext.Stock
+                        join p in ShopContext.Products on s.ProductId equals p.Id
+                        join m in ShopContext.Manufacturers on p.ManufacturerId equals m.Id
+                        where m.Id == manufacturerId
+                        select new
+                        {
+                            s
+                        };
+
+            foreach (var element in query)
             {
-                var query = from s in contextDB.Stock
-                            join p in contextDB.Products on s.ProductId equals p.Id
-                            join m in contextDB.Manufacturers on p.ManufacturerId equals m.Id
-                            where m.Id == manufacturerId
-                            select new
-                            {
-                                s
-                            };
-
-                foreach (var element in query)
-                {
-                    localStock.Add(GetStockModelFromStockDTO(element.s));
-                }
-
+                localStock.Add(GetStockModelFromStockDTO(element.s));
             }
+
             return localStock;
         }
 
@@ -135,21 +127,19 @@ namespace NaturalnieApp2.Services.Database.Providers
         public List<StockModel> GetAllStockEnts()
         {
 
-            List<StockModel> localStock = new List<StockModel>();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+        List<StockModel> localStock = new List<StockModel>();
+
+            var query = from s in ShopContext.Stock
+                        select new
+                        {
+                            s
+                        };
+
+            foreach (var element in query)
             {
-                var query = from s in contextDB.Stock
-                            select new
-                            {
-                                s
-                            };
-
-                foreach (var element in query)
-                {
-                    localStock.Add(GetStockModelFromStockDTO(element.s));
-                }
-
+                localStock.Add(GetStockModelFromStockDTO(element.s));
             }
+ 
             return localStock;
         }
 
@@ -163,18 +153,15 @@ namespace NaturalnieApp2.Services.Database.Providers
 
             StockDTO stockDTO = GetStockDTOFromStockModel(stockProduct);
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from s in contextDB.Stock
-                            where s.ProductId == stockDTO.ProductId &&
-                            s.ExpirationDate == stockDTO.ExpirationDate &&
-                            s.BarcodeWithDate == stockDTO.BarcodeWithDate
-                            select s;
+            var query = from s in ShopContext.Stock
+                        where s.ProductId == stockDTO.ProductId &&
+                        s.ExpirationDate == stockDTO.ExpirationDate &&
+                        s.BarcodeWithDate == stockDTO.BarcodeWithDate
+                        select s;
 
-                if (query.FirstOrDefault() != null) result = true;
-                else result = false;
-
-            }
+            if (query.FirstOrDefault() != null) result = true;
+            else result = false;
+           
             return result;
         }
 
@@ -185,24 +172,22 @@ namespace NaturalnieApp2.Services.Database.Providers
             string? salesUniqueIdForAutomaticUpdate = null)
         {
             //Get product id first
-            int? productId = new ProductProvider(ConnectionString).GetProductIdByProductName(productName);
+            int? productId = new ProductProvider(ShopContext).GetProductIdByProductName(productName);
             if (!productId.HasValue) throw new Exception($"Produkt o nazwie {productName} nie został znaleziony w bazie danych!");
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from s in contextDB.Stock
-                            where s.ProductId == productId
-                            select s;
+            var query = from s in ShopContext.Stock
+                        where s.ProductId == productId
+                        select s;
 
-                StockDTO? stockDTO = query.FirstOrDefault();
+            StockDTO? stockDTO = query.FirstOrDefault();
 
-                if (stockDTO == null) throw new NotFoundInStockException($"Produkt o nazwie {productName} nie został znaleziony w magazynie!");
+            if (stockDTO == null) throw new NotFoundInStockException($"Produkt o nazwie {productName} nie został znaleziony w magazynie!");
 
-                stockDTO.LastQuantity = stockDTO.ActualQuantity;
-                stockDTO.ActualQuantity = newQuantity;
+            stockDTO.LastQuantity = stockDTO.ActualQuantity;
+            stockDTO.ActualQuantity = newQuantity;
 
-                EditInStock(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
-            }
+            EditInStock(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
+            
         }
 
         //====================================================================================================
@@ -213,14 +198,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             StockDTO stockDTO = GetStockDTOFromStockModel(stockPiece);
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                contextDB.Stock.Add(stockDTO);
-                int retVal = contextDB.SaveChanges();
-            }
+            ShopContext.Stock.Add(stockDTO);
+            int retVal = ShopContext.SaveChanges();
+            
 
             //Add item to stock history
-            new StockHistoryProvider(ConnectionString).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
+            new StockHistoryProvider(ShopContext).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
         }
 
         //====================================================================================================
@@ -230,28 +213,26 @@ namespace NaturalnieApp2.Services.Database.Providers
             string? salesUniqueIdForAutomaticUpdate = null)
         {
             StockDTO stockDTO = GetStockDTOFromStockModel(stockProduct);
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                contextDB.Stock.Add(stockDTO);
-                contextDB.Entry(stockProduct).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
-            }
+
+            ShopContext.Stock.Add(stockDTO);
+            ShopContext.Entry(stockProduct).State = EntityState.Modified;
+            int retVal = ShopContext.SaveChanges();
+            
 
             //Add item to stock history
-            new StockHistoryProvider(ConnectionString).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
+            new StockHistoryProvider(ShopContext).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
         }
         public void EditInStock(StockDTO stockDTO, StockOperationType operationType,
             string? salesUniqueIdForAutomaticUpdate = null)
         {
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                contextDB.Stock.Add(stockDTO);
-                contextDB.Entry(stockDTO).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
-            }
+
+            ShopContext.Stock.Add(stockDTO);
+            ShopContext.Entry(stockDTO).State = EntityState.Modified;
+            int retVal = ShopContext.SaveChanges();
+            
 
             //Add item to stock history
-            new StockHistoryProvider(ConnectionString).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
+            new StockHistoryProvider(ShopContext).AddToStockHistory(stockDTO, operationType, salesUniqueIdForAutomaticUpdate);
         }
 
 
@@ -281,7 +262,7 @@ namespace NaturalnieApp2.Services.Database.Providers
                 ExpirationDate = stockDTO.ExpirationDate,
                 LastQuantity = stockDTO.LastQuantity,
                 ModificationDate = stockDTO.ModificationDate,
-                ProductName = new ProductProvider(ConnectionString).GetProductNameByProductId(stockDTO.Id)
+                ProductName = new ProductProvider(ShopContext).GetProductNameByProductId(stockDTO.Id)
             };
         }
 
@@ -311,7 +292,7 @@ namespace NaturalnieApp2.Services.Database.Providers
                 ExpirationDate = stockModel.ExpirationDate,
                 LastQuantity = stockModel.LastQuantity,
                 ModificationDate = stockModel.ModificationDate,
-                ProductId = (int) new ProductProvider(ConnectionString).GetProductIdByProductName(stockModel.ProductName)
+                ProductId = (int) new ProductProvider(ShopContext).GetProductIdByProductName(stockModel.ProductName)
                 };
         }
     }

@@ -10,7 +10,7 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class StockHistoryProvider: DatabaseBase
     {
-        public StockHistoryProvider(string connectionStrng) : base(connectionStrng)
+        public StockHistoryProvider(ShopContext shopContext) : base(shopContext)
         {
 
         }
@@ -28,12 +28,10 @@ namespace NaturalnieApp2.Services.Database.Providers
             stockHistory.OperationType = operationType.ToString();
             stockHistory.SalesIdForAutomaticUpdate = salesUniqueIdForAutomaticUpdate;
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
 
-                contextDB.StockHistory.Add(stockHistory);
-                int retVal = contextDB.SaveChanges();
-            }
+            ShopContext.StockHistory.Add(stockHistory);
+            int retVal = ShopContext.SaveChanges();
+
         }
     }
 }

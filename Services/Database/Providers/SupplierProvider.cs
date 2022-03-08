@@ -11,7 +11,7 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class SupplierProvider: DatabaseBase
     {
-        public SupplierProvider(string connectionStrng) : base(connectionStrng)
+        public SupplierProvider(ShopContext shopContext) : base(shopContext)
         {
 
         }
@@ -22,13 +22,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         public List<SupplierDTO> GetAllSupplierEnts()
         {
             List<SupplierDTO> localSupplier = new List<SupplierDTO>();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from s in contextDB.Suppliers
-                            select s;
 
-                localSupplier = query.ToList<SupplierDTO>();
-            }
+            var query = from s in ShopContext.Suppliers
+                        select s;
+
+            localSupplier = query.ToList<SupplierDTO>();
+            
             return localSupplier;
         }
 
@@ -38,14 +37,13 @@ namespace NaturalnieApp2.Services.Database.Providers
         public string GetSupplierNameById(int id)
         {
             SupplierDTO? localSupplier = new SupplierDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from m in contextDB.Suppliers
-                            where m.Id == id
-                            select m;
 
-                localSupplier = query.SingleOrDefault();
-            }
+            var query = from m in ShopContext.Suppliers
+                        where m.Id == id
+                        select m;
+
+            localSupplier = query.SingleOrDefault();
+            
             if (localSupplier == null) return "";
             return localSupplier.Name;
         }
@@ -56,14 +54,13 @@ namespace NaturalnieApp2.Services.Database.Providers
         public SupplierDTO? GetSupplierEntityByName(string supplierName)
         {
             SupplierDTO? localSupplier = new SupplierDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from m in contextDB.Suppliers
-                            where m.Name == supplierName
-                            select m;
 
-                localSupplier = query.SingleOrDefault();
-            }
+            var query = from m in ShopContext.Suppliers
+                        where m.Name == supplierName
+                        select m;
+
+            localSupplier = query.SingleOrDefault();
+            
             return localSupplier;
         }
 
@@ -74,22 +71,21 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             SupplierDTO localSupplier = new SupplierDTO();
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            join s in contextDB.Suppliers
-                            on p.SupplierId equals s.Id
-                            where p.ProductName == productName
-                            select new
-                            {
-                                s
-                            };
 
-                foreach (var element in query)
-                {
-                    localSupplier = element.s;
-                }
+            var query = from p in ShopContext.Products
+                        join s in ShopContext.Suppliers
+                        on p.SupplierId equals s.Id
+                        where p.ProductName == productName
+                        select new
+                        {
+                            s
+                        };
+
+            foreach (var element in query)
+            {
+                localSupplier = element.s;
             }
+            
             return localSupplier;
         }
 
@@ -98,12 +94,11 @@ namespace NaturalnieApp2.Services.Database.Providers
         //====================================================================================================
         public void AddSupplier(SupplierDTO SupplierDTO)
         {
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                contextDB.Suppliers.Add(SupplierDTO);
-                int retVal = contextDB.SaveChanges();
 
-            }
+            ShopContext.Suppliers.Add(SupplierDTO);
+            int retVal = ShopContext.SaveChanges();
+
+            
         }
 
         //====================================================================================================
@@ -111,12 +106,11 @@ namespace NaturalnieApp2.Services.Database.Providers
         //====================================================================================================
         public void EditSupplier(SupplierDTO SupplierDTO)
         {
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                contextDB.Suppliers.Add(SupplierDTO);
-                contextDB.Entry(SupplierDTO).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
-            }
+
+            ShopContext.Suppliers.Add(SupplierDTO);
+            ShopContext.Entry(SupplierDTO).State = EntityState.Modified;
+            int retVal = ShopContext.SaveChanges();
+            
         }
     }
 }

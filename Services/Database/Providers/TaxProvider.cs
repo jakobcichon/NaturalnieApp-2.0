@@ -11,7 +11,7 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class TaxProvider: DatabaseBase
     {
-        public TaxProvider(string connectionStrng) : base(connectionStrng)
+        public TaxProvider(ShopContext shopContext) : base(shopContext)
         {
 
         }
@@ -22,13 +22,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         public List<TaxDTO> GetAllTaxEnts()
         {
             List<TaxDTO> localTax = new List<TaxDTO>();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from t in contextDB.Tax
-                            select t;
 
-                localTax = query.ToList<TaxDTO>();
-            }
+            var query = from t in ShopContext.Tax
+                        select t;
+
+            localTax = query.ToList<TaxDTO>();
+            
             return localTax;
         }
 
@@ -38,14 +37,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         public int GetTaxValueById(int id)
         {
             TaxDTO? localTax = new TaxDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from t in contextDB.Tax
-                            where t.Id == id
-                            select t;
 
-                localTax = query.SingleOrDefault();
-            }
+            var query = from t in ShopContext.Tax
+                        where t.Id == id
+                        select t;
+
+            localTax = query.SingleOrDefault();
             if (localTax == null) return -1;
             return localTax.TaxValue;
         }
@@ -56,14 +53,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         public TaxDTO GetTaxEntityByValue(int value)
         {
             TaxDTO? localTax = new TaxDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from t in contextDB.Tax
-                            where t.TaxValue == value
-                            select t;
+            var query = from t in ShopContext.Tax
+                        where t.TaxValue == value
+                        select t;
 
-                localTax = query.SingleOrDefault();
-            }
+            localTax = query.SingleOrDefault();
+            
             return localTax;
         }
 
@@ -73,14 +68,13 @@ namespace NaturalnieApp2.Services.Database.Providers
         public TaxDTO GetTaxEntityById(int Id)
         {
             TaxDTO? localTax = new TaxDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from t in contextDB.Tax
-                            where t.Id == Id
-                            select t;
 
-                localTax = query.SingleOrDefault();
-            }
+            var query = from t in ShopContext.Tax
+                        where t.Id == Id
+                        select t;
+
+            localTax = query.SingleOrDefault();
+            
             return localTax;
         }
 
@@ -91,13 +85,11 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<string> taxList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            foreach (var TaxDTO in ShopContext.Tax)
             {
-                foreach (var TaxDTO in contextDB.Tax)
-                {
-                    taxList.Add(TaxDTO.TaxValue.ToString());
-                }
+                taxList.Add(TaxDTO.TaxValue.ToString());
             }
+            
             return taxList;
         }
 
@@ -108,13 +100,11 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<string> taxList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            foreach (var TaxDTO in ShopContext.Tax)
             {
-                foreach (var TaxDTO in contextDB.Tax)
-                {
-                    taxList.Add(TaxDTO.TaxValue.ToString());
-                }
+                taxList.Add(TaxDTO.TaxValue.ToString());
             }
+            
             return taxList;
         }
 
@@ -125,14 +115,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             int taxId = -1;
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from t in contextDB.Tax
-                            where t.TaxValue == taxValue
-                            select t.Id;
+            var query = from t in ShopContext.Tax
+                        where t.TaxValue == taxValue
+                        select t.Id;
 
-                taxId = query.SingleOrDefault();
-            }
+            taxId = query.SingleOrDefault();
+            
 
             return taxId;
         }
@@ -143,23 +131,22 @@ namespace NaturalnieApp2.Services.Database.Providers
         public TaxDTO GetTaxByProductName(string productName)
         {
             TaxDTO localTax = new TaxDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+
+            var query = from p in ShopContext.Products
+                        join t in ShopContext.Tax
+                        on p.TaxId equals t.Id
+                        where p.ProductName == productName
+                        select new
+                        {
+                            t
+                        };
+
+            foreach (var element in query)
             {
-                var query = from p in contextDB.Products
-                            join t in contextDB.Tax
-                            on p.TaxId equals t.Id
-                            where p.ProductName == productName
-                            select new
-                            {
-                                t
-                            };
-
-                foreach (var element in query)
-                {
-                    localTax = element.t;
-                }
-
+                localTax = element.t;
             }
+
+            
             return localTax;
         }
 
@@ -168,12 +155,11 @@ namespace NaturalnieApp2.Services.Database.Providers
         //====================================================================================================
         public void EditTax(TaxDTO TaxDTO)
         {
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                contextDB.Tax.Add(TaxDTO);
-                contextDB.Entry(TaxDTO).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
-            }
+
+            ShopContext.Tax.Add(TaxDTO);
+            ShopContext.Entry(TaxDTO).State = EntityState.Modified;
+            int retVal = ShopContext.SaveChanges();
+            
         }
     }
 }

@@ -11,7 +11,7 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class ManufacturerProvider: DatabaseBase
     {
-        public ManufacturerProvider(string connectionStrng) : base(connectionStrng)
+        public ManufacturerProvider(ShopContext shopContext) : base(shopContext)
         {
             
         }
@@ -21,12 +21,8 @@ namespace NaturalnieApp2.Services.Database.Providers
         //====================================================================================================
         public void AddManufacturer(ManufacturerDTO manufacturer)
         {
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                contextDB.Manufacturers.Add(manufacturer);
-                int retVal = contextDB.SaveChanges();
-
-            }
+            ShopContext.Manufacturers.Add(manufacturer);
+            int retVal = ShopContext.SaveChanges();
         }
 
         //====================================================================================================
@@ -40,13 +36,10 @@ namespace NaturalnieApp2.Services.Database.Providers
 
             if (localEntity != null)
             {
-                using (ShopContext contextDB = new ShopContext(ConnectionString))
-                {
-                    ManufacturerDTO manufacturerToDelete = new ManufacturerDTO { Id = localEntity.Id };
-                    contextDB.Entry(manufacturerToDelete).State = EntityState.Deleted;
-                    int retValInt = contextDB.SaveChanges();
-                    if (retValInt > 0) retVal = true;
-                }
+                ManufacturerDTO manufacturerToDelete = new ManufacturerDTO { Id = localEntity.Id };
+                ShopContext.Entry(manufacturerToDelete).State = EntityState.Deleted;
+                int retValInt = ShopContext.SaveChanges();
+                if (retValInt > 0) retVal = true;
             }
 
             return retVal;
@@ -58,14 +51,13 @@ namespace NaturalnieApp2.Services.Database.Providers
         public string GetManufacturerNameById(int id)
         {
             ManufacturerDTO localManufacturer = new ManufacturerDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Id == id
-                            select m;
 
-                localManufacturer = query.SingleOrDefault();
-            }
+            var query = from m in ShopContext.Manufacturers
+                        where m.Id == id
+                        select m;
+
+            localManufacturer = query.SingleOrDefault();
+
             return localManufacturer.Name;
         }
 
@@ -76,12 +68,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<string> manufacturersList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            foreach (var ManufacturerDTO in ShopContext.Manufacturers)
             {
-                foreach (var ManufacturerDTO in contextDB.Manufacturers)
-                {
-                    manufacturersList.Add(ManufacturerDTO.Name);
-                }
+                manufacturersList.Add(ManufacturerDTO.Name);
             }
 
             return manufacturersList;
@@ -93,14 +82,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         public ManufacturerDTO GetManufacturerEntityByName(string manufacturerName)
         {
             ManufacturerDTO localManufacturer = new ManufacturerDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m;
+            var query = from m in ShopContext.Manufacturers
+                        where m.Name == manufacturerName
+                        select m;
 
-                localManufacturer = query.SingleOrDefault();
-            }
+            localManufacturer = query.SingleOrDefault();
+
             return localManufacturer;
         }
         //====================================================================================================
@@ -109,14 +96,13 @@ namespace NaturalnieApp2.Services.Database.Providers
         public ManufacturerDTO GetManufacturerEntityById(int manufacturerId)
         {
             ManufacturerDTO localManufacturer = new ManufacturerDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Id == manufacturerId
-                            select m;
 
-                localManufacturer = query.SingleOrDefault();
-            }
+            var query = from m in ShopContext.Manufacturers
+                        where m.Id == manufacturerId
+                        select m;
+
+            localManufacturer = query.SingleOrDefault();
+
             return localManufacturer;
         }
 
@@ -126,23 +112,21 @@ namespace NaturalnieApp2.Services.Database.Providers
         public ManufacturerDTO GetManufacturerByProductName(string productName)
         {
             ManufacturerDTO localManufacturer = new ManufacturerDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+
+            var query = from p in ShopContext.Products
+                        join m in ShopContext.Manufacturers
+                        on p.ManufacturerId equals m.Id
+                        where p.ProductName == productName
+                        select new
+                        {
+                            m
+                        };
+
+            foreach (var element in query)
             {
-                var query = from p in contextDB.Products
-                            join m in contextDB.Manufacturers
-                            on p.ManufacturerId equals m.Id
-                            where p.ProductName == productName
-                            select new
-                            {
-                                m
-                            };
-
-                foreach (var element in query)
-                {
-                    localManufacturer = element.m;
-                }
-
+                localManufacturer = element.m;
             }
+
             return localManufacturer;
         }
         //====================================================================================================
@@ -152,23 +136,21 @@ namespace NaturalnieApp2.Services.Database.Providers
         public ManufacturerDTO GetManufacturerByBarcode(string barcode)
         {
             ManufacturerDTO localManufacturer = new ManufacturerDTO();
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+
+            var query = from p in ShopContext.Products
+                        join m in ShopContext.Manufacturers
+                        on p.ManufacturerId equals m.Id
+                        where p.BarCode == barcode
+                        select new
+                        {
+                            m
+                        };
+
+            foreach (var element in query)
             {
-                var query = from p in contextDB.Products
-                            join m in contextDB.Manufacturers
-                            on p.ManufacturerId equals m.Id
-                            where p.BarCode == barcode
-                            select new
-                            {
-                                m
-                            };
-
-                foreach (var element in query)
-                {
-                    localManufacturer = element.m;
-                }
-
+                localManufacturer = element.m;
             }
+
             return localManufacturer;
         }
         //====================================================================================================
@@ -178,13 +160,11 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<ManufacturerDTO> manufacturersList = new List<ManufacturerDTO>();
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            foreach (var manufacturer in ShopContext.Manufacturers)
             {
-                foreach (var manufacturer in contextDB.Manufacturers)
-                {
-                    manufacturersList.Add(manufacturer);
-                }
+                manufacturersList.Add(manufacturer);
             }
+
             return manufacturersList;
         }
 
@@ -195,14 +175,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             string eanPrefix = "";
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m.BarcodeEanPrefix;
+            var query = from m in ShopContext.Manufacturers
+                        where m.Name == manufacturerName
+                        select m.BarcodeEanPrefix;
 
-                eanPrefix = query.SingleOrDefault();
-            }
+            eanPrefix = query.SingleOrDefault();
+
             return eanPrefix;
         }
         //====================================================================================================
@@ -212,22 +190,19 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<string> productList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            //Create query to database
+            var query = from p in ShopContext.Products
+                        join m in ShopContext.Manufacturers
+                        on p.ManufacturerId equals m.Id
+                        where m.Name == manufacturerName
+                        select p;
+
+            //Add product names to the list
+            foreach (var products in query)
             {
-                //Create query to database
-                var query = from p in contextDB.Products
-                            join m in contextDB.Manufacturers
-                            on p.ManufacturerId equals m.Id
-                            where m.Name == manufacturerName
-                            select p;
-
-                //Add product names to the list
-                foreach (var products in query)
-                {
-                    productList.Add(products.ProductName);
-                }
-
+                productList.Add(products.ProductName);
             }
+
             return productList;
         }
 
@@ -238,22 +213,19 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<string> productList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            //Create query to database
+            var query = from p in ShopContext.Products
+                        join m in ShopContext.Manufacturers
+                        on p.ManufacturerId equals m.Id
+                        where m.Name == manufacturerName
+                        select p;
+
+            //Add product names to the list
+            foreach (var products in query)
             {
-                //Create query to database
-                var query = from p in contextDB.Products
-                            join m in contextDB.Manufacturers
-                            on p.ManufacturerId equals m.Id
-                            where m.Name == manufacturerName
-                            select p;
-
-                //Add product names to the list
-                foreach (var products in query)
-                {
-                    productList.Add(products.BarCode);
-                }
-
+                productList.Add(products.BarCode);
             }
+
             return productList;
         }
         //====================================================================================================
@@ -263,14 +235,12 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             int manufacturerId = -1;
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m.Id;
+            var query = from m in ShopContext.Manufacturers
+                        where m.Name == manufacturerName
+                        select m.Id;
 
-                manufacturerId = query.SingleOrDefault();
-            }
+            manufacturerId = query.SingleOrDefault();
+           
 
             return manufacturerId;
         }
@@ -282,13 +252,11 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<int> manufacturesrList = new List<int>();
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
+            foreach (var manufacturer in ShopContext.Manufacturers)
             {
-                foreach (var manufacturer in contextDB.Manufacturers)
-                {
-                    manufacturesrList.Add(manufacturer.Id);
-                }
+                manufacturesrList.Add(manufacturer.Id);
             }
+
             return manufacturesrList;
         }
         //====================================================================================================
@@ -298,16 +266,14 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m;
+            var query = from m in ShopContext.Manufacturers
+                        where m.Name == manufacturerName
+                        select m;
 
-                if (query.FirstOrDefault() != null) result = true;
-                else result = false;
+            if (query.FirstOrDefault() != null) result = true;
+            else result = false;
 
-            }
+
 
             return result;
         }

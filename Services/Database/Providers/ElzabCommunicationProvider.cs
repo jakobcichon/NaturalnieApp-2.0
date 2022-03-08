@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaturalnieApp.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class ElzabCommunicationProvider: DatabaseBase
     {
-        public ElzabCommunicationProvider(string connectionStrng) : base(connectionStrng)
+        public ElzabCommunicationProvider(ShopContext shopContext): base(shopContext)
         {
 
         }

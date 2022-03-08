@@ -13,9 +13,9 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class InventoryHistoryProvider: DatabaseBase
     {
-        internal InventoryHistoryProvider(string connectionStrng) : base(connectionStrng)
-        {
 
+        internal InventoryHistoryProvider(ShopContext shopContext): base(shopContext)
+        {
         }
 
       
@@ -29,11 +29,9 @@ namespace NaturalnieApp2.Services.Database.Providers
             inventoryHistoryDTO.OperationType = operationType.ToString();
             inventoryHistoryDTO.OperationDateTime = DateTime.Now;
 
-            using (ShopContext contextDB = new ShopContext(ConnectionString))
-            {
-                contextDB.InventoryHistory.Add(inventoryHistoryDTO);
-                int retVal = contextDB.SaveChanges();
-            }
+            ShopContext.InventoryHistory.Add(inventoryHistoryDTO);
+            int retVal = ShopContext.SaveChanges();
+
         }
 
         public InventoryHistoryDTO GetInventoryHistoryDTOFromInventoryDTO(InventoryDTO inventoryDTO)

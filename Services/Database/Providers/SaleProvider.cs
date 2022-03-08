@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaturalnieApp.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace NaturalnieApp2.Services.Database.Providers
 {
     internal class SaleProvider: DatabaseBase
     {
-        public SaleProvider(string connectionStrng) : base(connectionStrng)
+        public SaleProvider(ShopContext shopContext) : base(shopContext)
         {
 
         }
