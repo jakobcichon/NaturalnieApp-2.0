@@ -7,6 +7,8 @@ using NaturalnieApp2.ViewModels;
 using NaturalnieApp2.ViewModels.Menu;
 using NaturalnieApp2.ViewModels.MenuScreens;
 using NaturalnieApp2.ViewModels.MenuScreens.Inventory;
+using NaturalnieApp2.ViewModels.SplashScreen;
+using NaturalnieApp2.Views.SplashScreen;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,6 +26,7 @@ using NaturalnieApp2.Models;
 using System.IO;
 using NaturalnieApp2.Attributes;
 using NaturalnieApp2.Views.Controls.Models;
+using NaturalnieApp2.Interfaces.SplashScreen;
 
 namespace NaturalnieApp2
 {
@@ -57,6 +60,14 @@ namespace NaturalnieApp2
             services.AddSingleton(s => new MainWindow()
             {
                 DataContext = s.GetRequiredService<MainWindowViewModel>()
+            });
+
+            // Create an instance for the splash screen
+            services.AddSingleton(s => new SplashScreenViewModel());
+
+            services.AddSingleton(s => new SplashScreenView()
+            {
+                DataContext = s.GetRequiredService<SplashScreenViewModel>()
             });
 
             #region Menu bar items
@@ -103,48 +114,95 @@ namespace NaturalnieApp2
 
         protected async override void OnStartup(StartupEventArgs e)
         {
-            EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyDownEvent, 
+            // Call base method
+            base.OnStartup(e);
+
+            // Call splash screen
+            MainWindow = _serviceProvider.GetRequiredService<SplashScreenView>();
+            MainWindow.Show();
+
+            ISplashScreen _splashScreen = _serviceProvider.GetRequiredService<SplashScreenViewModel>();
+
+            _splashScreen.UpdateText("Uruchamianie naturalnie app 2.0..");
+
+
+            await Task.Run(() =>
+            {
+                _splashScreen.UpdateText("Konfigurowanie menagera zadań");
+                //Configure event manager
+                ConfigureEventManager();
+
+                _splashScreen.UpdateText("Tworzenie okna głownego");
+                //Configure main window
+                ConfigureMainWindow();
+
+                _splashScreen.UpdateText("Tworzenie przycisków menu");
+                //Configure menu bar main buttons
+                ConfigureMenuBarMainButtons();
+
+                _splashScreen.UpdateText("Konfigurowanie ekranów pracy");
+                //Add inventory sub buttons
+                CreateSubMenuButtons_Inventory(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
+
+                CreateSubMenuButtons_Sandbox(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
+
+                #region Execute inventory
+                _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider =
+                    _serviceProvider.GetRequiredService<ProductProvider>();
+                _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().StockProvider =
+                    _serviceProvider.GetRequiredService<StockProvider>();
+                _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().InventoryProvider =
+                    _serviceProvider.GetRequiredService<InventoryProvider>();
+                _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ScreenDipatcher =
+                    _serviceProvider.GetRequiredService<NavigationDispatcher>();
+                #endregion
+
+                #region Show inventory
+                _serviceProvider.GetRequiredService<ShowInventoryViewModel>().InventoryProvider =
+                    _serviceProvider.GetRequiredService<InventoryProvider>();
+                _serviceProvider.GetRequiredService<ShowInventoryViewModel>().StockProvider =
+                    _serviceProvider.GetRequiredService<StockProvider>();
+                #endregion
+
+                Dispatcher.Invoke(() =>
+                {
+                    MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+
+                    //Show window
+                    MainWindow.Show();
+
+                    _serviceProvider.GetRequiredService<SplashScreenView>().Close();
+                });
+
+
+            });
+
+
+
+            //Sandbox();
+        }
+
+        private void ConfigureMenuBarMainButtons()
+        {
+            _serviceProvider.GetRequiredService<MenuBarViewModel>().AddMenuBarMainButton(CreateMenuBarMainButtons());
+        }
+
+        private void ConfigureEventManager()
+        {
+            EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyDownEvent,
                 new KeyEventHandler(_serviceProvider.GetRequiredService<MainWindowViewModel>().OnKeyDown), true);
+        }
 
-            //Create main window object
-            MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+        private void ConfigureSplashScreen()
+        {
 
+        }
+
+        private void ConfigureMainWindow()
+        {
             //Add main view to the view dispatcher
             _serviceProvider.GetRequiredService<NavigationDispatcher>().
                 AddHostScreen(_serviceProvider.GetRequiredService<MainWindowViewModel>());
-
-            //Create menu bar main buttons
-            _serviceProvider.GetRequiredService<MenuBarViewModel>().AddMenuBarMainButton(CreateMenuBarMainButtons());
-
-            //Add inventory sub buttons
-            CreateSubMenuButtons_Inventory(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
-
-            CreateSubMenuButtons_Sandbox(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
-
-            #region Execute inventory
-            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ModelProvider =
-                _serviceProvider.GetRequiredService<ProductProvider>();
-            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().StockProvider =
-                _serviceProvider.GetRequiredService<StockProvider>();
-            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().InventoryProvider =
-                _serviceProvider.GetRequiredService<InventoryProvider>();
-            _serviceProvider.GetRequiredService<ExecuteInventoryViewModel>().ScreenDipatcher =
-                _serviceProvider.GetRequiredService<NavigationDispatcher>();
-            #endregion
-
-            #region Show inventory
-            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().InventoryProvider =
-                _serviceProvider.GetRequiredService<InventoryProvider>();
-            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().StockProvider =
-                _serviceProvider.GetRequiredService<StockProvider>();
-            #endregion
-
-            //Show window
-            MainWindow.Show();
-
-            base.OnStartup(e);
-
-            //Sandbox();
         }
 
         private List<MainButtonViewModel> CreateMenuBarMainButtons()
