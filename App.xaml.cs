@@ -29,6 +29,7 @@ using NaturalnieApp2.Views.Controls.Models;
 using NaturalnieApp2.Interfaces.SplashScreen;
 using System.Data.Entity;
 using NaturalnieApp.Database;
+using NaturalnieApp2.Services.Database;
 
 namespace NaturalnieApp2
 {
@@ -120,6 +121,11 @@ namespace NaturalnieApp2
 
             //Initialize inventory sub buttons
             InitializeSubMenuButtons_Inventory(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
+
+            _splashScreen.UpdateText("Ładowanie zasobów Entity Framework");
+
+            //EntityFramework loading resources
+            InitailizeEntityFrameworkRecourses(_serviceProvider);
 
             _splashScreen.UpdateText("Konfigurowanie przycisków Sandbox");
 
@@ -220,6 +226,9 @@ namespace NaturalnieApp2
 
             services.AddTransient<ShopContext>(s => new ShopContext(connectionString));
 
+            //Transient for the DatabaseCommon
+            services.AddTransient<DatabaseCommon>(s => new DatabaseCommon(s.GetRequiredService<ShopContext>()));
+
             //Transient for the ProductProvider
             services.AddTransient<ProductProvider>(s => new ProductProvider(s.GetRequiredService<ShopContext>()));
 
@@ -296,6 +305,16 @@ namespace NaturalnieApp2
                 service.GetRequiredService<NavigationDispatcher>()
                 )
             });
+        }
+
+        /// <summary>
+        /// Method used to load recouser of the EnitytFramwork
+        /// </summary>
+        /// <param name="menuBar">Instnace of the MenuBarViewModel</param>
+        /// <param name="service">Instance of the IServiceProvider </param>
+        private void InitailizeEntityFrameworkRecourses(IServiceProvider service)
+        {
+            service.GetRequiredService<DatabaseCommon>().CheckDatabaseConnection();
         }
 
         /// <summary>

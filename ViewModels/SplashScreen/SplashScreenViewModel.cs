@@ -21,6 +21,14 @@ namespace NaturalnieApp2.ViewModels.SplashScreen
             }
         }
 
+        private readonly string windowTitle = "Inicjalizacja NaturalnieApp2.0";
+
+        public string WindowTitle
+        {
+            get { return windowTitle; }
+        }
+
+
         public void UpdateText(string text)
         {
             ActualText = text;

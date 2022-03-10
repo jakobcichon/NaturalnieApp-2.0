@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using NaturalnieApp2.Attributes;
 using NaturalnieApp2.Commands;
 using NaturalnieApp2.Commands.MenuScreens.Inventory;
@@ -33,7 +35,6 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
         public ExecuteInventoryViewModel()
         {
             //Instance of the ProductSelectorDataModel
-            ProductSelectorDataModel = new ShopProductSelectorDataModel();
             ActualSelectedProductModel = new ProductModel();
             ListOfAllProductModels = new List<ProductModel>();
 
@@ -55,6 +56,21 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
             BottomButtonPanel.RightButtons.Add(new SignleButtonModel("Odśwież dane produktu",
                 new BottomButtonPanelCommands(), OnRefreshProductData));
         }
+
+        private bool modelHasBeenCreated = false;
+
+        private ICommand screenUpdates;
+
+        public ICommand ScreenUpdates
+        {
+            get 
+            {
+                if (screenUpdates == null) return new ScreenCommands(CreateModelProvider);
+                return screenUpdates; 
+            }
+            set { screenUpdates = value; }
+        }
+
 
         public BottomButtonBarModel BottomButtonPanel { get;}
 
@@ -107,7 +123,18 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
         private ShopProductSelectorDataModel AllValuesProductSelectorDataModel { get; set; }
         private ShopProductSelectorDataModel FilteredProductSelectorDataModel { get; set; }
 
-        public ShopProductSelectorDataModel ProductSelectorDataModel { get; set; }
+        private ShopProductSelectorDataModel productSelectorDataModel;
+
+        public ShopProductSelectorDataModel ProductSelectorDataModel
+        {
+            get { return productSelectorDataModel; }
+            set 
+            { 
+                productSelectorDataModel = value; 
+                OnPropertyChanged(nameof(ProductSelectorDataModel));
+            }
+        }
+
 
         private ObservableCollection<InventoryModel> _actualState;
         public ObservableCollection<InventoryModel> ActualState
@@ -169,7 +196,6 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 
         public void OnModelProviderChange()
         {
-            CreateModelProvider();
         }
 
         public InventoryModel? GetInventoryModelFromList(IEnumerable<InventoryModel> inventoryList, InventoryModel inventoryModelToSearch)
@@ -271,24 +297,39 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 
         public void CreateModelProvider()
         {
-            //Get all products
-            ListOfAllProductModels = ModelProvider.GetAllProductEntities();
+            if (!modelHasBeenCreated)
+            {
+                try
+                {
+                    //Get all products
+                    ListOfAllProductModels = ModelProvider.GetAllProductEntities();
 
-            EmptyModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
-            AllValuesProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
-            FilteredProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
-            ProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+                    EmptyModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+                    AllValuesProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+                    FilteredProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
+                    ProductSelectorDataModel = DataModelToShopSelectorModel<ProductModel>.FromDataModelToShopProductSelectorModel(ActualSelectedProductModel);
 
-            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(AllValuesProductSelectorDataModel, ListOfAllProductModels);
-            List<ProductModel> firstElement = new List<ProductModel>();
-            firstElement.Add(ListOfAllProductModels.First());
-            DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(EmptyModel, firstElement);
+                    DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(AllValuesProductSelectorDataModel, ListOfAllProductModels);
+                    List<ProductModel> firstElement = new List<ProductModel>();
+                    firstElement.Add(ListOfAllProductModels.First());
+                    DataModelToShopSelectorModel<ProductModel>.GetAllValuesOfModelToSelectorDataModel(EmptyModel, firstElement);
 
-            //ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
-            ProductSelectorDataModel.ClearAllValues();
-            ProductSelectorDataModel.AddElementsValues(AllValuesProductSelectorDataModel.Elements);
+                    //ProductSelectorDataModel.Elements = AllValuesProductSelectorDataModel.Elements;
+                    ProductSelectorDataModel.ClearAllValues();
+                    ProductSelectorDataModel.AddElementsValues(AllValuesProductSelectorDataModel.Elements);
 
-            ActualSelectedProductModel = ListOfAllProductModels.First();
+                    ActualSelectedProductModel = ListOfAllProductModels.First();
+
+                    //Set auxiliary field, to prevent reinitialization
+                    modelHasBeenCreated = true;
+                }
+                catch (System.Data.Entity.Core.ProviderIncompatibleException ex)
+                {
+                    MessageBox.Show("Nie można połączyć się z bazą danych");
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+
         }
         public void UpdateModelProvider()
         {
@@ -416,5 +457,32 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 
             }
         }
+
+        private class ScreenCommands : ICommand
+        {
+            public event EventHandler? CanExecuteChanged;
+
+            private readonly Action loadedAction;
+
+            public ScreenCommands(Action loadedAction)
+            {
+                this.loadedAction = loadedAction;
+            }
+
+            public bool CanExecute(object? parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object? parameter)
+            {
+                if ("Loaded" == parameter?.ToString())
+                {
+                    loadedAction();
+                }
+            }
+        }
     }
+
+
 }

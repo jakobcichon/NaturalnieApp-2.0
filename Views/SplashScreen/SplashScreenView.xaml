@@ -3,14 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NaturalnieApp2.Views.SplashScreen"
         mc:Ignorable="d"
-        WindowStyle="SingleBorderWindow"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen"
-        Title="SplashScreenView" Height="450" Width="800">
-        <!--AllowsTransparency="True"-->    
+        Title="{Binding WindowTitle}" Height="450" Width="800"
+        AllowsTransparency="True" Opacity="0.5" >
 
-    <Grid>
+    <Grid >
         <TextBlock Text="{Binding ActualText}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </Window>
