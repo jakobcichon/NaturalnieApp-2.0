@@ -1,10 +1,8 @@
 ﻿using NaturalnieApp2.Interfaces.SplashScreen;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
+
+[assembly: InternalsVisibleTo("NaturalnieApp2.Tests")]
 namespace NaturalnieApp2.ViewModels.SplashScreen
 {
     internal class SplashScreenViewModel: ViewModelBase, ISplashScreen

@@ -1,4 +1,5 @@
-﻿using NaturalnieApp2.Interfaces.DataGrid;
+﻿using NaturalnieApp2.Controls.NaturalnieMessageBox;
+using NaturalnieApp2.Interfaces.DataGrid;
 using NaturalnieApp2.Models.MenuScreens.Inventory;
 using NaturalnieApp2.Views.Controls.Models;
 using System;

@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:c="clr-namespace:NaturalnieApp2.Views.Controls"
-             xmlns:local="clr-namespace:NaturalnieApp2.Sandbox"
+             xmlns:local="clr-namespace:NaturalnieApp2.Sandbox" 
+             xmlns:naturalniemessagebox="clr-namespace:NaturalnieApp2.Controls.NaturalnieMessageBox"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Style="{StaticResource GeneralBackgroundColor}">
@@ -17,19 +18,13 @@
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
 
-        <ComboBox Grid.Row="0" 
-                  MaxHeight="100" 
-                  IsReadOnly="False"
-                  IsTextSearchEnabled="True"
-                  ItemsSource="{Binding ComboBoxDataSource}"
-                  MaxWidth="200"/>
 
-        <Button Grid.Row="1" Height="50" Width="100">
-            <ContentControl Content="{Binding }"/>
+        <Button Grid.Row="1" Height="50" Width="100" Command="{Binding ButtonClick}">
         </Button>
 
-        <!--
-        <c:ComboboxNaturalnieApp Grid.Row="1" Height="100" Width="300" FontSize="30"/>
-        -->
+        <naturalniemessagebox:UserControlWithMessageBox Grid.ColumnSpan="100" Grid.RowSpan="100" />
     </Grid>
+    
+    
+    
 </UserControl>

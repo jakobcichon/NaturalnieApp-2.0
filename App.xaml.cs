@@ -77,7 +77,7 @@ namespace NaturalnieApp2
             splashScreen.Show();
             
             // Run task to initialize recourses
-            await Task.Run(() =>
+            await RunSTATTask(() =>
             {
                 // Cal helper method, to initialize all recourses
                 InitializeObjects(_splashScreenViewModel);
@@ -98,6 +98,30 @@ namespace NaturalnieApp2
                     splashScreen.Close();
                 });
             });
+        }
+
+
+        private static Task RunSTATTask(Action action)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    action();
+                    tcs.SetResult(true);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+
+            return tcs.Task;
+
         }
 
         private void InitializeObjects(ISplashScreen _splashScreen)

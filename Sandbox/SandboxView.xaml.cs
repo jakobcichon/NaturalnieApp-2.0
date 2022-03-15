@@ -23,6 +23,7 @@ namespace NaturalnieApp2.Sandbox
         public SandboxView()
         {
             InitializeComponent();
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
