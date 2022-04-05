@@ -35,8 +35,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-     
-
 
         <!-- Grid layout for the DataGrid views-->
         <Grid Grid.Row="2">

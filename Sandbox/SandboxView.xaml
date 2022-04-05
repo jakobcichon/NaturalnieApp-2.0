@@ -22,7 +22,11 @@
         <Button Grid.Row="1" Height="50" Width="100" Command="{Binding ButtonClick}">
         </Button>
 
+        <c:PropertyDisplay Height="50" Width="200"/>
+
+        <!--
         <naturalniemessagebox:UserControlWithMessageBox Grid.ColumnSpan="100" Grid.RowSpan="100" />
+        -->
     </Grid>
     
     

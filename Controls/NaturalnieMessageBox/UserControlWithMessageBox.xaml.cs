@@ -190,7 +190,7 @@ namespace NaturalnieApp2.Controls.NaturalnieMessageBox
         #region Events
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Size delta = e.NewSize.Width
+            //Size delta = e.NewSize.Width;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

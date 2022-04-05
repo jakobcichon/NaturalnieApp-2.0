@@ -28,6 +28,7 @@ namespace NaturalnieApp2.Services.DTOs
         public string BarCodeShort { get; set; }
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
+        public bool CanBeRemovedFromCashRegister { get; set; }
 
         public ProductDTO DeepCopy()
         {
@@ -48,6 +49,7 @@ namespace NaturalnieApp2.Services.DTOs
             product.BarCodeShort = this.BarCodeShort;
             product.SupplierCode = this.SupplierCode;
             product.ProductInfo = this.ProductInfo;
+            product.CanBeRemovedFromCashRegister = this.CanBeRemovedFromCashRegister;
             return product;
         }
     }

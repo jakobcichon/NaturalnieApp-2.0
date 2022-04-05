@@ -71,6 +71,10 @@ namespace NaturalnieApp2.Models
         [VisibilityProperties(true, true)]
         public string ProductInfo { get; set; }
 
+        [DisplayName("Produkt może zostać usunięty z kasy")]
+        [VisibilityProperties(true, true)]
+        public bool CanBeRemovedFromCashRegister { get; set; }
+
         public ProductModel()
         {
 
@@ -90,7 +94,8 @@ namespace NaturalnieApp2.Models
             string barCode, 
             string barCodeShort, 
             string supplierCode, 
-            string productInfo)
+            string productInfo,
+            bool canBeRemovedFromCashRegister)
         {
             SupplierName = supplierName;
             ElzabProductId = elzabProductId;
@@ -107,6 +112,7 @@ namespace NaturalnieApp2.Models
             BarCodeShort = barCodeShort;
             SupplierCode = supplierCode;
             ProductInfo = productInfo;
+            CanBeRemovedFromCashRegister = canBeRemovedFromCashRegister;
         }
 
     }
