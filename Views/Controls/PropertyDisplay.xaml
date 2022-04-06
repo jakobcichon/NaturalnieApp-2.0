@@ -13,16 +13,19 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" d:Text="Default text" HorizontalAlignment="Center"
-                 VerticalAlignment="Center" Background="AliceBlue" 
-                 BorderBrush="AliceBlue" IsReadOnly="True"/>
-        <TextBox Grid.Row="1" d:Text="Default Text"/>
+        <Label Grid.Row="0" d:Content="Default text" 
+               Content="{Binding Path=HeaderText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center" Background="AliceBlue" 
+               BorderBrush="AliceBlue" FontWeight="Bold"/>
+        <ContentControl x:Name="ContentForVisualPresenter" Content="{Binding Path=}" Grid.Row="1"/>
 
-        <Canvas Grid.Row="2" Background="Red" Height="2" Margin=" 0 0 0 0" Visibility="Visible">
+        <Canvas Grid.Row="2" Background="Blue" Height="2" Margin=" 0 0 0 0" Visibility="Visible">
             <Canvas.Effect>
                 <DropShadowEffect Direction="90" BlurRadius="5" ShadowDepth="1" Opacity="1" RenderingBias="Quality" Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}" />
             </Canvas.Effect>
         </Canvas>
+        
 
     </Grid>
 </UserControl>
