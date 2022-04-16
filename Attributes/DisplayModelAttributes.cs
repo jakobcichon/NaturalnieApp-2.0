@@ -11,7 +11,6 @@ namespace NaturalnieApp2.Attributes
         [AttributeUsage(AttributeTargets.Property)]
         internal sealed class DisplayName: Attribute
         {
-            private string _name;
             public string Name { get; }
 
             public DisplayName(string name)
@@ -42,6 +41,21 @@ namespace NaturalnieApp2.Attributes
             }
         }
 
+        [AttributeUsage(AttributeTargets.Property)]
+        internal sealed class VisualRepresenation : Attribute
+        {
+            public VisualRepresenationType Type { get; }
+            public VisualRepresenation(VisualRepresenationType type)
+            {
+                Type = type;
+            }
+        }
+    }
 
+    public enum VisualRepresenationType
+    {
+        List,
+        Field,
+        LongField
     }
 }

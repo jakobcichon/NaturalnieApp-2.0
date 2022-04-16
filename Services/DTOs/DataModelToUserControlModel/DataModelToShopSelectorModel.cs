@@ -1,4 +1,5 @@
 ﻿using NaturalnieApp2.Attributes;
+using NaturalnieApp2.Interfaces.Services.Attributes;
 using NaturalnieApp2.Services.Attributes;
 using NaturalnieApp2.Views.Controls.Models;
 using System;
@@ -13,7 +14,7 @@ namespace NaturalnieApp2.Services.DTOs.DataModelToUserControlModel
 {
     internal static class DataModelToShopSelectorModel<T> where T : class
     {
-        public static ShopProductSelectorDataModel FromDataModelToShopProductSelectorModel(DisplayModelAttributes dataModel)
+        public static ShopProductSelectorDataModel FromDataModelToShopProductSelectorModel(IDisplayableModel dataModel)
         {
             ShopProductSelectorDataModel shopProductSelectorDataModel = new ShopProductSelectorDataModel();
 

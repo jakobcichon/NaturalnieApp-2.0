@@ -1,4 +1,5 @@
 ﻿using NaturalnieApp2.Controls.NaturalnieMessageBox;
+using NaturalnieApp2.Models;
 using NaturalnieApp2.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,15 @@ namespace NaturalnieApp2.Sandbox
                 OnPropertyChanged(nameof(messageVisiability));
             }
         }
+
+        private ProductModel displayModelTest;
+
+        public ProductModel DisplayModelTest
+        {
+            get { return displayModelTest; }
+            set { displayModelTest = value; }
+        }
+
 
 
         int i = 0;
@@ -60,6 +70,8 @@ namespace NaturalnieApp2.Sandbox
         public SandboxViewModel()
         {
             MessageVisiability = Visibility.Visible;
+            DisplayModelTest = new ProductModel();
+            DisplayModelTest.ProductName = "Test name of product";
         }
 
 

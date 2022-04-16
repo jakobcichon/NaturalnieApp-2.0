@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NaturalnieApp2.Attributes;
+using NaturalnieApp2.Views.Controls.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -28,6 +30,35 @@ namespace NaturalnieApp2.Views.Controls
         }
 
         #region Dependency properties
+
+        private bool Test { get; set; }
+        public Binding PropertyValue
+        {
+            get { return (Binding)GetValue(PropertyValueProperty); }
+            set { SetValue(PropertyValueProperty, value); }
+        }
+
+        // Property value
+        public static readonly DependencyProperty PropertyValueProperty =
+            DependencyProperty.Register("PropertyValue", typeof(Binding), typeof(PropertyDisplay), new PropertyMetadata(null, 
+                new PropertyChangedCallback(PropertyValueChangeCallback)));
+
+        private static void PropertyValueChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+            PropertyDisplay? localSource = source as PropertyDisplay;
+            if (localSource == null) return;
+
+            if (localSource.ContentForVisualPresenter.Content?.GetType() == typeof(TextBox) && !localSource.Test)
+            {
+                TextBox? localContent = (localSource.ContentForVisualPresenter.Content as TextBox);
+                if (localContent == null) return;
+                localContent.SetBinding(TextBox.TextProperty, localSource.PropertyValue);
+
+
+            }
+        }
+
+        // Header Text
         public static readonly DependencyProperty HeaderTextProperty = DependencyProperty.Register(name: "HeaderText", typeof(string), 
             typeof(PropertyDisplay), new PropertyMetadata(null));
 
@@ -37,8 +68,9 @@ namespace NaturalnieApp2.Views.Controls
             set => SetValue(HeaderTextProperty, value);
         }
 
-        public static readonly DependencyProperty VisualPresenterTypeProperty = DependencyProperty.Register(name: "VisualPresenterType", typeof(VisualPresenterTypes),
-        typeof(PropertyDisplay), new FrameworkPropertyMetadata(defaultValue: VisualPresenterTypes.Field, 
+        // Visual presenter type
+        public static readonly DependencyProperty VisualPresenterTypeProperty = DependencyProperty.Register(name: "VisualPresenterType", typeof(VisualRepresenationType),
+        typeof(PropertyDisplay), new FrameworkPropertyMetadata(defaultValue: VisualRepresenationType.Field,
             new PropertyChangedCallback(VisualPresenterTypeChangeCallback)));
 
         private static void VisualPresenterTypeChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
@@ -46,12 +78,12 @@ namespace NaturalnieApp2.Views.Controls
             PropertyDisplay? localSource = source as PropertyDisplay;
             if (localSource == null) return;
 
-            localSource.SetContentForVisualPresenter((VisualPresenterTypes)e.NewValue);
+            localSource.SetContentForVisualPresenter((VisualRepresenationType)e.NewValue);
         }
 
-        public VisualPresenterTypes VisualPresenterType
+        public VisualRepresenationType VisualPresenterType
         {
-            get => (VisualPresenterTypes)GetValue(VisualPresenterTypeProperty);
+            get => (VisualRepresenationType)GetValue(VisualPresenterTypeProperty);
             set => SetValue(VisualPresenterTypeProperty, value);
 
         }
@@ -59,20 +91,18 @@ namespace NaturalnieApp2.Views.Controls
 
 
         #region Private methods
-        private void SetContentForVisualPresenter(VisualPresenterTypes type)
+        private void SetContentForVisualPresenter(VisualRepresenationType type)
         {
-            if (type == VisualPresenterTypes.Field)
+            if (type == VisualRepresenationType.Field)
             {
-                FrameworkElement textBlock = new TextBlock();
-                ContentForVisualPresenter.Content = textBlock.Loa;
+
+                ContentForVisualPresenter.Content = new TextBox();
+
+
             }
         }
         #endregion
     }
 
-    public enum VisualPresenterTypes
-    {
-        Field,
-        List
-    }
+
 }

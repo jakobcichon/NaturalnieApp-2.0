@@ -5,27 +5,61 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NaturalnieApp2.ViewModels.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="200" Background="AliceBlue">
+             d:DesignHeight="50" d:DesignWidth="200" Background="AliceBlue"
+             Height="50" Width="200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="2"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" d:Content="Default text" 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width= "Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" d:Content="Default text"  
+               Grid.ColumnSpan="2"
                Content="{Binding Path=HeaderText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
                HorizontalAlignment="Center"
                VerticalAlignment="Center" Background="AliceBlue" 
-               BorderBrush="AliceBlue" FontWeight="Bold"/>
-        <ContentControl x:Name="ContentForVisualPresenter" Content="{Binding Path=}" Grid.Row="1"/>
+               BorderBrush="AliceBlue" FontWeight="Bold">
+        </Label>
 
-        <Canvas Grid.Row="2" Background="Blue" Height="2" Margin=" 0 0 0 0" Visibility="Visible">
+        <Rectangle Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   Margin="5 0 5 0" Opacity="0.5">
+            <Rectangle.Fill>
+                <RadialGradientBrush SpreadMethod="Pad">
+                    <GradientStop Color="Blue"/>
+                    <GradientStop Color="#FFFFFDFD" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <ContentControl x:Name="ContentForVisualPresenter" 
+                        Grid.Row="2"/>
+
+        <Canvas Grid.Row="3" 
+                Grid.ColumnSpan ="2"
+                Background="Blue" 
+                Height="2" 
+                Margin=" 0 0 0 0" 
+                Visibility="Visible">
             <Canvas.Effect>
                 <DropShadowEffect Direction="90" BlurRadius="5" ShadowDepth="1" Opacity="1" RenderingBias="Quality" Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}" />
             </Canvas.Effect>
         </Canvas>
-        
+
+        <Rectangle Grid.Column="1"
+                   Grid.Row="2" 
+                   Width="20" 
+                   Fill="Red"
+                   Margin="2" 
+                   ToolTip=""/>
+
 
     </Grid>
 </UserControl>

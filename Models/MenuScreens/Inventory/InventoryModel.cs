@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static NaturalnieApp2.Attributes.DisplayModelAttributes;
 
 namespace NaturalnieApp2.Models.MenuScreens.Inventory
 {

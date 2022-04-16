@@ -104,6 +104,16 @@ namespace NaturalnieApp2.Services.Attributes
             return false;
         }
 
+        public static bool CheckIfPropertyVisiable(PropertyDescriptor property)
+        {
+
+            if (property.Attributes.OfType<DisplayModelAttributes.VisibilityProperties>()?.FirstOrDefault()?.Visible == true)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static bool CheckIfPropertyVisiableByDefault(string propertyName, Type examinedObjectType)
         {
             List<PropertyDescriptor> propertiesWithVisibilityAttributes =
@@ -148,6 +158,11 @@ namespace NaturalnieApp2.Services.Attributes
                 }
             }
             return returnList;
+        }
+
+        public static VisualRepresenationType? GetPropertyVisualRepresentationType(PropertyDescriptor property)
+        {
+            return property.Attributes.OfType<DisplayModelAttributes.VisualRepresenation>()?.FirstOrDefault()?.Type;
         }
     }
 }

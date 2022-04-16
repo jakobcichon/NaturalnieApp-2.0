@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using NaturalnieApp2.Services.DataModel;
+using static NaturalnieApp2.Attributes.DisplayModelAttributes;
 
 namespace NaturalnieApp2.Models
 {
