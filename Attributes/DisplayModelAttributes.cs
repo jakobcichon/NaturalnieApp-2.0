@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.Windows.Controls;
 
 namespace NaturalnieApp2.Attributes
 {
     public class DisplayModelAttributes
     {
         [AttributeUsage(AttributeTargets.Property)]
-        internal sealed class DisplayName: Attribute
+        internal sealed class NameToBeDisplayed: Attribute
         {
             public string Name { get; }
 
-            public DisplayName(string name)
+            public NameToBeDisplayed(string name)
             {
                 Name = name;
             }
@@ -48,6 +46,24 @@ namespace NaturalnieApp2.Attributes
             public VisualRepresenation(VisualRepresenationType type)
             {
                 Type = type;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Property)]
+        internal sealed class PropertyValidationRule : Attribute
+        {
+
+            private readonly Type validationRule;
+
+            public PropertyValidationRule(Type validationClassType)
+            {
+                if (!validationClassType.IsSubclassOf(typeof(ValidationRule))) throw new ArgumentException($"Wrong attribute type! Expected {typeof(ValidationRule)}");
+                validationRule = validationClassType;
+            }
+
+            public ValidationRule GetValidationClass()
+            {
+                return Activator.CreateInstance(validationRule) as ValidationRule;
             }
         }
     }

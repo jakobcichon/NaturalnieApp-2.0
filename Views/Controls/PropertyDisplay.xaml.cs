@@ -1,4 +1,5 @@
 ﻿using NaturalnieApp2.Attributes;
+using NaturalnieApp2.Services.Attributes;
 using NaturalnieApp2.Views.Controls.Models;
 using System;
 using System.Collections.Generic;
@@ -46,15 +47,34 @@ namespace NaturalnieApp2.Views.Controls
         private static void PropertyValueChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
             PropertyDisplay? localSource = source as PropertyDisplay;
+
             if (localSource == null) return;
+
+            if (localSource.PropertyValue != null)
+            {
+                ValidationRule? validationRule = null;
+                string? propertyName = localSource.PropertyValue.Path?.Path.ToString();
+                if (propertyName != null)
+                {
+                    //Get validation class
+                    PropertyDescriptor? property = DisplayModelAttributesServices.GetPropertyByName(localSource.PropertyValue.Source.GetType(), propertyName);
+                    if (property != null) validationRule = DisplayModelAttributesServices.GetValidationClass(property);
+                }
+
+
+                localSource.PropertyValue.ValidatesOnDataErrors = true;
+                localSource.PropertyValue.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                if (validationRule != null) localSource.PropertyValue.ValidationRules.Add(validationRule);
+            }
+
 
             if (localSource.ContentForVisualPresenter.Content?.GetType() == typeof(TextBox) && !localSource.Test)
             {
                 TextBox? localContent = (localSource.ContentForVisualPresenter.Content as TextBox);
+                
                 if (localContent == null) return;
+
                 localContent.SetBinding(TextBox.TextProperty, localSource.PropertyValue);
-
-
             }
         }
 
@@ -95,8 +115,10 @@ namespace NaturalnieApp2.Views.Controls
         {
             if (type == VisualRepresenationType.Field)
             {
-
-                ContentForVisualPresenter.Content = new TextBox();
+                TextBox textBox = new();
+                textBox.Style = this.FindResource("textBoxInError") as Style;
+                ContentForVisualPresenter.Content = textBox;
+                textBox.ToolTip
 
 
             }

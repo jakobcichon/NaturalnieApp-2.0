@@ -12,7 +12,7 @@ namespace NaturalnieApp2.Services.DataGrid
     {
         public static void ApllyColumnProperties(Attribute attribute, DataGridColumn column)
         {
-            if (attribute.GetType() == typeof(DisplayModelAttributes.DisplayName))
+            if (attribute.GetType() == typeof(DisplayModelAttributes.NameToBeDisplayed))
             {
                 ColumnHeaderNameFromAttribute(attribute, column);
             }
@@ -26,7 +26,7 @@ namespace NaturalnieApp2.Services.DataGrid
 
         public static void ColumnHeaderNameFromAttribute(Attribute attribute, DataGridColumn column)
         {
-            column.Header = (attribute as DisplayModelAttributes.DisplayName).Name;
+            column.Header = (attribute as DisplayModelAttributes.NameToBeDisplayed).Name;
         }
 
         public static void ColumnDefaultVisibilityFromAttribute(Attribute attribute, DataGridColumn column)

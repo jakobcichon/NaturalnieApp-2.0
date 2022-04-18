@@ -12,27 +12,27 @@ namespace NaturalnieApp2.Models
 {
     internal class StockModel: ModelBase
     {
-        [DisplayName("Nazwa produktu")]
+        [NameToBeDisplayed("Nazwa produktu")]
         [VisibilityProperties(true, false)]
         public string ProductName { get; set; }
 
-        [DisplayName("Obecny stan")]
+        [NameToBeDisplayed("Obecny stan")]
         [VisibilityProperties(true, false)]
         public int ActualQuantity { get; set; }
 
-        [DisplayName("Poprzedni stan")]
+        [NameToBeDisplayed("Poprzedni stan")]
         [VisibilityProperties(true, false)]
         public int LastQuantity { get; set; }
 
-        [DisplayName("Data ostatniej modyfikacji")]
+        [NameToBeDisplayed("Data ostatniej modyfikacji")]
         [VisibilityProperties(true, false)]
         public DateTime ModificationDate { get; set; }
 
-        [DisplayName("Data ważności")]
+        [NameToBeDisplayed("Data ważności")]
         [VisibilityProperties(true, true)]
         public DateTime ExpirationDate { get; set; }
 
-        [DisplayName("Kod kreskowy z datą")]
+        [NameToBeDisplayed("Kod kreskowy z datą")]
         [VisibilityProperties(true, true)]
         public string BarcodeWithDate { get; set; }
 

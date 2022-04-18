@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace NaturalnieApp2.Services.Attributes
 {
@@ -55,11 +56,23 @@ namespace NaturalnieApp2.Services.Attributes
             {
                 if (property.Attributes.OfType<DisplayModelAttributes.VisibilityProperties>()?.FirstOrDefault()?.Visible == true)
                 {
-                    if (property.Attributes.OfType<DisplayModelAttributes.DisplayName>()?.FirstOrDefault()?.Name == propertyDisplayName)
+                    if (property.Attributes.OfType<DisplayModelAttributes.NameToBeDisplayed>()?.FirstOrDefault()?.Name == propertyDisplayName)
                     {
                         return property;
                     }    
                 }
+            }
+
+            return null;
+        }
+
+        public static PropertyDescriptor? GetPropertyByName(Type examinedObjectType, string propertyName)
+        {
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(examinedObjectType);
+
+            foreach (PropertyDescriptor property in properties)
+            {
+                if (property.Name == propertyName) return property;
             }
 
             return null;
@@ -137,7 +150,7 @@ namespace NaturalnieApp2.Services.Attributes
 
         public static string? GetPropertyDisplayName(PropertyDescriptor property)
         {
-            return property.Attributes.OfType<DisplayModelAttributes.DisplayName>()?.FirstOrDefault()?.Name;
+            return property.Attributes.OfType<DisplayModelAttributes.NameToBeDisplayed>()?.FirstOrDefault()?.Name;
         }
 
 
@@ -163,6 +176,11 @@ namespace NaturalnieApp2.Services.Attributes
         public static VisualRepresenationType? GetPropertyVisualRepresentationType(PropertyDescriptor property)
         {
             return property.Attributes.OfType<DisplayModelAttributes.VisualRepresenation>()?.FirstOrDefault()?.Type;
+        }
+
+        public static ValidationRule? GetValidationClass(PropertyDescriptor property)
+        {
+            return property.Attributes.OfType<DisplayModelAttributes.PropertyValidationRule>()?.FirstOrDefault()?.GetValidationClass();
         }
     }
 }

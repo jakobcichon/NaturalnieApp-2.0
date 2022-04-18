@@ -7,14 +7,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" ClipToBounds="True">
     <Grid>
-        <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=PropertiesToDisplay}">
+        <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+            Path=PropertiesToDisplay}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <local:PropertyDisplay HeaderText="{Binding Header}" 
                                            VisualPresenterType="{Binding Type}"
                                            PropertyValue="{Binding Value}"
-                                           Margin="5"
-                                           />
+                                           Margin="5"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>

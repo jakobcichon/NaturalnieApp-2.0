@@ -7,87 +7,91 @@ using System.Text;
 using System.Threading.Tasks;
 using NaturalnieApp2.Services.DataModel;
 using static NaturalnieApp2.Attributes.DisplayModelAttributes;
+using System.ComponentModel;
+using NaturalnieApp2.Validators.StringValidations;
+using System.Windows.Controls;
 
 namespace NaturalnieApp2.Models
 {
     internal class ProductModel: ModelBase
     {
-        [DisplayName("Nazwa dostawcy")]
+        [NameToBeDisplayed("Nazwa dostawcy")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public string SupplierName { get; set; }
 
-        [DisplayName("Numer w kasie elzab")]
+        [NameToBeDisplayed("Numer w kasie elzab")]
         [VisibilityProperties(true, false)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public int ElzabProductId { get; set; }
 
-        [DisplayName("Nazwa producenta")]
+        [NameToBeDisplayed("Nazwa producenta")]
         [VisibilityProperties(true, false)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public string ManufacturerName { get; set; }
 
-        [DisplayName("Nazwa produktu")]
+        [NameToBeDisplayed("Nazwa produktu")]
         [VisibilityProperties(true, false)]
         [VisualRepresenation(VisualRepresenationType.Field)]
+        [PropertyValidationRule(typeof(ProductNameValidator))]
         public string ProductName { get; set; }
 
-        [DisplayName("Nazwa produktu w kasie Elzab")]
+        [NameToBeDisplayed("Nazwa produktu w kasie Elzab")]
         [VisualRepresenation(VisualRepresenationType.Field)]
         [VisibilityProperties(true, false)]
         public string ElzabProductName { get; set; }
 
-        [DisplayName("Cena netto")]
+        [NameToBeDisplayed("Cena netto")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public float PriceNet { get; set; }
 
-        [DisplayName("Zniżka")]
+        [NameToBeDisplayed("Zniżka")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public int Discount { get; set; }
 
-        [DisplayName("Cena netto ze zniżką")]
+        [NameToBeDisplayed("Cena netto ze zniżką")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public float PriceNetWithDiscount { get; set; }
 
-        [DisplayName("Wartość podatku")]
+        [NameToBeDisplayed("Wartość podatku")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public int TaxValue { get; set; }
 
-        [DisplayName("Marża")]
+        [NameToBeDisplayed("Marża")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public int Marigin { get; set; }
 
-        [DisplayName("Cena klienta")]
+        [NameToBeDisplayed("Cena klienta")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public float FinalPrice { get; set; }
 
-        [DisplayName("Kode kreskowy")]
+        [NameToBeDisplayed("Kode kreskowy")]
         [VisibilityProperties(true, false)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public string BarCode { get; set; }
 
-        [DisplayName("Kod kreskowy własny")]
+        [NameToBeDisplayed("Kod kreskowy własny")]
         [VisibilityProperties(true, false)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public string BarCodeShort { get; set; }
 
-        [DisplayName("Kod dostawcy")]
+        [NameToBeDisplayed("Kod dostawcy")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public string SupplierCode { get; set; }
 
-        [DisplayName("Informacje o produkcie")]
+        [NameToBeDisplayed("Informacje o produkcie")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public string ProductInfo { get; set; }
 
-        [DisplayName("Produkt może zostać usunięty z kasy")]
+        [NameToBeDisplayed("Produkt może zostać usunięty z kasy")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         public bool CanBeRemovedFromCashRegister { get; set; }

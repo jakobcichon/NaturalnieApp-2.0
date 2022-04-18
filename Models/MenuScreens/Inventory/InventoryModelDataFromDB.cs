@@ -10,23 +10,23 @@ namespace NaturalnieApp2.Models.MenuScreens.Inventory
 {
     internal class InventoryModelDataFromDB: ModelBase
     {
-        [DisplayName("Nazwa dostawcy")]
+        [NameToBeDisplayed("Nazwa dostawcy")]
         [VisibilityProperties(true, true)]
         public string SupplierName { get; set; }
 
-        [DisplayName("Numer w kasie Elzab")]
+        [NameToBeDisplayed("Numer w kasie Elzab")]
         [VisibilityProperties(true, true)]
         public int ElzabProductId { get; set; }
 
-        [DisplayName("Nazwa producenta")]
+        [NameToBeDisplayed("Nazwa producenta")]
         [VisibilityProperties(true, true)]
         public string ManufacturerName { get; set; }
 
-        [DisplayName("Nazwa produktu")]
+        [NameToBeDisplayed("Nazwa produktu")]
         [VisibilityProperties(true, false)]
         public string ProductName { get; set; }
 
-        [DisplayName("Aktualna ilość produktów")]
+        [NameToBeDisplayed("Aktualna ilość produktów")]
         [VisibilityProperties(true, false)]
         public int ProductQuantity
         {
@@ -39,47 +39,47 @@ namespace NaturalnieApp2.Models.MenuScreens.Inventory
         }
         private int productQuantity;
 
-        [DisplayName("Nazwa produktu w kasie Elzab")]
+        [NameToBeDisplayed("Nazwa produktu w kasie Elzab")]
         [VisibilityProperties(true, true)]
         public string ElzabProductName { get; set; }
 
-        [DisplayName("Cena netto")]
+        [NameToBeDisplayed("Cena netto")]
         [VisibilityProperties(true, true)]
         public float PriceNet { get; set; }
 
-        [DisplayName("Zniżka")]
+        [NameToBeDisplayed("Zniżka")]
         [VisibilityProperties(true, true)]
         public int Discount { get; set; }
 
-        [DisplayName("Cena netto ze zniżką")]
+        [NameToBeDisplayed("Cena netto ze zniżką")]
         [VisibilityProperties(true, true)]
         public float PriceNetWithDiscount { get; set; }
 
-        [DisplayName("Wartość podatku")]
+        [NameToBeDisplayed("Wartość podatku")]
         [VisibilityProperties(true, true)]
         public int TaxValue { get; set; }
 
-        [DisplayName("Marża")]
+        [NameToBeDisplayed("Marża")]
         [VisibilityProperties(true, true)]
         public int Marigin { get; set; }
 
-        [DisplayName("Cena klienta")]
+        [NameToBeDisplayed("Cena klienta")]
         [VisibilityProperties(true, true)]
         public float FinalPrice { get; set; }
 
-        [DisplayName("Kod kreskowy")]
+        [NameToBeDisplayed("Kod kreskowy")]
         [VisibilityProperties(true, true)]
         public string BarCode { get; set; }
 
-        [DisplayName("kod kreskowy własny")]
+        [NameToBeDisplayed("kod kreskowy własny")]
         [VisibilityProperties(true, true)]
         public string BarCodeShort { get; set; }
 
-        [DisplayName("Kod dostawcy")]
+        [NameToBeDisplayed("Kod dostawcy")]
         [VisibilityProperties(true, true)]
         public string SupplierCode { get; set; }
 
-        [DisplayName("Informacje o produkcie")]
+        [NameToBeDisplayed("Informacje o produkcie")]
         [VisibilityProperties(true, true)]
         public string ProductInfo { get; set; }
     }
