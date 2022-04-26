@@ -34,7 +34,7 @@ namespace NaturalnieApp2.Models
         [VisibilityProperties(true, false)]
         [VisualRepresenation(VisualRepresenationType.Field)]
         [PropertyValidationRule(typeof(ProductNameValidator))]
-        public string ProductName { get; set; }
+        public string ProductName {get; set; }
 
         [NameToBeDisplayed("Nazwa produktu w kasie Elzab")]
         [VisualRepresenation(VisualRepresenationType.Field)]

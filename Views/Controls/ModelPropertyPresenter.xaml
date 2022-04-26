@@ -14,7 +14,8 @@
                     <local:PropertyDisplay HeaderText="{Binding Header}" 
                                            VisualPresenterType="{Binding Type}"
                                            PropertyValue="{Binding Value}"
-                                           Margin="5"/>
+                                           Margin="5"
+                                           HasErrorChangedEvent="PropertyDisplay_HasErrorChangedEvent"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>

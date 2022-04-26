@@ -26,6 +26,7 @@
     <None Remove="Images\check.png" />
     <None Remove="Images\clear-filter.png" />
     <None Remove="Images\down-arrow.png" />
+    <None Remove="Images\error-icon.png" />
     <None Remove="Images\Naturalnielogo.png" />
     <None Remove="Images\right-arrow.png" />
     <None Remove="Images\select.png" />
@@ -35,6 +36,7 @@
 
   <ItemGroup>
     <Content Include="Images\mainIcon.ico" />
+    <Resource Include="Images\error-icon.png" />
     <Resource Include="Images\right-arrow.png" />
   </ItemGroup>
 

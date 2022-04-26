@@ -30,9 +30,37 @@ namespace NaturalnieApp2.Views.Controls
             SetContentForVisualPresenter(VisualPresenterType);
         }
 
+        #region Events
+        public class HasErorEventArgs: EventArgs
+        {
+            public bool HasError { get; set; }
+        }
+        public delegate void HasErrorChangedEventHandler(object sender, HasErorEventArgs e);
+        public event HasErrorChangedEventHandler HasErrorChangedEvent;
+        #endregion
+
         #region Dependency properties
 
-        private bool Test { get; set; }
+        public bool HasError
+        {
+            get { return (bool)GetValue(HasErrorProperty); }
+            set { SetValue(HasErrorProperty, value); }
+        }
+
+        // If field has error, this becomes true
+        public static readonly DependencyProperty HasErrorProperty =
+            DependencyProperty.Register("HasError", typeof(bool), typeof(PropertyDisplay), new PropertyMetadata(false, 
+                new PropertyChangedCallback(HasErrorChangeCallback)));
+
+        private static void HasErrorChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+            PropertyDisplay? localSource = source as PropertyDisplay;
+
+           if (localSource == null) return;
+
+            localSource.OnHasErrorChange();
+        }
+
         public Binding PropertyValue
         {
             get { return (Binding)GetValue(PropertyValueProperty); }
@@ -63,18 +91,24 @@ namespace NaturalnieApp2.Views.Controls
 
 
                 localSource.PropertyValue.ValidatesOnDataErrors = true;
-                localSource.PropertyValue.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                localSource.PropertyValue.NotifyOnValidationError = true;
+                localSource.PropertyValue.NotifyOnSourceUpdated = true;
+
+                localSource.PropertyValue.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged ;
                 if (validationRule != null) localSource.PropertyValue.ValidationRules.Add(validationRule);
             }
 
 
-            if (localSource.ContentForVisualPresenter.Content?.GetType() == typeof(TextBox) && !localSource.Test)
+            if (localSource.ContentForVisualPresenter.Content?.GetType() == typeof(TextBox))
             {
                 TextBox? localContent = (localSource.ContentForVisualPresenter.Content as TextBox);
                 
                 if (localContent == null) return;
 
                 localContent.SetBinding(TextBox.TextProperty, localSource.PropertyValue);
+
+                // Update source to force validation
+                localContent.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
         }
 
@@ -115,14 +149,101 @@ namespace NaturalnieApp2.Views.Controls
         {
             if (type == VisualRepresenationType.Field)
             {
-                TextBox textBox = new();
-                textBox.Style = this.FindResource("textBoxInError") as Style;
-                ContentForVisualPresenter.Content = textBox;
-                textBox.ToolTip
-
-
+                CreateTextBox();
             }
         }
+
+        private void CreateTextBox()
+        {
+            TextBox textBox = new();
+
+            // Cutomize error template
+            Validation.SetErrorTemplate(textBox, null);
+
+            // Customize appearance
+            textBox.Style = (this.FindResource("SmallerFontStyle") as Style);
+
+            // Add handlers
+            Validation.AddErrorHandler(textBox, OnValidationError);
+            textBox.SourceUpdated += TextBox_SourceUpdated;
+            textBox.GotFocus += TextBox_GotFocus;
+            textBox.LostFocus += TextBox_LostFocus;
+
+            // Asigne object
+            ContentForVisualPresenter.Content = textBox;
+        }
+
+        public void ShowBottomBar()
+        {
+            BottomBar.Visibility = Visibility.Visible;
+        }
+
+        public void HideBottomBar()
+        {
+            BottomBar.Visibility = Visibility.Collapsed;
+        }
+
+        public void ErroredBottomBarStyle()
+        {
+           BottomBar.Style = FindResource("ErroredBottomBarStyle") as Style;
+        }
+
+        public void RegularBottomBarStyle()
+        {
+            BottomBar.Style = FindResource("RegularBottomBarStyle") as Style;
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HideBottomBar();
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ShowBottomBar();
+        }
+
+        private void TextBox_SourceUpdated(object? sender, DataTransferEventArgs e)
+        {
+            RemoveErrorIndicator();
+
+            RegularBottomBarStyle();
+        }
+
+        private void OnValidationError(object? sender, ValidationErrorEventArgs e)
+        {
+            SetErrorIndicator(e.Error.ErrorContent);
+
+            ErroredBottomBarStyle();
+        }
+
+        private void SetErrorIndicator(object errorContent)
+        {
+            ValidationErrorIndicator.Visibility = Visibility.Visible;
+
+            var toolTip = new ToolTip();
+            toolTip.Content = errorContent;
+            ValidationErrorIndicator.ToolTip = toolTip;
+
+            HasError = true;
+        }
+
+
+        private void RemoveErrorIndicator()
+        {
+            ValidationErrorIndicator.Visibility = Visibility.Collapsed;
+            ValidationErrorIndicator.ToolTip = null;
+
+            HasError = false;
+        }
+
+        private void OnHasErrorChange()
+        {
+            HasErrorChangedEventHandler handler = HasErrorChangedEvent;
+            handler?.Invoke(this, new HasErorEventArgs { HasError = HasError });
+        }
+
+
         #endregion
     }
 

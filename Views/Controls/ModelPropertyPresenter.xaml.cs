@@ -31,8 +31,36 @@ namespace NaturalnieApp2.Views.Controls
             InitializeComponent();
         }
 
-        #region Dependency properties
+        #region Events
+        public class HasErorEventArgs : EventArgs
+        {
+            public bool HasError { get; set; }
+        }
+        public delegate void HasErrorChangedEventHandler(object sender, HasErorEventArgs e);
+        public event HasErrorChangedEventHandler HasErrorChangedEvent;
+        #endregion
 
+        #region Dependency properties
+        public bool HasError2
+        {
+            get { return (bool)GetValue(HasError2Property); }
+            set { SetValue(HasError2Property, value); }
+        }
+
+        // If field has error, this becomes true
+        public static readonly DependencyProperty HasError2Property =
+            DependencyProperty.Register("HasError2", typeof(bool), typeof(PropertyDisplay), new PropertyMetadata(false,
+                new PropertyChangedCallback(HasError2ChangeCallback)));
+
+        private static void HasError2ChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+           
+            ModelPropertyPresenter? localSource = source as ModelPropertyPresenter;
+
+            if (localSource == null) return;
+
+            localSource.OnHasErrorChange();
+        }
 
         public ObservableCollection<PropertyDisplayModel> PropertiesToDisplay
         {
@@ -105,6 +133,18 @@ namespace NaturalnieApp2.Views.Controls
             return model;
 
         }
+
+        private void OnHasErrorChange()
+        {
+            HasErrorChangedEventHandler handler = HasErrorChangedEvent;
+            handler?.Invoke(this, new HasErorEventArgs { HasError = HasError2 });
+        }
         #endregion
+
+        private void PropertyDisplay_HasErrorChangedEvent(object sender, PropertyDisplay.HasErorEventArgs e)
+        {
+            SetValue(HasError2Property, e.HasError);
+            OnHasErrorChange();
+        }
     }
 }

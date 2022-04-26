@@ -19,10 +19,20 @@
         </Grid.RowDefinitions>
 
 
-        <Button Grid.Row="1" Height="50" Width="100" Command="{Binding ButtonClick}">
+        <Button Grid.Row="0" Height="50" Width="100" Command="{Binding ButtonClick}">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers >
+                        <DataTrigger Binding="{Binding Path=HasError2, ElementName=PropertyPresenter}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Setter Property="Background" Value="Black"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
 
-        <c:ModelPropertyPresenter
+        <c:ModelPropertyPresenter x:Name="PropertyPresenter"
             Grid.Row="1"
             ModelToDisplay="{Binding DisplayModelTest}"/>
         <!--
