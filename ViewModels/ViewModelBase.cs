@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.ViewModels
 {
-    public class ViewModelBase : INotifyPropertyChanged, IViewScreen
+    public class NotifyPropertyChanged : INotifyPropertyChanged, IViewScreen
     {
         public INavigateToScreen ScreenDipatcher { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public void CloseScreen(ViewModelBase screenToClose)
+        public void CloseScreen(NotifyPropertyChanged screenToClose)
         {
             ScreenDipatcher.CloseScreen(screenToClose);
         }

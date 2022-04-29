@@ -10,6 +10,6 @@ namespace NaturalnieApp2.Interfaces
     public interface IViewScreen
     {
         public INavigateToScreen ScreenDipatcher { get; }
-        public void CloseScreen(ViewModelBase screenToClose);
+        public void CloseScreen(NotifyPropertyChanged screenToClose);
     }
 }

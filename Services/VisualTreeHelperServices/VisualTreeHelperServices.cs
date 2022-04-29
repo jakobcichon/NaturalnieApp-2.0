@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace NaturalnieApp2.Services.VisualTreeHelperServices
 {
-    public static class VisualTreeHelperServicescs
+    public static class VisualTreeHelperServices
     {
         public static List<T>? GetChildOfType<T>(DependencyObject depObj, int identLevel = 1)
         where T : DependencyObject
@@ -20,13 +20,11 @@ namespace NaturalnieApp2.Services.VisualTreeHelperServices
 
             if (depObj == null) return null;
 
-            int test = VisualTreeHelper.GetChildrenCount(depObj);
+            int childrenCount = VisualTreeHelper.GetChildrenCount(depObj);
 
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            for (int i = 0; i < childrenCount; i++)
             {
                 var child = VisualTreeHelper.GetChild(depObj, i);
-
-                var test2 = VisualTreeHelper.GetParent(child);
 
                 if (child is T) list.Add((T)child);
                 List<T>? childList = GetChildOfType<T>(child, identLevel);

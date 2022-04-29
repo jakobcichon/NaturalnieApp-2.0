@@ -23,7 +23,7 @@
             <Button.Style>
                 <Style TargetType="Button">
                     <Style.Triggers >
-                        <DataTrigger Binding="{Binding Path=HasError2, ElementName=PropertyPresenter}" Value="True">
+                        <DataTrigger Binding="{Binding Path=HasError, ElementName=PropertyPresenter}" Value="True">
                             <Setter Property="IsEnabled" Value="False"/>
                             <Setter Property="Background" Value="Black"/>
                         </DataTrigger>

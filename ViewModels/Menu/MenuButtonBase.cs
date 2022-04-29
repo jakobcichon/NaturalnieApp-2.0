@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace NaturalnieApp2.ViewModels.Menu
 {
-    internal abstract class MenuButtonBase: ViewModelBase, ICommand
+    internal abstract class MenuButtonBase: NotifyPropertyChanged, ICommand
     {
         public event EventHandler? CanExecuteChanged;
 

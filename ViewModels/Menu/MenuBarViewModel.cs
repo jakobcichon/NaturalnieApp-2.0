@@ -13,11 +13,11 @@ using System.Windows.Input;
 
 namespace NaturalnieApp2.ViewModels.Menu
 {
-    internal class MenuBarViewModel: ViewModelBase, ICommand
+    internal class MenuBarViewModel: NotifyPropertyChanged, ICommand
     {
         public MenuBarCollapseCommand ButtonCommand { get; set; }
 
-        public ViewModelBase LogoClickScreen { get; }
+        public NotifyPropertyChanged LogoClickScreen { get; }
 
         private INavigateToScreen ScreenDispatcher { get; }
 
@@ -31,7 +31,7 @@ namespace NaturalnieApp2.ViewModels.Menu
             set { _menuBarViews = value; }
         }
 
-        public MenuBarViewModel(ViewModelBase logoClickScreen, INavigateToScreen screenDispatcher)
+        public MenuBarViewModel(NotifyPropertyChanged logoClickScreen, INavigateToScreen screenDispatcher)
         {
             _menuBarViews = new ObservableCollection<MainButtonViewModel>();  
             LogoClickScreen = logoClickScreen;

@@ -30,7 +30,7 @@ using NaturalnieApp2.Views.Controls.Models;
 
 namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 {
-    internal class ExecuteInventoryViewModel: ViewModelBase, IBarcodeListner, IProductSelectorHandler, IDataGridAdditionalActionsEventHandler
+    internal class ExecuteInventoryViewModel: NotifyPropertyChanged, IBarcodeListner, IProductSelectorHandler, IDataGridAdditionalActionsEventHandler
     {
         public ExecuteInventoryViewModel()
         {

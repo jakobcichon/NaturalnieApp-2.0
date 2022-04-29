@@ -25,7 +25,7 @@ namespace NaturalnieApp2.Views
         private void ParentClass_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
 
-            List<Button>? childList = VisualTreeHelperServicescs.GetChildOfType<Button>(ParentClass, SearchIdentLevel);
+            List<Button>? childList = VisualTreeHelperServices.GetChildOfType<Button>(ParentClass, SearchIdentLevel);
             if(childList != null)
             {
                 foreach(Button button in childList)

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("NaturalnieApp2.Tests")]
 namespace NaturalnieApp2.ViewModels.SplashScreen
 {
-    internal class SplashScreenViewModel: ViewModelBase, ISplashScreen
+    internal class SplashScreenViewModel: NotifyPropertyChanged, ISplashScreen
     {
         private string actualText = "";
 

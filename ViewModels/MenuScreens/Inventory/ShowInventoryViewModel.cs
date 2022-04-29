@@ -16,7 +16,7 @@ using System.Windows;
 
 namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 {
-    internal class ShowInventoryViewModel:ViewModelBase
+    internal class ShowInventoryViewModel: NotifyPropertyChanged
     {
         public ShowInventoryViewModel()
         {

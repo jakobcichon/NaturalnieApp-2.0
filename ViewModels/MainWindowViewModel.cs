@@ -7,21 +7,21 @@ using System.Windows.Input;
 
 namespace NaturalnieApp2.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase, IHostScreen, IKeyDownListner
+    internal class MainWindowViewModel : NotifyPropertyChanged, IHostScreen, IKeyDownListner
     {
         private readonly BarcodeReader BarcodeListner;
 
-        private ViewModelBase _menuBarView;
+        private NotifyPropertyChanged _menuBarView;
 
-        public ViewModelBase MenuBarView
+        public NotifyPropertyChanged MenuBarView
         {
             get { return _menuBarView; }
             set { _menuBarView = value; }
         }
 
-        private ViewModelBase _currentView;
+        private NotifyPropertyChanged _currentView;
 
-        public ViewModelBase CurrentView
+        public NotifyPropertyChanged CurrentView
         {
             get { return _currentView; }
             set
@@ -31,7 +31,7 @@ namespace NaturalnieApp2.ViewModels
             }
         }
 
-        public MainWindowViewModel(ViewModelBase _menuBarViewModel, ViewModelBase initialScreen = null)
+        public MainWindowViewModel(NotifyPropertyChanged _menuBarViewModel, NotifyPropertyChanged initialScreen = null)
         {
             _menuBarView = _menuBarViewModel;
             CurrentView = initialScreen;
@@ -42,12 +42,12 @@ namespace NaturalnieApp2.ViewModels
             
         }
 
-        public void ShowScreen(ViewModelBase screenToShow)
+        public void ShowScreen(NotifyPropertyChanged screenToShow)
         {
             CurrentView = screenToShow;
         }
 
-        public void CloseViewModel(ViewModelBase screenToClose)
+        public void CloseViewModel(NotifyPropertyChanged screenToClose)
         {
 
         }

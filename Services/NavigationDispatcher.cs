@@ -26,7 +26,7 @@ namespace NaturalnieApp2.Stores
         }
 
  
-        public void Navigate(ViewModelBase screenToShow)
+        public void Navigate(NotifyPropertyChanged screenToShow)
         {
             _hostScreen.ShowScreen(screenToShow);
         }
@@ -41,7 +41,7 @@ namespace NaturalnieApp2.Stores
             throw new NotImplementedException();
         }
 
-        public void CloseScreen(ViewModelBase screenToClose)
+        public void CloseScreen(NotifyPropertyChanged screenToClose)
         {
             _hostScreen.CloseViewModel(screenToClose);
         }

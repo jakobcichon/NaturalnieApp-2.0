@@ -9,7 +9,7 @@ namespace NaturalnieApp2.Interfaces
 {
     public interface IHostScreen
     {
-        public void ShowScreen(ViewModelBase screenToShow);
-        public void CloseViewModel(ViewModelBase screenToClose);
+        public void ShowScreen(NotifyPropertyChanged screenToShow);
+        public void CloseViewModel(NotifyPropertyChanged screenToClose);
     }
 }

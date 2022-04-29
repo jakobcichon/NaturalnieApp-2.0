@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using NaturalnieApp2.Services.Attributes;
 using System.ComponentModel;
 using NaturalnieApp2.Attributes;
+using NaturalnieApp2.Services.VisualTreeHelperServices;
 
 namespace NaturalnieApp2.Views.Controls
 {
@@ -26,10 +27,14 @@ namespace NaturalnieApp2.Views.Controls
     /// </summary>
     public partial class ModelPropertyPresenter : UserControl
     {
+
+        private Dictionary<PropertyDisplay, bool?> propetiesDictionary = new Dictionary<PropertyDisplay, bool?>();
+
         public ModelPropertyPresenter()
         {
             InitializeComponent();
         }
+
 
         #region Events
         public class HasErorEventArgs : EventArgs
@@ -41,20 +46,23 @@ namespace NaturalnieApp2.Views.Controls
         #endregion
 
         #region Dependency properties
-        public bool HasError2
+        public bool HasError
         {
-            get { return (bool)GetValue(HasError2Property); }
-            set { SetValue(HasError2Property, value); }
+            get { return (bool)GetValue(HasErrorProperty); }
+            set 
+            { 
+                SetValue(HasErrorProperty, value); 
+            }
         }
 
         // If field has error, this becomes true
-        public static readonly DependencyProperty HasError2Property =
-            DependencyProperty.Register("HasError2", typeof(bool), typeof(PropertyDisplay), new PropertyMetadata(false,
-                new PropertyChangedCallback(HasError2ChangeCallback)));
+        public static readonly DependencyProperty HasErrorProperty =
+            DependencyProperty.Register("HasError", typeof(bool), typeof(ModelPropertyPresenter),
+                                new FrameworkPropertyMetadata(false, new PropertyChangedCallback(HasErrorChangeCallback)));
 
-        private static void HasError2ChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        private static void HasErrorChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
-           
+
             ModelPropertyPresenter? localSource = source as ModelPropertyPresenter;
 
             if (localSource == null) return;
@@ -69,9 +77,9 @@ namespace NaturalnieApp2.Views.Controls
         }
 
         // Properties to be displayed
-        public static readonly DependencyProperty PropertiesToDisplayProperty = DependencyProperty.Register("PropertiesToDisplay", 
-                typeof(ObservableCollection<PropertyDisplayModel>), 
-                typeof(ModelPropertyPresenter), 
+        public static readonly DependencyProperty PropertiesToDisplayProperty = DependencyProperty.Register("PropertiesToDisplay",
+                typeof(ObservableCollection<PropertyDisplayModel>),
+                typeof(ModelPropertyPresenter),
                 new PropertyMetadata(null));
 
         public IDisplayableModel? ModelToDisplay
@@ -81,7 +89,7 @@ namespace NaturalnieApp2.Views.Controls
         }
 
         public static readonly DependencyProperty ModelToDisplayProperty =
-            DependencyProperty.Register("ModelToDisplay", typeof(IDisplayableModel), typeof(ModelPropertyPresenter), 
+            DependencyProperty.Register("ModelToDisplay", typeof(IDisplayableModel), typeof(ModelPropertyPresenter),
                 new PropertyMetadata(null, new PropertyChangedCallback(ModelToDisplaySourceChanged)));
 
 
@@ -103,12 +111,12 @@ namespace NaturalnieApp2.Views.Controls
                 foreach (PropertyDescriptor property in properties)
                 {
                     PropertyDisplayModel? propertyToDisplay = ExtractDataFromProperty(property, ModelToDisplay);
-                    if (propertyToDisplay!= null) propertiesToDisplay.Add(propertyToDisplay);
+                    if (propertyToDisplay != null) propertiesToDisplay.Add(propertyToDisplay);
                 }
 
                 PropertiesToDisplay = propertiesToDisplay;
             }
-            
+
         }
 
         private PropertyDisplayModel? ExtractDataFromProperty(PropertyDescriptor property, object instance)
@@ -137,14 +145,47 @@ namespace NaturalnieApp2.Views.Controls
         private void OnHasErrorChange()
         {
             HasErrorChangedEventHandler handler = HasErrorChangedEvent;
-            handler?.Invoke(this, new HasErorEventArgs { HasError = HasError2 });
+            handler?.Invoke(this, new HasErorEventArgs { HasError = HasError });
         }
         #endregion
 
-        private void PropertyDisplay_HasErrorChangedEvent(object sender, PropertyDisplay.HasErorEventArgs e)
+        private bool CheckIfErrorExists()
         {
-            SetValue(HasError2Property, e.HasError);
+            if (propetiesDictionary.ContainsValue(true))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private void PropertyDisplay_HasErrorChanged(object sender, RoutedEventArgs e)
+        {
+            PropertyDisplay.HasErorEventArgs? localArgs = e as PropertyDisplay.HasErorEventArgs;
+            PropertyDisplay? localSender = sender as PropertyDisplay;
+
+            if (localArgs == null || localSender == null) return;
+
+            if (!propetiesDictionary.ContainsKey(localSender))
+            {
+                propetiesDictionary.Add(localSender, localArgs.HasError);
+            }
+            else
+            {
+                propetiesDictionary[localSender] = localArgs.HasError;
+            }
+
+            if (CheckIfErrorExists())
+            {
+                HasError = true;
+                OnHasErrorChange();
+                return;
+            }
+
+            HasError = false;
             OnHasErrorChange();
+            return;
+
         }
     }
-}
+ }

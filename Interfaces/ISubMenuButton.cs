@@ -11,7 +11,7 @@ namespace NaturalnieApp2.Interfaces
     internal interface ISubMenuButton
     {
         string DisplayText { get; }
-        ViewModelBase TargetScreen { get; set; }
+        NotifyPropertyChanged TargetScreen { get; set; }
         INavigateToScreen ScreenDispatcher { get; }
         IServiceProvider ScreenServiceProvider { get; }
 

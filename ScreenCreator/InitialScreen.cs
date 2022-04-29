@@ -15,7 +15,7 @@ namespace NaturalnieApp2.ScreenCreator
 
         public ICommand commad;
          
-        public Dictionary<string, ViewModelBase> buttonsList;
+        public Dictionary<string, NotifyPropertyChanged> buttonsList;
 
         public InitialScreen()
         {

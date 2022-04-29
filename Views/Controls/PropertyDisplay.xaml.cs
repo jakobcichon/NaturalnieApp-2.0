@@ -31,26 +31,52 @@ namespace NaturalnieApp2.Views.Controls
         }
 
         #region Events
-        public class HasErorEventArgs: EventArgs
+        public class HasErorEventArgs: RoutedEventArgs
         {
-            public bool HasError { get; set; }
+            HasErorEventArgs(): base()
+            {
+
+            }
+
+            public HasErorEventArgs(RoutedEvent routedEvent) : base(routedEvent: routedEvent)
+            {
+
+            }
+
+            public bool? HasError { get; set; }
         }
-        public delegate void HasErrorChangedEventHandler(object sender, HasErorEventArgs e);
-        public event HasErrorChangedEventHandler HasErrorChangedEvent;
+        //public delegate void HasErrorChangedEventHandler(object sender, HasErorEventArgs e);
+        //public event HasErrorChangedEventHandler HasErrorChangedEvent;
+
+        // Register a custom routed event using the Bubble routing strategy.
+        public static readonly RoutedEvent HasErrorChangedEvent = EventManager.RegisterRoutedEvent(
+            name: "HasErrorChanged",
+            routingStrategy: RoutingStrategy.Bubble,
+            handlerType: typeof(RoutedEventHandler),
+            ownerType: typeof(PropertyDisplay));
+
+        // Provide CLR accessors for assigning an event handler.
+        public event RoutedEventHandler HasErrorChanged
+        {
+            add { AddHandler(HasErrorChangedEvent, value); }
+            remove { RemoveHandler(HasErrorChangedEvent, value); }
+        }
         #endregion
+
+
 
         #region Dependency properties
 
-        public bool HasError
+        public bool? HasError
         {
-            get { return (bool)GetValue(HasErrorProperty); }
+            get { return (bool?)GetValue(HasErrorProperty); }
             set { SetValue(HasErrorProperty, value); }
         }
 
         // If field has error, this becomes true
         public static readonly DependencyProperty HasErrorProperty =
-            DependencyProperty.Register("HasError", typeof(bool), typeof(PropertyDisplay), new PropertyMetadata(false, 
-                new PropertyChangedCallback(HasErrorChangeCallback)));
+            DependencyProperty.Register("HasError", typeof(bool?), typeof(PropertyDisplay), 
+                new FrameworkPropertyMetadata(false, new PropertyChangedCallback(HasErrorChangeCallback)));
 
         private static void HasErrorChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
@@ -215,6 +241,7 @@ namespace NaturalnieApp2.Views.Controls
             SetErrorIndicator(e.Error.ErrorContent);
 
             ErroredBottomBarStyle();
+
         }
 
         private void SetErrorIndicator(object errorContent)
@@ -239,12 +266,21 @@ namespace NaturalnieApp2.Views.Controls
 
         private void OnHasErrorChange()
         {
-            HasErrorChangedEventHandler handler = HasErrorChangedEvent;
-            handler?.Invoke(this, new HasErorEventArgs { HasError = HasError });
+            // Create a RoutedEventArgs instance.
+            HasErorEventArgs routedEventArgs = new(routedEvent: HasErrorChangedEvent);
+            routedEventArgs.HasError = HasError;
+
+            // Raise the event, which will bubble up through the element tree.
+            RaiseEvent(routedEventArgs);
         }
 
 
         #endregion
+
+        private void PropertyDisplayUserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            OnHasErrorChange();
+        }
     }
 
 

@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace NaturalnieApp2.ViewModels.Controls
 {
-    internal class BottomButtonBarViewModel: ViewModelBase
+    internal class BottomButtonBarViewModel: NotifyPropertyChanged
     {
         private ObservableCollection<BottomButtonBarButton> _leftAlignedButtons;
 

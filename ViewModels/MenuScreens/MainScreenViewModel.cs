@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.ViewModels.MenuScreens
 {
-    internal class MainScreenViewModel: ViewModelBase
+    internal class MainScreenViewModel: NotifyPropertyChanged
     {
     }
 }

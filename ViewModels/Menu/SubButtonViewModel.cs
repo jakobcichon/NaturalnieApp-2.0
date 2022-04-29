@@ -17,7 +17,7 @@ namespace NaturalnieApp2.ViewModels.Menu
     
     internal class SubButtonViewModel: MenuButtonBase, ISubMenuButton
     {
-        public ViewModelBase TargetScreen { get; set; }
+        public NotifyPropertyChanged TargetScreen { get; set; }
 
         public string DisplayText { get; }
 
@@ -26,7 +26,7 @@ namespace NaturalnieApp2.ViewModels.Menu
         public IServiceProvider ScreenServiceProvider { get; }
 
 
-        public SubButtonViewModel(string displayText, ViewModelBase targetScreen, INavigateToScreen screenDispatcher)
+        public SubButtonViewModel(string displayText, NotifyPropertyChanged targetScreen, INavigateToScreen screenDispatcher)
         {
             TargetScreen = targetScreen;
             DisplayText = displayText;

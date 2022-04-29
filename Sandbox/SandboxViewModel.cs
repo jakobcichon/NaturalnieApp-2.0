@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace NaturalnieApp2.Sandbox
 {
-    internal class SandboxViewModel : ViewModelBase
+    internal class SandboxViewModel : NotifyPropertyChanged
     {
         private Visibility messageVisiability;
 
