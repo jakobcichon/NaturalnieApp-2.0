@@ -1,4 +1,5 @@
 ﻿using NaturalnieApp2.Attributes;
+using NaturalnieApp2.Interfaces;
 using NaturalnieApp2.Services.Attributes;
 using NaturalnieApp2.Views.Controls.Models;
 using System;
@@ -27,7 +28,7 @@ namespace NaturalnieApp2.Views.Controls
         public PropertyDisplay()
         {
             InitializeComponent();
-            SetContentForVisualPresenter(VisualPresenterType);
+            SetContentForVisualPresenter(ContentForVisualPresenter, VisualPresenterType);
         }
 
         #region Events
@@ -106,35 +107,25 @@ namespace NaturalnieApp2.Views.Controls
 
             if (localSource.PropertyValue != null)
             {
-                ValidationRule? validationRule = null;
-                string? propertyName = localSource.PropertyValue.Path?.Path.ToString();
-                if (propertyName != null)
-                {
-                    //Get validation class
-                    PropertyDescriptor? property = DisplayModelAttributesServices.GetPropertyByName(localSource.PropertyValue.Source.GetType(), propertyName);
-                    if (property != null) validationRule = DisplayModelAttributesServices.GetValidationClass(property);
-                }
-
-
-                localSource.PropertyValue.ValidatesOnDataErrors = true;
-                localSource.PropertyValue.NotifyOnValidationError = true;
-                localSource.PropertyValue.NotifyOnSourceUpdated = true;
-
-                localSource.PropertyValue.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged ;
-                if (validationRule != null) localSource.PropertyValue.ValidationRules.Add(validationRule);
+                AddValidationRule(localSource.PropertyValue);
             }
 
+            ContentControl contentControl = localSource.ContentForVisualPresenter;
 
-            if (localSource.ContentForVisualPresenter.Content?.GetType() == typeof(TextBox))
+            object content = contentControl.Content;
+
+            if (content == null) return;
+
+            if (content.GetType() == typeof(TextBox))
             {
-                TextBox? localContent = (localSource.ContentForVisualPresenter.Content as TextBox);
-                
-                if (localContent == null) return;
+                localSource.BindPropertyToTextBox(contentControl);
+                return;
+            }
 
-                localContent.SetBinding(TextBox.TextProperty, localSource.PropertyValue);
-
-                // Update source to force validation
-                localContent.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            if (content.GetType() == typeof(ComboBox))
+            {
+                localSource.BindPropertyToComboBox(contentControl);
+                return;
             }
         }
 
@@ -158,7 +149,7 @@ namespace NaturalnieApp2.Views.Controls
             PropertyDisplay? localSource = source as PropertyDisplay;
             if (localSource == null) return;
 
-            localSource.SetContentForVisualPresenter((VisualRepresenationType)e.NewValue);
+            localSource.SetContentForVisualPresenter(localSource.ContentForVisualPresenter, (VisualRepresenationType)e.NewValue);
         }
 
         public VisualRepresenationType VisualPresenterType
@@ -171,15 +162,51 @@ namespace NaturalnieApp2.Views.Controls
 
 
         #region Private methods
-        private void SetContentForVisualPresenter(VisualRepresenationType type)
+        private static void AddHintList(Binding property)
         {
-            if (type == VisualRepresenationType.Field)
+            IHintListProvider? hintListProvider = null;
+            List<String>? hintList = null;
+            string? propertyName = property.Path?.Path.ToString();
+            if (propertyName != null)
             {
-                CreateTextBox();
+                //Get validation class
+                PropertyDescriptor? propertyDesc = DisplayModelAttributesServices.GetPropertyByName(property.Source.GetType(), propertyName);
+                if (propertyDesc != null) hintListProvider = DisplayModelAttributesServices.GetHintListProvider(propertyDesc);
+            }
+        }
+        private static void AddValidationRule(Binding property)
+        {
+            ValidationRule? validationRule = null;
+            string? propertyName = property.Path?.Path.ToString();
+            if (propertyName != null)
+            {
+                //Get validation class
+                PropertyDescriptor? propertyDesc = DisplayModelAttributesServices.GetPropertyByName(property.Source.GetType(), propertyName);
+                if (propertyDesc != null) validationRule = DisplayModelAttributesServices.GetValidationClass(propertyDesc);
+            }
+
+
+            property.ValidatesOnDataErrors = true;
+            property.NotifyOnValidationError = true;
+            property.NotifyOnSourceUpdated = true;
+
+            property.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            if (validationRule != null) property.ValidationRules.Add(validationRule);
+        }
+        private void SetContentForVisualPresenter(ContentControl targetControl, VisualRepresenationType type)
+        {
+            switch (type)
+            {
+                case VisualRepresenationType.Field:
+                    CreateTextBox(targetControl);
+                    break;
+                case VisualRepresenationType.List:
+                    CreateComboBox(targetControl);
+                    break;
             }
         }
 
-        private void CreateTextBox()
+        private void CreateTextBox(ContentControl targetControl)
         {
             TextBox textBox = new();
 
@@ -195,10 +222,39 @@ namespace NaturalnieApp2.Views.Controls
             textBox.GotFocus += TextBox_GotFocus;
             textBox.LostFocus += TextBox_LostFocus;
 
-            // Asigne object
-            ContentForVisualPresenter.Content = textBox;
+            // Assigne object
+            targetControl.Content = textBox;
         }
 
+        private void CreateComboBox(ContentControl targetControl)
+        {
+            ComboBox comboBox = new ComboBox();
+
+            // Customize appearance
+            comboBox.Style = (this.FindResource("SmallerFontStyle") as Style);
+
+            // Assigne object
+            targetControl.Content = comboBox;
+        }
+
+        private void BindPropertyToTextBox(ContentControl contentControl)
+        {
+
+            TextBox? localContent = (contentControl.Content as TextBox);
+
+            if (localContent == null) return;
+
+            localContent.SetBinding(TextBox.TextProperty, PropertyValue);
+
+            // Update source to force validation
+            localContent.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        }
+
+        private void BindPropertyToComboBox(ContentControl contentControl)
+        {
+
+            
+        }
         public void ShowBottomBar()
         {
             BottomBar.Visibility = Visibility.Visible;

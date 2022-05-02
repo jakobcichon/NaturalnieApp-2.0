@@ -58,7 +58,7 @@ namespace NaturalnieApp2.Models
 
         [NameToBeDisplayed("Wartość podatku")]
         [VisibilityProperties(true, true)]
-        [VisualRepresenation(VisualRepresenationType.Field)]
+        [VisualRepresenation(VisualRepresenationType.List)]
         public int TaxValue { get; set; }
 
         [NameToBeDisplayed("Marża")]

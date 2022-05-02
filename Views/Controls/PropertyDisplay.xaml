@@ -99,7 +99,7 @@
 
             <ContentControl x:Name="ContentForVisualPresenter" 
                         Grid.Row="2"/>
-
+            <ComboBox Grid.Row="2"/>
 
             <Image x:Name="ValidationErrorIndicator" 
                    Grid.Column="1"
