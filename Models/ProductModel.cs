@@ -10,6 +10,7 @@ using static NaturalnieApp2.Attributes.DisplayModelAttributes;
 using System.ComponentModel;
 using NaturalnieApp2.Validators.StringValidations;
 using System.Windows.Controls;
+using NaturalnieApp2.Interfaces;
 
 namespace NaturalnieApp2.Models
 {
@@ -58,7 +59,7 @@ namespace NaturalnieApp2.Models
 
         [NameToBeDisplayed("Wartość podatku")]
         [VisibilityProperties(true, true)]
-        [VisualRepresenation(VisualRepresenationType.List)]
+        [VisualRepresenation(VisualRepresenationType.List, listProvider: new TestProvider())]
         public int TaxValue { get; set; }
 
         [NameToBeDisplayed("Marża")]
@@ -98,7 +99,7 @@ namespace NaturalnieApp2.Models
 
         public ProductModel()
         {
-
+            
         }
 
         public ProductModel(string supplierName, 
@@ -136,5 +137,13 @@ namespace NaturalnieApp2.Models
             CanBeRemovedFromCashRegister = canBeRemovedFromCashRegister;
         }
 
+    }
+
+    class TestProvider : IHintListProvider
+    {
+        public List<string> GetData()
+        {
+            return new List<string> { "1", "2", "3", "4", "5", "6" };
+        }
     }
 }

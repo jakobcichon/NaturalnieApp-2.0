@@ -31,6 +31,10 @@ namespace NaturalnieApp2.Views.Controls
             SetContentForVisualPresenter(ContentForVisualPresenter, VisualPresenterType);
         }
 
+        #region Private fields
+        List<string>? hintList = null;
+        #endregion
+
         #region Events
         public class HasErorEventArgs: RoutedEventArgs
         {
@@ -129,6 +133,17 @@ namespace NaturalnieApp2.Views.Controls
             }
         }
 
+        public List<string> HintItemsSource
+        {
+            get { return (List<string>)GetValue(HintItemsSourceProperty); }
+            set { SetValue(HintItemsSourceProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HintItemsSource.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HintItemsSourceProperty =
+            DependencyProperty.Register("HintItemsSource", typeof(List<string>), typeof(PropertyDisplay), new PropertyMetadata(null));
+
+
         // Header Text
         public static readonly DependencyProperty HeaderTextProperty = DependencyProperty.Register(name: "HeaderText", typeof(string), 
             typeof(PropertyDisplay), new PropertyMetadata(null));
@@ -162,10 +177,9 @@ namespace NaturalnieApp2.Views.Controls
 
 
         #region Private methods
-        private static void AddHintList(Binding property)
+        private static IHintListProvider? GetHintListProvider(Binding property)
         {
             IHintListProvider? hintListProvider = null;
-            List<String>? hintList = null;
             string? propertyName = property.Path?.Path.ToString();
             if (propertyName != null)
             {
@@ -173,6 +187,8 @@ namespace NaturalnieApp2.Views.Controls
                 PropertyDescriptor? propertyDesc = DisplayModelAttributesServices.GetPropertyByName(property.Source.GetType(), propertyName);
                 if (propertyDesc != null) hintListProvider = DisplayModelAttributesServices.GetHintListProvider(propertyDesc);
             }
+
+            return hintListProvider;
         }
         private static void AddValidationRule(Binding property)
         {
@@ -252,8 +268,21 @@ namespace NaturalnieApp2.Views.Controls
 
         private void BindPropertyToComboBox(ContentControl contentControl)
         {
+            ComboBox? localContent = (contentControl.Content as ComboBox);
 
-            
+            if (localContent == null) return;
+
+            Binding binding = new Binding { Source = this, Path = new PropertyPath("HintItemsSource") };
+            localContent.SetBinding(ComboBox.ItemsSourceProperty, binding);
+            localContent.SetBinding(ComboBox.SelectedItemProperty, PropertyValue);
+
+
+            HintItemsSource = GetHintListProvider(PropertyValue)?.GetData();
+
+            // Update source to force validation
+            /*            localContent.GetBindingExpression(TextBox.TextProperty).UpdateSource();*/
+
+
         }
         public void ShowBottomBar()
         {
