@@ -11,10 +11,11 @@ using System.ComponentModel;
 using NaturalnieApp2.Validators.StringValidations;
 using System.Windows.Controls;
 using NaturalnieApp2.Interfaces;
+using NaturalnieApp2.Services.Database.Providers;
 
 namespace NaturalnieApp2.Models
 {
-    internal class ProductModel: ModelBase
+    internal class ProductModel: ModelBase, IHintListProvider
     {
         [NameToBeDisplayed("Nazwa dostawcy")]
         [VisibilityProperties(true, true)]
@@ -59,7 +60,7 @@ namespace NaturalnieApp2.Models
 
         [NameToBeDisplayed("Wartość podatku")]
         [VisibilityProperties(true, true)]
-        [VisualRepresenation(VisualRepresenationType.List, listProvider: new TestProvider())]
+        [VisualRepresenation(VisualRepresenationType.List)]
         public int TaxValue { get; set; }
 
         [NameToBeDisplayed("Marża")]
@@ -99,8 +100,14 @@ namespace NaturalnieApp2.Models
 
         public ProductModel()
         {
-            
         }
+
+        public ProductModel(TaxProvider taxProvider)
+        {
+            this.taxProvider = taxProvider ?? throw new ArgumentNullException(nameof(taxProvider));
+        }
+
+        private readonly TaxProvider? taxProvider = null;
 
         public ProductModel(string supplierName, 
             int elzabProductId, 
@@ -137,13 +144,37 @@ namespace NaturalnieApp2.Models
             CanBeRemovedFromCashRegister = canBeRemovedFromCashRegister;
         }
 
+        public List<object> GetHintList(string propertyName)
+        {
+            List<object> hintList = new List<object>();
+
+            switch(propertyName)
+            {
+                case "TaxValue":
+                    if (taxProvider != null)
+                    {
+                        try
+                        {
+                            /*                            hintList = taxProvider.GetAllTaxEnts().
+                                                        Select(taxEnt => taxEnt.TaxValue.ToString()).ToList();*/
+                            hintList = new List<object>() { 0,5,8,23 };
+                        }
+                        catch (Exception ex)
+                        {
+                            break;
+                        }
+                        
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            return hintList;
+        }
+
     }
 
-    class TestProvider : IHintListProvider
-    {
-        public List<string> GetData()
-        {
-            return new List<string> { "1", "2", "3", "4", "5", "6" };
-        }
-    }
 }

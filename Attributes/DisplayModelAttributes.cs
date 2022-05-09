@@ -1,6 +1,7 @@
 ﻿using NaturalnieApp2.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
 namespace NaturalnieApp2.Attributes
@@ -44,48 +45,10 @@ namespace NaturalnieApp2.Attributes
         [AttributeUsage(AttributeTargets.Property)]
         internal sealed class VisualRepresenation : Attribute
         {
-            private IHintListProvider? hintListProvider = null;
-            private int? defaultIndex = null;
-            private object? defaultElement = null;
-
             public VisualRepresenationType Type { get; }
             public VisualRepresenation(VisualRepresenationType type)
             {
                 Type = type;
-
-                if (type == VisualRepresenationType.List)
-                {
-                    throw new Exception("Selecting List type for visual presenter, IHintListPRovider must be assigned");
-                }
-            }
-
-            public VisualRepresenation(VisualRepresenationType type, IHintListProvider listProvider, int defaultIndex = 0)
-            {
-                Type = type;
-                hintListProvider = listProvider;
-                this.defaultIndex = defaultIndex;
-            }
-
-            public VisualRepresenation(VisualRepresenationType type, IHintListProvider listProvider, object defaultSelection)
-            {
-                Type = type;
-                hintListProvider = listProvider;
-                this.defaultElement = defaultSelection;
-            }
-
-            public IHintListProvider? GetHintListProvider()
-            {
-                return hintListProvider;
-            }
-
-            public int? GetHintListDefaultIndex()
-            {
-                return defaultIndex;
-            }
-
-            public object? GetHintListDefaultElement()
-            {
-                return defaultElement;
             }
         }
 
@@ -110,8 +73,9 @@ namespace NaturalnieApp2.Attributes
 
     public enum VisualRepresenationType
     {
+        Default = -1,
         List,
         Field,
-        LongField
+        LongField,
     }
 }

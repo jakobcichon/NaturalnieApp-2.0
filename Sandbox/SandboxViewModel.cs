@@ -1,5 +1,6 @@
 ﻿using NaturalnieApp2.Controls.NaturalnieMessageBox;
 using NaturalnieApp2.Models;
+using NaturalnieApp2.Services.Database.Providers;
 using NaturalnieApp2.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -67,11 +68,12 @@ namespace NaturalnieApp2.Sandbox
             MessageVisiability = Visibility.Visible;
         }
 
-        public SandboxViewModel()
+        public SandboxViewModel(TaxProvider taxProvider)
         {
             MessageVisiability = Visibility.Visible;
-            DisplayModelTest = new ProductModel();
+            DisplayModelTest = new ProductModel(taxProvider);
             DisplayModelTest.ProductName = "Test name of product";
+            DisplayModelTest.TaxValue = 8;
         }
 
 

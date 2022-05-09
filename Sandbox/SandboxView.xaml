@@ -9,6 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Style="{StaticResource GeneralBackgroundColor}">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -32,7 +33,7 @@
             </Button.Style>
         </Button>
 
-        <c:ModelPropertyPresenter x:Name="PropertyPresenter"
+        <c:ModelPropertyPresenter x:Name="PropertyPresenter" Margin="2 0 2 0"
             Grid.Row="1"
             ModelToDisplay="{Binding DisplayModelTest}"/>
         <!--

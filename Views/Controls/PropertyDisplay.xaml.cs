@@ -5,6 +5,7 @@ using NaturalnieApp2.Views.Controls.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,17 +29,13 @@ namespace NaturalnieApp2.Views.Controls
         public PropertyDisplay()
         {
             InitializeComponent();
-            SetContentForVisualPresenter(ContentForVisualPresenter, VisualPresenterType);
+            RemoveErrorIndicator();
         }
 
-        #region Private fields
-        List<string>? hintList = null;
-        #endregion
-
         #region Events
-        public class HasErorEventArgs: RoutedEventArgs
+        public class HasErorEventArgs : RoutedEventArgs
         {
-            HasErorEventArgs(): base()
+            HasErorEventArgs() : base()
             {
 
             }
@@ -50,8 +47,8 @@ namespace NaturalnieApp2.Views.Controls
 
             public bool? HasError { get; set; }
         }
-        //public delegate void HasErrorChangedEventHandler(object sender, HasErorEventArgs e);
-        //public event HasErrorChangedEventHandler HasErrorChangedEvent;
+
+        #region HasError Routed Event
 
         // Register a custom routed event using the Bubble routing strategy.
         public static readonly RoutedEvent HasErrorChangedEvent = EventManager.RegisterRoutedEvent(
@@ -68,10 +65,11 @@ namespace NaturalnieApp2.Views.Controls
         }
         #endregion
 
-
+        #endregion
 
         #region Dependency properties
 
+        #region HasError Dependency prop
         public bool? HasError
         {
             get { return (bool?)GetValue(HasErrorProperty); }
@@ -80,18 +78,42 @@ namespace NaturalnieApp2.Views.Controls
 
         // If field has error, this becomes true
         public static readonly DependencyProperty HasErrorProperty =
-            DependencyProperty.Register("HasError", typeof(bool?), typeof(PropertyDisplay), 
+            DependencyProperty.Register("HasError", typeof(bool?), typeof(PropertyDisplay),
                 new FrameworkPropertyMetadata(false, new PropertyChangedCallback(HasErrorChangeCallback)));
 
         private static void HasErrorChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
             PropertyDisplay? localSource = source as PropertyDisplay;
 
-           if (localSource == null) return;
+            if (localSource == null) return;
 
             localSource.OnHasErrorChange();
         }
+        #endregion
 
+        #region VisualPresenterType Dependency prop
+        public VisualRepresenationType VisualPresenterType
+        {
+            get => (VisualRepresenationType)GetValue(VisualPresenterTypeProperty);
+            set => SetValue(VisualPresenterTypeProperty, value);
+
+        }
+
+        // Visual presenter type
+        public static readonly DependencyProperty VisualPresenterTypeProperty = DependencyProperty.Register(name: "VisualPresenterType", typeof(VisualRepresenationType),
+        typeof(PropertyDisplay), new FrameworkPropertyMetadata(defaultValue: VisualRepresenationType.Default,
+            new PropertyChangedCallback(VisualPresenterTypeChangeCallback)));
+
+        private static void VisualPresenterTypeChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+            PropertyDisplay? localSource = source as PropertyDisplay;
+            if (localSource == null) return;
+
+            localSource.SetContentForVisualPresenter(localSource.ContentForVisualPresenter, (VisualRepresenationType)e.NewValue);
+        }
+        #endregion
+
+        #region PropertyValue Dependency prop
         public Binding PropertyValue
         {
             get { return (Binding)GetValue(PropertyValueProperty); }
@@ -100,7 +122,7 @@ namespace NaturalnieApp2.Views.Controls
 
         // Property value
         public static readonly DependencyProperty PropertyValueProperty =
-            DependencyProperty.Register("PropertyValue", typeof(Binding), typeof(PropertyDisplay), new PropertyMetadata(null, 
+            DependencyProperty.Register("PropertyValue", typeof(Binding), typeof(PropertyDisplay), new PropertyMetadata(null,
                 new PropertyChangedCallback(PropertyValueChangeCallback)));
 
         private static void PropertyValueChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
@@ -128,64 +150,48 @@ namespace NaturalnieApp2.Views.Controls
 
             if (content.GetType() == typeof(ComboBox))
             {
-                localSource.BindPropertyToComboBox(contentControl);
+                localSource.BindPropertyToComboBox(contentControl, e.Property.Name);
                 return;
             }
         }
+        #endregion
 
-        public List<string> HintItemsSource
+        #region HintItemsSource Dependency prop
+        public List<object>? HintItemsSource
         {
-            get { return (List<string>)GetValue(HintItemsSourceProperty); }
+            get { return (List<object>?)GetValue(HintItemsSourceProperty); }
             set { SetValue(HintItemsSourceProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for HintItemsSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty HintItemsSourceProperty =
-            DependencyProperty.Register("HintItemsSource", typeof(List<string>), typeof(PropertyDisplay), new PropertyMetadata(null));
+            DependencyProperty.Register("HintItemsSource", typeof(List<object>), typeof(PropertyDisplay), new PropertyMetadata(null));
+        #endregion
 
-
-        // Header Text
-        public static readonly DependencyProperty HeaderTextProperty = DependencyProperty.Register(name: "HeaderText", typeof(string), 
-            typeof(PropertyDisplay), new PropertyMetadata(null));
-
+        #region HeaderText Dependency prop
         public string HeaderText
         {
             get => (string)GetValue(HeaderTextProperty);
             set => SetValue(HeaderTextProperty, value);
         }
 
-        // Visual presenter type
-        public static readonly DependencyProperty VisualPresenterTypeProperty = DependencyProperty.Register(name: "VisualPresenterType", typeof(VisualRepresenationType),
-        typeof(PropertyDisplay), new FrameworkPropertyMetadata(defaultValue: VisualRepresenationType.Field,
-            new PropertyChangedCallback(VisualPresenterTypeChangeCallback)));
-
-        private static void VisualPresenterTypeChangeCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
-        {
-            PropertyDisplay? localSource = source as PropertyDisplay;
-            if (localSource == null) return;
-
-            localSource.SetContentForVisualPresenter(localSource.ContentForVisualPresenter, (VisualRepresenationType)e.NewValue);
-        }
-
-        public VisualRepresenationType VisualPresenterType
-        {
-            get => (VisualRepresenationType)GetValue(VisualPresenterTypeProperty);
-            set => SetValue(VisualPresenterTypeProperty, value);
-
-        }
+        // Header Text
+        public static readonly DependencyProperty HeaderTextProperty = DependencyProperty.Register(name: "HeaderText", typeof(string),
+            typeof(PropertyDisplay), new PropertyMetadata(null));
         #endregion
 
+        #endregion
 
         #region Private methods
+
         private static IHintListProvider? GetHintListProvider(Binding property)
         {
             IHintListProvider? hintListProvider = null;
             string? propertyName = property.Path?.Path.ToString();
             if (propertyName != null)
             {
-                //Get validation class
-                PropertyDescriptor? propertyDesc = DisplayModelAttributesServices.GetPropertyByName(property.Source.GetType(), propertyName);
-                if (propertyDesc != null) hintListProvider = DisplayModelAttributesServices.GetHintListProvider(propertyDesc);
+                // Get IHintListProvider
+                hintListProvider = property.Source as IHintListProvider;
             }
 
             return hintListProvider;
@@ -198,16 +204,19 @@ namespace NaturalnieApp2.Views.Controls
             {
                 //Get validation class
                 PropertyDescriptor? propertyDesc = DisplayModelAttributesServices.GetPropertyByName(property.Source.GetType(), propertyName);
-                if (propertyDesc != null) validationRule = DisplayModelAttributesServices.GetValidationClass(propertyDesc);
+                if (propertyDesc != null)
+                {
+                    validationRule = DisplayModelAttributesServices.GetValidationClass(propertyDesc);
+                }
+
+                property.ValidatesOnDataErrors = true;
+                property.NotifyOnValidationError = true;
+                property.NotifyOnSourceUpdated = true;
+                property.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                if (validationRule != null) property.ValidationRules.Add(validationRule);
             }
 
-
-            property.ValidatesOnDataErrors = true;
-            property.NotifyOnValidationError = true;
-            property.NotifyOnSourceUpdated = true;
-
-            property.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-            if (validationRule != null) property.ValidationRules.Add(validationRule);
         }
         private void SetContentForVisualPresenter(ContentControl targetControl, VisualRepresenationType type)
         {
@@ -244,10 +253,9 @@ namespace NaturalnieApp2.Views.Controls
 
         private void CreateComboBox(ContentControl targetControl)
         {
-            ComboBox comboBox = new ComboBox();
+            ComboBox comboBox = new();
 
-            // Customize appearance
-            comboBox.Style = (this.FindResource("SmallerFontStyle") as Style);
+            comboBox.IsSynchronizedWithCurrentItem = true;
 
             // Assigne object
             targetControl.Content = comboBox;
@@ -266,22 +274,17 @@ namespace NaturalnieApp2.Views.Controls
             localContent.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
 
-        private void BindPropertyToComboBox(ContentControl contentControl)
+        private void BindPropertyToComboBox(ContentControl contentControl, string propertyName)
         {
             ComboBox? localContent = (contentControl.Content as ComboBox);
 
             if (localContent == null) return;
 
+            HintItemsSource = GetHintListProvider(PropertyValue)?.GetHintList(PropertyValue.Path.Path);
+
             Binding binding = new Binding { Source = this, Path = new PropertyPath("HintItemsSource") };
             localContent.SetBinding(ComboBox.ItemsSourceProperty, binding);
-            localContent.SetBinding(ComboBox.SelectedItemProperty, PropertyValue);
-
-
-            HintItemsSource = GetHintListProvider(PropertyValue)?.GetData();
-
-            // Update source to force validation
-            /*            localContent.GetBindingExpression(TextBox.TextProperty).UpdateSource();*/
-
+            localContent.SetBinding(ComboBox.SelectedValueProperty, PropertyValue);
 
         }
         public void ShowBottomBar()
@@ -296,7 +299,7 @@ namespace NaturalnieApp2.Views.Controls
 
         public void ErroredBottomBarStyle()
         {
-           BottomBar.Style = FindResource("ErroredBottomBarStyle") as Style;
+            BottomBar.Style = FindResource("ErroredBottomBarStyle") as Style;
         }
 
         public void RegularBottomBarStyle()
@@ -367,6 +370,4 @@ namespace NaturalnieApp2.Views.Controls
             OnHasErrorChange();
         }
     }
-
-
 }

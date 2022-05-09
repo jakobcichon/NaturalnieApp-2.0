@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NaturalnieApp2.Interfaces
+namespace NaturalnieApp2.Interfaces.Database
 {
-    public interface IHintListProvider
+    internal interface IModelProvider
     {
-        List<object> GetHintList(string propertyName);
+        List<T> GetAll<T>() where T : class;
     }
 }

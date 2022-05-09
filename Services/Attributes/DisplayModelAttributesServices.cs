@@ -183,20 +183,5 @@ namespace NaturalnieApp2.Services.Attributes
         {
             return property.Attributes.OfType<DisplayModelAttributes.PropertyValidationRule>()?.FirstOrDefault()?.GetValidationClass();
         }
-
-        public static IHintListProvider? GetHintListProvider(PropertyDescriptor property)
-        {
-            return property.Attributes.OfType<DisplayModelAttributes.VisualRepresenation>()?.FirstOrDefault()?.GetHintListProvider();
-        }
-
-        public static int? GetHintListDefaultIndex(PropertyDescriptor property)
-        {
-            return property.Attributes.OfType<DisplayModelAttributes.VisualRepresenation>()?.FirstOrDefault()?.GetHintListDefaultIndex();
-        }
-
-        public static object? GetHintListDefaultElement(PropertyDescriptor property)
-        {
-            return property.Attributes.OfType<DisplayModelAttributes.VisualRepresenation>()?.FirstOrDefault()?.GetHintListDefaultElement();
-        }
     }
 }

@@ -234,7 +234,7 @@ namespace NaturalnieApp2
             services.AddSingleton<ShowInventoryViewModel>();
 
             //Singleton for the SandboxViewModel
-            services.AddSingleton<SandboxViewModel>();
+            services.AddSingleton<SandboxViewModel>(s => new SandboxViewModel(s.GetRequiredService<TaxProvider>()));
 
             //Singleton for the NavigationDispatcher
             services.AddSingleton(s => new NavigationDispatcher());
@@ -258,6 +258,9 @@ namespace NaturalnieApp2
 
             //Transient for the StockProvider
             services.AddTransient<StockProvider>(s => new StockProvider(s.GetRequiredService<ShopContext>()));
+
+            //Transient for the TaxProvider
+            services.AddTransient<TaxProvider>(s => new TaxProvider(s.GetRequiredService<ShopContext>()));
 
             //Transient for the InventoryProvider
             services.AddTransient<InventoryProvider>(s => new InventoryProvider(s.GetRequiredService<ShopContext>()));

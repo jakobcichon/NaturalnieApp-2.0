@@ -10,7 +10,7 @@
              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
              Loaded="PropertyDisplayUserControl_Loaded"
              >
-    
+
 
     <UserControl.Resources>
         <Style x:Key="BasicAppearenceStyle" TargetType="Control">
@@ -62,6 +62,7 @@
         <Style x:Key="RegularBottomBarStyle" TargetType="Canvas">
             <Setter Property="Background" Value="Blue"/>
         </Style>
+
     </UserControl.Resources>
 
     <Border CornerRadius="5" Background="AliceBlue">
@@ -99,7 +100,6 @@
 
             <ContentControl x:Name="ContentForVisualPresenter" 
                         Grid.Row="2"/>
-            <ComboBox Grid.Row="2"/>
 
             <Image x:Name="ValidationErrorIndicator" 
                    Grid.Column="1"
