@@ -2,16 +2,32 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     >
 
-   
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Views/Resources/ColorResources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+
     <Style x:Key="GeneralBackgroundColor" TargetType="UserControl">
-        <Setter Property="Background" Value="#FFEADFCB"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource GeneralBackgorundColor}"/>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="BottomButtonBarStyle" TargetType="UserControl">
-        <Setter Property="Background" Value="#FFE6D2AE"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource NaturalnieHoneyColor}"/>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="HeaderStyle" TargetType="Border">
-        <Setter Property="Background" Value="#fede84"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource NaturalnieSandColor}"/>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

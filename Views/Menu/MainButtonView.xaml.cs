@@ -20,9 +20,26 @@ namespace NaturalnieApp2.Views.Menu
     /// </summary>
     public partial class MainButtonView : UserControl
     {
+        private static Button lastSelectedButton;
+
         public MainButtonView()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button? localButton = sender as Button;
+            if (localButton == null) return;
+
+            if (lastSelectedButton != null)
+            {
+                lastSelectedButton.Style = FindResource("UnselectedButtonStyle") as Style;
+            }
+
+            lastSelectedButton = localButton;
+            lastSelectedButton.Style = FindResource("SelectedButtonStyle") as Style;
+
         }
     }
 }

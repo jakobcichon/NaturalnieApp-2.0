@@ -9,4 +9,14 @@
     <Color x:Key="NaturalnieGreenBright">
         #FF5FA992
     </Color>
+    <Color x:Key="GeneralBackgorundColor">
+        #FFEADFCB
+    </Color>
+    <Color x:Key="NaturalnieHoneyColor">
+        #FFE6D2AE
+    </Color>
+    <Color x:Key="NaturalnieSandColor">
+        #FFfede84
+    </Color>
+
 </ResourceDictionary>

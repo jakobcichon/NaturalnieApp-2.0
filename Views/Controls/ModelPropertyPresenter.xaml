@@ -16,48 +16,48 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-        <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3"/>
+        </Grid.RowDefinitions>
+        
 
-        <Border Grid.Column="0" BorderBrush="#FFE6D2AE"  BorderThickness="1" Margin="1 1 5 1" >
-            <Border.Effect>
-                <DropShadowEffect Color="{StaticResource NaturalnieGreenBright}" BlurRadius="5" ShadowDepth="5" Direction="0" RenderingBias="Quality">
-                    
-                </DropShadowEffect>
-            </Border.Effect>
-        </Border>
-        <ItemsControl Grid.Column="0" x:Name="ItemsControlPanel" Margin="20"
-            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-            Path=PropertiesToDisplay}"
-                      
-                      >
-                <ItemsControl.ItemTemplate >
-                    <DataTemplate>
-                        <local:PropertyDisplay HasErrorChanged="PropertyDisplay_HasErrorChanged"
-                                               HeaderText="{Binding Header}" 
-                                               VisualPresenterType="{Binding Type}"
-                                               PropertyValue="{Binding Value}"
-                                               Margin="5"
-                                               />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Margin="2" ScrollViewer.CanContentScroll="True" >
+        <local:ElementDeliminer Grid.Row="0"/>
+        <local:ElementDeliminer Grid.Row="2"/>
 
-                        </WrapPanel>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.Template>
-                    <ControlTemplate>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" >
+        <ItemsControl Grid.Row="1" x:Name="ItemsControlPanel" Margin="20"
+        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+        Path=PropertiesToDisplay}">
+            <ItemsControl.ItemTemplate >
+                <DataTemplate>
+                    <local:PropertyDisplay HasErrorChanged="PropertyDisplay_HasErrorChanged"
+                                            HeaderText="{Binding Header}" 
+                                            VisualPresenterType="{Binding Type}"
+                                            PropertyValue="{Binding Value}"
+                                            Margin="5"
+                                            />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Margin="2" ScrollViewer.CanContentScroll="True" >
+
+                    </WrapPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" >
                         <ItemsPresenter/>
                     </ScrollViewer>
-                    </ControlTemplate>
-                </ItemsControl.Template>
-            </ItemsControl>
-        </Grid>
-    
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
+    </Grid>
+
 </UserControl>
