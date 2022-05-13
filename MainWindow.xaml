@@ -11,6 +11,7 @@
         <!-- Column and row definition-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="40" Width="auto" MaxWidth="300"/>
+            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="3" />
             <ColumnDefinition MinWidth="400" Width="5*"/>
         </Grid.ColumnDefinitions>
@@ -21,14 +22,30 @@
         </Grid.RowDefinitions>
 
         <!-- Content control-->
-        <ContentControl Grid.Row="1" Grid.Column="0" 
+        <ContentControl x:Name="MenuBarButtons" Grid.Row="1" Grid.Column="0" 
                         Content="{Binding MenuBarView}"/>
-        <ContentControl Grid.Row="1" Grid.Column="2" 
+        <ContentControl Grid.Row="1" Grid.Column="3" 
                         Content="{Binding CurrentView}"/>
-        
+
         <!-- Slider -->
         <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" ResizeDirection="Columns" 
                 HorizontalAlignment="Stretch" Padding="0"/>
+
+        <Button x:Name="SliderButton" Grid.Column="1" Grid.RowSpan="3">
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Click">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="MenuBarButtons"
+                                             Storyboard.TargetProperty="Width"
+                                             From="{Binding ElementName=MenuBarButtons, 
+                                Path=ActualWidth}" 
+                                             To="40" Duration="0:0:1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
 
     </Grid>
 

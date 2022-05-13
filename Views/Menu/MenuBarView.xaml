@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:NaturalnieApp2.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="300" MaxWidth="300"
-             Style="{StaticResource GeneralBackgroundColor}">
+             Style="{StaticResource DarkBackgroundColor}">
 
     <Grid>
 

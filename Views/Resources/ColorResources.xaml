@@ -12,6 +12,9 @@
     <Color x:Key="GeneralBackgorundColor">
         #FFEADFCB
     </Color>
+    <Color x:Key="DarkBackgorundColor">
+        #FFC9B99E
+    </Color>
     <Color x:Key="NaturalnieHoneyColor">
         #FFE6D2AE
     </Color>

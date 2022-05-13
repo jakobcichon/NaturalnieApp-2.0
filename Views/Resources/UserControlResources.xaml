@@ -15,6 +15,14 @@
         </Setter>
     </Style>
 
+    <Style x:Key="DarkBackgroundColor" TargetType="UserControl">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource DarkBackgorundColor}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="BottomButtonBarStyle" TargetType="UserControl">
         <Setter Property="Background">
             <Setter.Value>

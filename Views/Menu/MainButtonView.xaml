@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200" BorderThickness="0"
+             d:DesignHeight="200" d:DesignWidth="200"
              >
 
     <UserControl.Resources>
@@ -32,7 +32,7 @@
                             <Border x:Name="BottomMarker" 
                                        CornerRadius="1"
                                        Grid.Row="1" Grid.ColumnSpan="2" 
-                                       Visibility="Collapsed" BorderThickness="0">
+                                       Visibility="Collapsed">
                                 <Border.Background>
                                     <RadialGradientBrush RadiusX="0.4" RadiusY="1" Opacity="1" SpreadMethod="Pad">
                                         <GradientStop Color="{StaticResource GeneralBackgorundColor}"/>
@@ -91,12 +91,12 @@
         </Grid.ColumnDefinitions>
 
         <!-- Main button-->
-        <Button FontSize="22" Height="40"
+        <Button x:Name="MainButton" FontSize="22" Height="40"
                 Content="{Binding Name}" d:Content="Main button"
                 Command="{Binding}" 
                 CommandParameter="{Binding}" 
                 Style="{StaticResource ButtonStyle}"
-                Click="Button_Click">
+                >
             
             <Button.Background>
                 <SolidColorBrush Color="{StaticResource NaturalnieGreenDark}"/>
@@ -108,18 +108,15 @@
                       Visibility="{Binding Visibility}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Grid.Column="1" FontSize="16" Padding="3" Height="30"
+                    <Button Grid.Column="1" FontSize="16" Height="30"  
                                 Content="{Binding Path=DisplayText}"
                                 Command="{Binding}" 
                                 CommandParameter="{Binding}" 
                                 Style="{StaticResource ButtonStyle}" 
-                                  >
+                                Click="Button_Click">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource NaturalnieGreenBright}"/>
                         </Button.Background>
-                        <Button.BorderBrush>
-                            <SolidColorBrush Color="{StaticResource NaturalnieGreenBright}"/>
-                        </Button.BorderBrush>
                     </Button>
 
                 </DataTemplate>
