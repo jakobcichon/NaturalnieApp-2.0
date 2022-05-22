@@ -10,7 +10,7 @@ using static NaturalnieApp2.Attributes.DisplayModelAttributes;
 
 namespace NaturalnieApp2.Models
 {
-    internal class StockModel: ModelBase
+    internal record StockModel : ModelBase
     {
         [NameToBeDisplayed("Nazwa produktu")]
         [VisibilityProperties(true, false)]

@@ -13,7 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using NaturalnieApp2.Attributes;
 using NaturalnieApp2.Commands;
-using NaturalnieApp2.Commands.MenuScreens.Inventory;
+using NaturalnieApp2.Commands;
 using NaturalnieApp2.Interfaces;
 using NaturalnieApp2.Interfaces.Barcode;
 using NaturalnieApp2.Interfaces.Database;

@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Models
 {
-    public class ModelBase: IDisplayableModel, IHashableModel, INotifyPropertyChanged
+    public record ModelBase: IDisplayableModel, INotifyPropertyChanged
     {
-        private string? _hahsFromModel;
 
         public bool HasDisplayableMembers => true;
 
@@ -21,15 +20,6 @@ namespace NaturalnieApp2.Models
         public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public virtual string? GetHashCodeFromModel()
-        {
-            return Services.DataModel.HashCode.GetHashCodeFromAllClassProperties(this);
-        }
-        public void RegenerateHashOnPropertyChange()
-        {
-            _hahsFromModel = GetHashCodeFromModel();
         }
 
     }

@@ -8,7 +8,7 @@ using static NaturalnieApp2.Attributes.DisplayModelAttributes;
 
 namespace NaturalnieApp2.Models.MenuScreens.Inventory
 {
-    internal class InventoryModelDataFromDB: ModelBase
+    internal record InventoryModelDataFromDB : ModelBase
     {
         [NameToBeDisplayed("Nazwa dostawcy")]
         [VisibilityProperties(true, true)]

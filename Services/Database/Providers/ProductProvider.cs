@@ -177,6 +177,44 @@ namespace NaturalnieApp2.Services.Database.Providers
         }
 
 
+        //====================================================================================================
+        //Method used to retrieve from DB Product entity by Barcode value
+        //====================================================================================================
+        public ProductDTO? GetProductEntityByBarcode(string barcode)
+        {
+            ProductDTO? localProduct = new ProductDTO();
+
+            var query = from p in ShopContext.Products
+                        where p.BarCode == barcode
+                        select p;
+
+            localProduct = query?.SingleOrDefault();
+
+            return localProduct;
+        }
+
+        //====================================================================================================
+        //Method used to add new product
+        //====================================================================================================
+        public void AddNewProduct(ProductModel product)
+        {
+            //Local variables
+            ProductDTO? localProductDTO = GetProductDTOFromProductModel(product);
+
+            if (localProductDTO == null) throw new ArgumentNullException();
+
+            ShopContext.Products.Add(localProductDTO);
+            ShopContext.SaveChanges();
+
+            localProductDTO = GetProductEntityByBarcode(product.BarCode);
+
+            /// UNDONE: Dorobić zapis changelog:
+
+            /*if (localProductDTO == null) AddProductToChangelog(product, ProductOperationType.AddNew);
+            else AddProductToChangelog(localProductDTO, ProductOperationType.AddNew);*/
+        }
+
+
         #region Interface elements
         public List<string> GetElementsNames()
         {
@@ -228,35 +266,37 @@ namespace NaturalnieApp2.Services.Database.Providers
         }
         #endregion
 
-
-        public List<ProductModel> GetProductFromProductDTO(List<ProductDTO> productsDTO)
+        private (List<ManufacturerDTO>, List<SupplierDTO>, List<TaxDTO>) GetAuxiliaryProviders()
         {
-            if (productsDTO == null) return null;
-            List<ProductModel> localProduct = new List<ProductModel>();
             List<ManufacturerDTO> manufacturerDTOs = new ManufacturerProvider(ShopContext).GetAllManufacturersEnts();
             List<SupplierDTO> supplierDTOs = new SupplierProvider(ShopContext).GetAllSupplierEnts();
             List<TaxDTO> taxDTOs = new TaxProvider(ShopContext).GetAllTaxEnts();
 
+            return (manufacturerDTOs, supplierDTOs, taxDTOs);
+        }
+
+        #region Conversion from Model to DTO
+        public List<ProductModel> GetProductFromProductDTO(List<ProductDTO> productsDTO)
+        {
+            if (productsDTO == null) return null;
+            List<ProductModel> localProduct = new List<ProductModel>();
+           
             foreach (ProductDTO productDTO in productsDTO)
             {
-                ProductModel? _product = GetProductFromProductDTO(productDTO, manufacturerDTOs, supplierDTOs, taxDTOs);
-                _product.RegenerateHashOnPropertyChange();
+                ProductModel? _product = GetProductFromProductDTO(productDTO);
                 if(_product != null) localProduct.Add(_product);
             }
               
             return localProduct;
         }
 
-        public ProductModel GetProductFromProductDTO(ProductDTO productDTO)
+        public ProductModel? GetProductFromProductDTO(ProductDTO productDTO)
         {
             if (productDTO == null) return null;
-            ProductModel localProduct = new ProductModel();
-            List<ManufacturerDTO> manufacturerDTOs = new ManufacturerProvider(ShopContext).GetAllManufacturersEnts();
-            List<SupplierDTO> supplierDTOs = new SupplierProvider(ShopContext).GetAllSupplierEnts();
-            List<TaxDTO> taxDTOs = new TaxProvider(ShopContext).GetAllTaxEnts();
-            
-            ProductModel? _product = GetProductFromProductDTO(productDTO, manufacturerDTOs, supplierDTOs, taxDTOs);
-            _product.RegenerateHashOnPropertyChange();          
+            ProductModel? localProduct;
+            (List<ManufacturerDTO> manufacturerDTOs, List<SupplierDTO> supplierDTOs, List<TaxDTO> taxDTOs) = GetAuxiliaryProviders();
+
+            localProduct = GetProductFromProductDTO(productDTO, manufacturerDTOs, supplierDTOs, taxDTOs);        
 
             return localProduct;
         }
@@ -277,15 +317,69 @@ namespace NaturalnieApp2.Services.Database.Providers
                 ElzabProductId = productDTO.ElzabProductId,
                 ElzabProductName = productDTO.ElzabProductName,
                 FinalPrice = productDTO.FinalPrice,
-                ManufacturerName = manufacturerDTOs.Find(e => e.Id == productDTO.ManufacturerId)?.Name,
+                ManufacturerName = manufacturerDTOs.Find(e => e.Id == productDTO.ManufacturerId)?.Name ?? String.Empty,
                 Marigin = productDTO.Marigin,
                 PriceNet = productDTO.PriceNet,
                 PriceNetWithDiscount = productDTO.PriceNetWithDiscount,
                 ProductInfo = productDTO.ProductInfo,
-                SupplierName = supplierDTOs.Find(e => e.Id == productDTO.SupplierId)?.Name,
-                TaxValue = taxDTOs.Find(e => e.Id == productDTO.TaxId).TaxValue
+                SupplierName = supplierDTOs.Find(e => e.Id == productDTO.SupplierId)?.Name ?? String.Empty,
+                TaxValue = taxDTOs.Find(e => e.Id == productDTO.TaxId)?.TaxValue ?? -1
             };
         }
+        #endregion
 
+        #region Conversion from DTO to Model
+        public List<ProductDTO> GetProductDTOFromProductModel(List<ProductModel> productModels)
+        {
+
+            if (productModels == null) return null;
+            List<ProductDTO> localProduct = new();
+
+            foreach (ProductModel productModel in productModels)
+            {
+                ProductDTO? _product = GetProductDTOFromProductModel(productModel);
+                if (_product != null) localProduct.Add(_product);
+            }
+
+            return localProduct;
+        }
+
+        public ProductDTO GetProductDTOFromProductModel(ProductModel productModel)
+        {
+            if (productModel == null) return null;
+            ProductDTO localProduct = new ProductDTO();
+            (List<ManufacturerDTO> manufacturerDTOs, List<SupplierDTO> supplierDTOs, List<TaxDTO> taxDTOs) = GetAuxiliaryProviders();
+
+            ProductDTO? _product = GetProductDTOFromProductModel(productModel, manufacturerDTOs, supplierDTOs, taxDTOs);
+
+            return localProduct;
+        }
+
+        public ProductDTO? GetProductDTOFromProductModel(ProductModel productModel,
+            List<ManufacturerDTO> manufacturerDTOs,
+            List<SupplierDTO> supplierDTOs,
+            List<TaxDTO> taxDTOs)
+        {
+            if (productModel == null) return null;
+            return new ProductDTO()
+            {
+                ProductName = productModel.ProductName,
+                BarCode = productModel.BarCode,
+                SupplierCode = productModel.SupplierCode,
+                BarCodeShort = productModel.BarCodeShort,
+                Discount = productModel.Discount,
+                ElzabProductId = productModel.ElzabProductId,
+                ElzabProductName = productModel.ElzabProductName,
+                FinalPrice = productModel.FinalPrice,
+                ManufacturerId = manufacturerDTOs.Find(e => e.Name == productModel.ManufacturerName)?.Id ?? 0,
+                Marigin = productModel.Marigin,
+                PriceNet = productModel.PriceNet,
+                PriceNetWithDiscount = productModel.PriceNetWithDiscount,
+                ProductInfo = productModel.ProductInfo,
+                SupplierId = supplierDTOs.Find(e => e.Name == productModel.SupplierName)?.Id ?? 0,
+                TaxId = taxDTOs.Find(e => e.TaxValue == productModel.TaxValue)?.Id ?? 0
+            };
+        }
+        #endregion
     }
 }

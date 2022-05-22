@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using NaturalnieApp2.Commands.MenuScreens.Inventory;
+using NaturalnieApp2.Commands;
 using NaturalnieApp2.Models;
 using NaturalnieApp2.Models.MenuScreens.Inventory;
 using NaturalnieApp2.Services.Database.Providers;

@@ -22,10 +22,39 @@ namespace NaturalnieApp2
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly double slidePanelOpenValue;
+        private readonly double slidePanelCloseValue;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            slidePanelOpenValue = MainGrid.ColumnDefinitions[0].MaxWidth;
+            slidePanelCloseValue = MainGrid.ColumnDefinitions[0].MinWidth;
+            var test = new GridSplitter();
         }
 
+        
+
+        public double TargetSlidePanelValue
+        {
+            get { return (double)GetValue(TargetSlidePanelValueProperty); }
+            set { SetValue(TargetSlidePanelValueProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TargetSlidePanelValue.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TargetSlidePanelValueProperty =
+            DependencyProperty.Register("TargetSlidePanelValue", typeof(double), typeof(MainWindow), new PropertyMetadata(40.0d));
+
+        private void DoubleAnimation_Completed(object sender, EventArgs e)
+        {
+            if (TargetSlidePanelValue != slidePanelCloseValue)
+            {
+                TargetSlidePanelValue = slidePanelCloseValue;
+                return;
+            }
+
+            TargetSlidePanelValue = slidePanelOpenValue;
+        }
     }
 }

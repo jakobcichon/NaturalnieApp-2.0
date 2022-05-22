@@ -8,7 +8,7 @@ using static NaturalnieApp2.Attributes.DisplayModelAttributes;
 
 namespace NaturalnieApp2.Models.MenuScreens.Inventory
 {
-    internal class InventoryHistoryModel: ModelBase
+    internal record InventoryHistoryModel: ModelBase
     {
         [NameToBeDisplayed("Data dodania do historii")]
         [VisibilityProperties(true, true)]

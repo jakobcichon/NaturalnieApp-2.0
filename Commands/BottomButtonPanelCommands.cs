@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NaturalnieApp2.Commands.MenuScreens.Inventory
+namespace NaturalnieApp2.Commands
 {
     internal class BottomButtonPanelCommands : CommandBase
     {

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,6 +75,7 @@ namespace NaturalnieApp2.Sandbox
             DisplayModelTest = new ProductModel(taxProvider);
             DisplayModelTest.ProductName = "Test name of product";
             DisplayModelTest.TaxValue = 8;
+            Debug.WriteLine( DisplayModelTest.GetHashCode());
         }
 
 

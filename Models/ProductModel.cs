@@ -15,7 +15,7 @@ using NaturalnieApp2.Services.Database.Providers;
 
 namespace NaturalnieApp2.Models
 {
-    internal class ProductModel: ModelBase, IHintListProvider
+    internal record ProductModel: ModelBase, IHintListProvider
     {
         [NameToBeDisplayed("Nazwa dostawcy")]
         [VisibilityProperties(true, true)]
@@ -155,8 +155,6 @@ namespace NaturalnieApp2.Models
                     {
                         try
                         {
-                            /*                            hintList = taxProvider.GetAllTaxEnts().
-                                                        Select(taxEnt => taxEnt.TaxValue.ToString()).ToList();*/
                             hintList = new List<object>() { 0,5,8,23 };
                         }
                         catch (Exception ex)

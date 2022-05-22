@@ -30,6 +30,7 @@ using NaturalnieApp2.Interfaces.SplashScreen;
 using System.Data.Entity;
 using NaturalnieApp.Database;
 using NaturalnieApp2.Services.Database;
+using NaturalnieApp2.ViewModels.MenuScreens.Product;
 
 namespace NaturalnieApp2
 {
@@ -141,15 +142,15 @@ namespace NaturalnieApp2
             //Initialize menu bar main buttons
             InitializeMenuBarMainButtons();
 
+            _splashScreen.UpdateText("Konfigurowanie przycisków Menu Produktu");
+
+            //Initialize product sub buttons
+            InitializeSubMenuButtons_Product(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
+
             _splashScreen.UpdateText("Konfigurowanie przycisków Inwentaryzacji");
 
             //Initialize inventory sub buttons
             InitializeSubMenuButtons_Inventory(_serviceProvider.GetRequiredService<MenuBarViewModel>(), _serviceProvider);
-
-            _splashScreen.UpdateText("Ładowanie zasobów Entity Framework");
-
-            //EntityFramework loading resources
-            InitailizeEntityFrameworkRecourses(_serviceProvider);
 
             _splashScreen.UpdateText("Konfigurowanie przycisków Sandbox");
 
@@ -166,6 +167,27 @@ namespace NaturalnieApp2
             // Initialize Show Inventory Properties
             InitializeShowInventoryProperties();
 
+            _splashScreen.UpdateText("Konfigurowanie właściwości obiektu 'Pokaż produkt'");
+
+            // Initialize Show Inventory Properties
+            InitializeShowProductProperties();
+
+            _splashScreen.UpdateText("Ładowanie zasobów Entity Framework");
+
+            //EntityFramework loading resources
+            InitailizeEntityFrameworkRecourses(_serviceProvider);
+
+        }
+
+        /// <summary>
+        /// Method uset to initialize ShowProductProperties
+        /// </summary>
+        private void InitializeShowProductProperties()
+        {
+            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().InventoryProvider =
+                _serviceProvider.GetRequiredService<InventoryProvider>();
+            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().StockProvider =
+                _serviceProvider.GetRequiredService<StockProvider>();
         }
 
         /// <summary>
@@ -173,10 +195,7 @@ namespace NaturalnieApp2
         /// </summary>
         private void InitializeShowInventoryProperties()
         {
-            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().InventoryProvider =
-                _serviceProvider.GetRequiredService<InventoryProvider>();
-            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().StockProvider =
-                _serviceProvider.GetRequiredService<StockProvider>();
+            _serviceProvider.GetRequiredService<ShowProductViewModel>();
         }
 
         /// <summary>
@@ -226,6 +245,9 @@ namespace NaturalnieApp2
 
             //Singleton for the Initial Screen View Model
             services.AddSingleton<InitialScreenViewModel>();
+
+            //Singleton for the ShowProductViewModel
+            services.AddSingleton<ShowProductViewModel>();
 
             //Singleton for the ExecuteInventoryViewModel
             services.AddSingleton<ExecuteInventoryViewModel>();
@@ -303,9 +325,27 @@ namespace NaturalnieApp2
         {
             return new List<MainButtonViewModel>()
             {
+                new MainButtonViewModel(MenuButtonNames.ProductButton),
                 new MainButtonViewModel(MenuButtonNames.InventoryButton),
                 new MainButtonViewModel(MenuButtonNames.Sandbox)
             };
+        }
+
+        /// <summary>
+        /// Method used to create Product sub menu
+        /// </summary>
+        /// <param name="menuBar">Instnace of the MenuBarViewModel</param>
+        /// <param name="service">Instance of the IServiceProvider </param>
+        private void InitializeSubMenuButtons_Product(MenuBarViewModel menuBar, IServiceProvider service)
+        {
+            menuBar.MenuBarViews.Where(m => m.Name == MenuButtonNames.ProductButton).
+                FirstOrDefault()?.AddSubButton(new List<ISubMenuButton>()
+            {
+                new SubButtonViewModel("Pokaż produkt",
+                service.GetRequiredService<ShowProductViewModel>(),
+                service.GetRequiredService<NavigationDispatcher>()
+                )
+            });
         }
 
         /// <summary>
@@ -363,6 +403,8 @@ namespace NaturalnieApp2
         public static class MenuButtonNames
         {
             public static string MainMenuButton = "Ekran główny";
+
+            public static string ProductButton = "Produkt";
             public static string InventoryButton = "Inwentaryzacja";
 
             public static string Sandbox = "Piaskownica";

@@ -8,7 +8,7 @@ using static NaturalnieApp2.Attributes.DisplayModelAttributes;
 
 namespace NaturalnieApp2.Models.MenuScreens.Inventory
 {
-    internal class InventoryModel: ModelBase
+    internal record InventoryModel : ModelBase
     {
         [NameToBeDisplayed("Nazwa inwentaryzacji")]
         [VisibilityProperties(true, true)]
