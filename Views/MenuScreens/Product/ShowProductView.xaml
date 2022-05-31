@@ -14,7 +14,8 @@
             <RowDefinition Height="auto" d:Height="60"/>
         </Grid.RowDefinitions>
 
-        <c:ModelPropertyPresenter Grid.Row="1" />
+        <c:ModelPropertyPresenter ModelToDisplay="{Binding ProductModel}"
+                                  Grid.Row="1" />
 
         <c:BottomButtonBarView x:Name="BottomBar" Grid.Row="2" 
                                DataContext="{Binding BottomButtonPanel}"/>

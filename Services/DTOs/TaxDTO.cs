@@ -15,6 +15,8 @@ namespace NaturalnieApp2.Services.DTOs
         public int Id { get; set; }
         public int TaxValue { get; set; }
 
+        public ICollection<ProductDTO> Products { get; set; }
+
         public TaxDTO DeepCopy()
         {
             TaxDTO tax = (TaxDTO)this.MemberwiseClone();

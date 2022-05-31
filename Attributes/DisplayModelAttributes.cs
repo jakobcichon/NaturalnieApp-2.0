@@ -46,7 +46,7 @@ namespace NaturalnieApp2.Attributes
         internal sealed class VisualRepresenation : Attribute
         {
             public VisualRepresenationType Type { get; }
-            public VisualRepresenation(VisualRepresenationType type)
+            public VisualRepresenation(VisualRepresenationType type, [CallerMemberName] string name = null)
             {
                 Type = type;
             }

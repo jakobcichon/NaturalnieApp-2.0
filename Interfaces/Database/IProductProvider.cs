@@ -11,9 +11,6 @@ namespace NaturalnieApp2.Interfaces.Database
 {
     internal interface IProductProvider
     {
-        public ProductModel GetProductFromProductDTO(ProductDTO productDTO, 
-            List<ManufacturerDTO> manufacturerDTOs,
-            List<SupplierDTO> supplierDTOs,
-            List<TaxDTO> taxDTOs);
+        public ProductModel GetProductFromProductDTO(ProductDTO productDTO);
     }
 }

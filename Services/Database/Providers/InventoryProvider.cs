@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class InventoryProvider: DatabaseBase
+    internal class InventoryProvider: DatabaseBase<InventoryProvider>
     {
         internal InventoryProvider(ShopContext shopContext): base(shopContext)
         {
@@ -138,7 +138,8 @@ namespace NaturalnieApp2.Services.Database.Providers
 
         public void AddOperationToInventoryHistory(InventoryDTO inventoryDTO, HistoryOperationType operationType)
         {
-            new InventoryHistoryProvider(ShopContext).AddToInventoryHistory(inventoryDTO, operationType);
+            //TODO Need to fix it
+            //new InventoryHistoryProvider(ShopContext).AddToInventoryHistory(inventoryDTO, operationType);
         }
 
         public InventoryDTO GetInventoryDTOFromInventoryModel(InventoryModel inventoryModel)

@@ -14,21 +14,24 @@ namespace NaturalnieApp2.Services.DTOs
         [Key]
         public int Id { get; set; }
         public int SupplierId { get; set; }
-        public int ElzabProductId { get; set; }
+        public SupplierDTO Supplier {get; set;}
+        public int? ElzabProductId { get; set; }
         public int ManufacturerId { get; set; }
+        public ManufacturerDTO Manufacturer { get; set; }
         public string ProductName { get; set; }
         public string ElzabProductName { get; set; }
         public float PriceNet { get; set; }
         public int Discount { get; set; }
         public float PriceNetWithDiscount { get; set; }
         public int TaxId { get; set; }
+        public TaxDTO Tax { get; set; }
         public int Marigin { get; set; }
         public float FinalPrice { get; set; }
         public string BarCode { get; set; }
         public string BarCodeShort { get; set; }
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
-        public bool CanBeRemovedFromCashRegister { get; set; }
+        public bool CanBeRemoveFromCashRegister { get; set; }
 
         public ProductDTO DeepCopy()
         {
@@ -42,14 +45,14 @@ namespace NaturalnieApp2.Services.DTOs
             product.PriceNet = this.PriceNet;
             product.Discount = this.Discount;
             product.PriceNetWithDiscount = this.PriceNetWithDiscount;
-            product.TaxId = this.TaxId;
+            product.Tax = this.Tax;
             product.Marigin = this.Marigin;
             product.FinalPrice = this.FinalPrice;
             product.BarCode = this.BarCode;
             product.BarCodeShort = this.BarCodeShort;
             product.SupplierCode = this.SupplierCode;
             product.ProductInfo = this.ProductInfo;
-            product.CanBeRemovedFromCashRegister = this.CanBeRemovedFromCashRegister;
+            product.CanBeRemoveFromCashRegister = this.CanBeRemoveFromCashRegister;
             return product;
         }
     }

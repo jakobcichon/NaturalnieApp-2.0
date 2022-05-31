@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class InventoryHistoryProvider: DatabaseBase
+    internal class InventoryHistoryProvider: DatabaseBase<InventoryHistoryProvider>
     {
 
         internal InventoryHistoryProvider(ShopContext shopContext): base(shopContext)

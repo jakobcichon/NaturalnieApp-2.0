@@ -17,6 +17,8 @@ namespace NaturalnieApp2.Services.DTOs
         public string BarcodeEanPrefix { get; set; }
         public string Info { get; set; }
 
+        public ICollection<ProductDTO> Products { get; set; }
+
         public ManufacturerDTO DeepCopy()
         {
             ManufacturerDTO manufacturer = (ManufacturerDTO)this.MemberwiseClone();

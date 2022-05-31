@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class ElzabCommunicationProvider: DatabaseBase
+    internal class ElzabCommunicationProvider: DatabaseBase<ElzabCommunicationProvider>
     {
         public ElzabCommunicationProvider(ShopContext shopContext): base(shopContext)
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class StockHistoryProvider: DatabaseBase
+    internal class StockHistoryProvider: DatabaseBase<StockHistoryProvider>
     {
         public StockHistoryProvider(ShopContext shopContext) : base(shopContext)
         {

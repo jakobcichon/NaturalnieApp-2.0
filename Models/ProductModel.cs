@@ -12,10 +12,11 @@ using NaturalnieApp2.Validators.StringValidations;
 using System.Windows.Controls;
 using NaturalnieApp2.Interfaces;
 using NaturalnieApp2.Services.Database.Providers;
+using NaturalnieApp2.Services.DTOs;
 
 namespace NaturalnieApp2.Models
 {
-    internal record ProductModel: ModelBase, IHintListProvider
+    internal record ProductModel: ModelBase
     {
         [NameToBeDisplayed("Nazwa dostawcy")]
         [VisibilityProperties(true, true)]
@@ -25,7 +26,7 @@ namespace NaturalnieApp2.Models
         [NameToBeDisplayed("Numer w kasie elzab")]
         [VisibilityProperties(true, false)]
         [VisualRepresenation(VisualRepresenationType.Field)]
-        public int ElzabProductId { get; set; }
+        public int? ElzabProductId { get; set; }
 
         [NameToBeDisplayed("Nazwa producenta")]
         [VisibilityProperties(true, false)]
@@ -96,7 +97,7 @@ namespace NaturalnieApp2.Models
         [NameToBeDisplayed("Produkt może zostać usunięty z kasy")]
         [VisibilityProperties(true, true)]
         [VisualRepresenation(VisualRepresenationType.Field)]
-        public bool CanBeRemovedFromCashRegister { get; set; }
+        public bool CanBeRemoveFromCashRegister { get; set; }
 
         public ProductModel()
         {
@@ -141,7 +142,7 @@ namespace NaturalnieApp2.Models
             BarCodeShort = barCodeShort;
             SupplierCode = supplierCode;
             ProductInfo = productInfo;
-            CanBeRemovedFromCashRegister = canBeRemovedFromCashRegister;
+            CanBeRemoveFromCashRegister = canBeRemovedFromCashRegister;
         }
 
         public List<object> GetHintList(string propertyName)

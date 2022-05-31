@@ -30,9 +30,9 @@ namespace NaturalnieApp2.Sandbox
             }
         }
 
-        private ProductModel displayModelTest;
+        private ProductModel? displayModelTest;
 
-        public ProductModel DisplayModelTest
+        public ProductModel? DisplayModelTest
         {
             get { return displayModelTest; }
             set { displayModelTest = value; }
@@ -69,13 +69,12 @@ namespace NaturalnieApp2.Sandbox
             MessageVisiability = Visibility.Visible;
         }
 
-        public SandboxViewModel(TaxProvider taxProvider)
+        public SandboxViewModel(TaxProvider taxProvider, ProductProvider productProvider)
         {
             MessageVisiability = Visibility.Visible;
             DisplayModelTest = new ProductModel(taxProvider);
-            DisplayModelTest.ProductName = "Test name of product";
-            DisplayModelTest.TaxValue = 8;
-            Debug.WriteLine( DisplayModelTest.GetHashCode());
+            DisplayModelTest = productProvider?.CheckDatabaseConnection()?.GetProductEntityByProductId(1);
+            ;
         }
 
 

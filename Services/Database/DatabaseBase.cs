@@ -2,13 +2,16 @@
 using NUnit.Framework.Internal.Execution;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database
 {
-    internal class DatabaseBase
+    internal class DatabaseBase<T> where T : DatabaseBase<T>
     {
 
         internal class ModelChangedEventArgs: EventArgs
@@ -32,7 +35,6 @@ namespace NaturalnieApp2.Services.Database
             handler?.Invoke(sender, new ModelChangedEventArgs(modelType, modelName));
         }
 
-
         private ShopContext shopContext;
 
         public ShopContext ShopContext
@@ -51,6 +53,43 @@ namespace NaturalnieApp2.Services.Database
             AddedNew,
             Deleted,
             Modified
+        }
+
+        public T? CheckDatabaseConnection()
+        {
+            bool connectionStatus = CheckConnection();
+            if (connectionStatus)
+            { 
+                return (T)this;
+            }
+            return default;
+        }
+
+        public async Task<T>? CheckDatabaseConnectionAsync()
+        {
+            bool connectionStatus = await CheckConnectionAsync();
+            if (connectionStatus)
+            {
+                return (T)this;
+            }
+            return default;
+        }
+
+        private async Task<bool> CheckConnectionAsync()
+        {
+            return await Task.Run(() =>
+                {
+                    return shopContext.Database.Exists();
+                }
+            );
+            
+        }
+
+        private bool CheckConnection()
+        {
+
+            return shopContext.Database.Exists();
+
         }
     }
 }

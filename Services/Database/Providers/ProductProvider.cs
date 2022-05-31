@@ -11,14 +11,17 @@ using System.Data.Entity;
 using NaturalnieApp2.Attributes;
 using NaturalnieApp2.Services.Attributes;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class ProductProvider: DatabaseBase, IProductProvider, IGetModelProvider
+    internal class ProductProvider: DatabaseBase<ProductProvider>, IProductProvider, IModelProvider
     {
-        public ProductProvider(ShopContext shopContext): base(shopContext)
-        {
+        public Type ModelType { get; init; }
 
+        public ProductProvider(ShopContext shopContext) : base(shopContext)
+        {
+            //ModelType = modelType;
         }
 
         //====================================================================================================
@@ -79,7 +82,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             ProductModel localProduct = new ProductModel();
 
-            var query = from p in ShopContext.Products
+            var query = from p in ShopContext.Products.Include(p => p.Tax).
+                        Include(p => p.Supplier).
+                        Include(p => p.Manufacturer)
                         where p.Id == productId
                         select p;
 
@@ -96,7 +101,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         public int? GetProductIdByProductName(string productName)
         {
 
-            var query = from p in ShopContext.Products
+            var query = from p in ShopContext.Products.Include(p => p.Tax).
+                        Include(p => p.Supplier).
+                        Include(p => p.Manufacturer)
                         where p.ProductName == productName
                         select p;
 
@@ -113,7 +120,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         public string GetProductNameByProductId(int productId)
         {
 
-            var query = from p in ShopContext.Products
+            var query = from p in ShopContext.Products.Include(p => p.Tax).
+                        Include(p => p.Supplier).
+                        Include(p => p.Manufacturer)
                         where p.Id == productId
                         select p;
 
@@ -130,7 +139,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             ProductModel localProduct = new ProductModel();
 
-            var query = from p in ShopContext.Products
+            var query = from p in ShopContext.Products.Include(p => p.Tax).
+                        Include(p => p.Supplier).
+                        Include(p => p.Manufacturer)
                         where p.ProductName == productName
                         select p;
 
@@ -148,7 +159,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<ProductModel> localProduct = new List<ProductModel>();
 
-            var query = from p in ShopContext.Products
+            var query = from p in ShopContext.Products.Include(p => p.Tax).
+                        Include(p => p.Supplier).
+                        Include(p => p.Manufacturer)
                         select p;
 
             List<ProductDTO> productDTOs = query.ToList();
@@ -165,7 +178,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             List<ProductModel> localProduct = new List<ProductModel>();
 
-            var query = from p in ShopContext.Products
+            var query = from p in ShopContext.Products.Include(p => p.Tax).
+                        Include(p => p.Supplier).
+                        Include(p => p.Manufacturer)
                         select p;
 
             var test = query;
@@ -184,7 +199,9 @@ namespace NaturalnieApp2.Services.Database.Providers
         {
             ProductDTO? localProduct = new ProductDTO();
 
-            var query = from p in ShopContext.Products
+            var query = from p in ShopContext.Products.Include(p => p.Tax).
+                        Include(p => p.Supplier).
+                        Include(p => p.Manufacturer)
                         where p.BarCode == barcode
                         select p;
 
@@ -212,58 +229,13 @@ namespace NaturalnieApp2.Services.Database.Providers
 
             /*if (localProductDTO == null) AddProductToChangelog(product, ProductOperationType.AddNew);
             else AddProductToChangelog(localProductDTO, ProductOperationType.AddNew);*/
+
+            OnModelChange(this, this.GetType(), this.ToString());
         }
 
 
         #region Interface elements
-        public List<string> GetElementsNames()
-        {
-            List<PropertyDescriptor> propertiesList = DisplayModelAttributesServices.GetPropertiesToBeDisplayed(typeof(ProductModel));
-            List<string> returnList = propertiesList.Select(p => DisplayModelAttributesServices.GetPropertyDisplayName(p)).ToList();
 
-            return returnList;
-        }
-
-        public Dictionary<string, object> GetElementsValues()
-        {
-            List<ProductModel> productModels = GetAllProductEntities();
-            Dictionary<string, object> _returnDict = new Dictionary<string, object>();
-
-            foreach (string propertyName in GetElementsNames())
-            {
-                List<object> allPropertyValues = new List<object>();
-                foreach (ProductModel model in productModels)
-                {
-                    allPropertyValues.Add(DisplayModelAttributesServices.GetPropertyValueByDisplayName(propertyName, model));
-                }
-                allPropertyValues = allPropertyValues.Distinct().ToList();
-                _returnDict.Add(propertyName, allPropertyValues);
-            }
-
-            return _returnDict;
-
-        }
-
-        public async Task<Dictionary<string, object>> GetElementsValuesAsync()
-        {
-            List<ProductModel> productModels = await GetAllProductEntitiesAsync();
-
-            Dictionary<string, object> _returnDict = new Dictionary<string, object>();
-
-            foreach (string propertyName in GetElementsNames())
-            {
-                List<object> allPropertyValues = new List<object>();
-                foreach (ProductModel model in productModels)
-                {
-                    allPropertyValues.Add(DisplayModelAttributesServices.GetPropertyValueByDisplayName(propertyName, model));
-                }
-                allPropertyValues = allPropertyValues.Distinct().ToList();
-                _returnDict.Add(propertyName, allPropertyValues);
-            }
-
-            return _returnDict;
-
-        }
         #endregion
 
         private (List<ManufacturerDTO>, List<SupplierDTO>, List<TaxDTO>) GetAuxiliaryProviders()
@@ -293,20 +265,6 @@ namespace NaturalnieApp2.Services.Database.Providers
         public ProductModel? GetProductFromProductDTO(ProductDTO productDTO)
         {
             if (productDTO == null) return null;
-            ProductModel? localProduct;
-            (List<ManufacturerDTO> manufacturerDTOs, List<SupplierDTO> supplierDTOs, List<TaxDTO> taxDTOs) = GetAuxiliaryProviders();
-
-            localProduct = GetProductFromProductDTO(productDTO, manufacturerDTOs, supplierDTOs, taxDTOs);        
-
-            return localProduct;
-        }
-
-        public ProductModel? GetProductFromProductDTO(ProductDTO productDTO, 
-            List<ManufacturerDTO> manufacturerDTOs,
-            List<SupplierDTO> supplierDTOs,
-            List<TaxDTO> taxDTOs)
-        {
-            if (productDTO == null) return null;
             return new ProductModel()
             {
                 ProductName = productDTO.ProductName,
@@ -317,13 +275,13 @@ namespace NaturalnieApp2.Services.Database.Providers
                 ElzabProductId = productDTO.ElzabProductId,
                 ElzabProductName = productDTO.ElzabProductName,
                 FinalPrice = productDTO.FinalPrice,
-                ManufacturerName = manufacturerDTOs.Find(e => e.Id == productDTO.ManufacturerId)?.Name ?? String.Empty,
+                ManufacturerName = productDTO.Manufacturer.Name,
                 Marigin = productDTO.Marigin,
                 PriceNet = productDTO.PriceNet,
                 PriceNetWithDiscount = productDTO.PriceNetWithDiscount,
                 ProductInfo = productDTO.ProductInfo,
-                SupplierName = supplierDTOs.Find(e => e.Id == productDTO.SupplierId)?.Name ?? String.Empty,
-                TaxValue = taxDTOs.Find(e => e.Id == productDTO.TaxId)?.TaxValue ?? -1
+                SupplierName = productDTO.Supplier.Name,
+                TaxValue = productDTO.Tax.TaxValue
             };
         }
         #endregion
@@ -379,6 +337,13 @@ namespace NaturalnieApp2.Services.Database.Providers
                 SupplierId = supplierDTOs.Find(e => e.Name == productModel.SupplierName)?.Id ?? 0,
                 TaxId = taxDTOs.Find(e => e.TaxValue == productModel.TaxValue)?.Id ?? 0
             };
+        }
+
+        public TmodelDTO GetModelFromModelDTO<TmodelDTO, Tmodel>()
+            where TmodelDTO : class
+            where Tmodel : class
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

@@ -7,20 +7,12 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database
 {
-    internal class DatabaseCommon : DatabaseBase
+    internal class DatabaseCommon : DatabaseBase<DatabaseCommon>
     {
         public DatabaseCommon(ShopContext shopContext) : base(shopContext)
         {
 
         }
 
-        /// <summary>
-        /// Method used to check if conenction to database exist
-        /// </summary>
-        /// <returns>True if connection exist, otherwise False.</returns>
-        public bool CheckDatabaseConnection()
-        {
-            return ShopContext.Database.Exists();
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using NaturalnieApp2.Attributes;
 using NaturalnieApp2.Interfaces;
+using NaturalnieApp2.Interfaces.Services;
 using NaturalnieApp2.Services.Attributes;
 using NaturalnieApp2.Views.Controls.Models;
 using System;
@@ -184,14 +185,14 @@ namespace NaturalnieApp2.Views.Controls
 
         #region Private methods
 
-        private static IHintListProvider? GetHintListProvider(Binding property)
+        private static IHintListProvider<object>? GetHintListProvider(Binding property)
         {
-            IHintListProvider? hintListProvider = null;
+            IHintListProvider<object>? hintListProvider = null;
             string? propertyName = property.Path?.Path.ToString();
             if (propertyName != null)
             {
                 // Get IHintListProvider
-                hintListProvider = property.Source as IHintListProvider;
+                hintListProvider = property.Source as IHintListProvider<object>;
             }
 
             return hintListProvider;
@@ -280,7 +281,7 @@ namespace NaturalnieApp2.Views.Controls
 
             if (localContent == null) return;
 
-            HintItemsSource = GetHintListProvider(PropertyValue)?.GetHintList(PropertyValue.Path.Path);
+            HintItemsSource = GetHintListProvider(PropertyValue)?.GetHintList() as List<object>;
 
             Binding binding = new Binding { Source = this, Path = new PropertyPath("HintItemsSource") };
             localContent.SetBinding(ComboBox.ItemsSourceProperty, binding);

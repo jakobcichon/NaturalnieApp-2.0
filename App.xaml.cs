@@ -167,27 +167,11 @@ namespace NaturalnieApp2
             // Initialize Show Inventory Properties
             InitializeShowInventoryProperties();
 
-            _splashScreen.UpdateText("Konfigurowanie właściwości obiektu 'Pokaż produkt'");
-
-            // Initialize Show Inventory Properties
-            InitializeShowProductProperties();
-
             _splashScreen.UpdateText("Ładowanie zasobów Entity Framework");
 
             //EntityFramework loading resources
             InitailizeEntityFrameworkRecourses(_serviceProvider);
 
-        }
-
-        /// <summary>
-        /// Method uset to initialize ShowProductProperties
-        /// </summary>
-        private void InitializeShowProductProperties()
-        {
-            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().InventoryProvider =
-                _serviceProvider.GetRequiredService<InventoryProvider>();
-            _serviceProvider.GetRequiredService<ShowInventoryViewModel>().StockProvider =
-                _serviceProvider.GetRequiredService<StockProvider>();
         }
 
         /// <summary>
@@ -247,7 +231,8 @@ namespace NaturalnieApp2
             services.AddSingleton<InitialScreenViewModel>();
 
             //Singleton for the ShowProductViewModel
-            services.AddSingleton<ShowProductViewModel>();
+            services.AddSingleton<ShowProductViewModel>(s => new ShowProductViewModel(s.GetRequiredService<ProductProvider>(), 
+                s.GetRequiredService<TaxProvider>()));
 
             //Singleton for the ExecuteInventoryViewModel
             services.AddSingleton<ExecuteInventoryViewModel>();
@@ -256,7 +241,7 @@ namespace NaturalnieApp2
             services.AddSingleton<ShowInventoryViewModel>();
 
             //Singleton for the SandboxViewModel
-            services.AddSingleton<SandboxViewModel>(s => new SandboxViewModel(s.GetRequiredService<TaxProvider>()));
+            services.AddSingleton<SandboxViewModel>(s => new SandboxViewModel(s.GetRequiredService<TaxProvider>(), s.GetRequiredService<ProductProvider>()));
 
             //Singleton for the NavigationDispatcher
             services.AddSingleton(s => new NavigationDispatcher());
@@ -270,6 +255,7 @@ namespace NaturalnieApp2
             /*            string connectionString = string.Format("server = {0}; port = 3306; database = shop;" +
                         "uid = admin; password = admin; Connection Timeout = 10", "localhost");*/
 
+            //Transient for the ShopContext
             services.AddTransient<ShopContext>(s => new ShopContext(connectionString));
 
             //Transient for the DatabaseCommon
@@ -283,6 +269,12 @@ namespace NaturalnieApp2
 
             //Transient for the TaxProvider
             services.AddTransient<TaxProvider>(s => new TaxProvider(s.GetRequiredService<ShopContext>()));
+
+            //Transient for the ManufacturerProvider
+            services.AddTransient<ManufacturerProvider>(s => new ManufacturerProvider(s.GetRequiredService<ShopContext>()));
+
+            //Transient for the SupplierProvider
+            services.AddTransient<SupplierProvider>(s => new SupplierProvider(s.GetRequiredService<ShopContext>()));
 
             //Transient for the InventoryProvider
             services.AddTransient<InventoryProvider>(s => new InventoryProvider(s.GetRequiredService<ShopContext>()));
@@ -298,7 +290,7 @@ namespace NaturalnieApp2
         {
             _serviceProvider.GetRequiredService<MenuBarViewModel>().AddMenuBarMainButton(CreateMenuBarMainButtons());
         }
-
+         
         /// <summary>
         /// Method uset to initialize EventManager
         /// </summary>

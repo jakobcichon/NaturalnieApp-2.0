@@ -1,5 +1,4 @@
-﻿using NaturalnieApp.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class SaleProvider: DatabaseBase<SaleProvider>
+    internal class HintListProvider<T> where T: class
     {
-        public SaleProvider(ShopContext shopContext) : base(shopContext)
+        public HintListProvider(string propertyName)
         {
 
         }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp2.Services.Database.Providers
 {
-    internal class StockProvider: DatabaseBase
+    internal class StockProvider: DatabaseBase<StockProvider>
     {
         public StockProvider(ShopContext shopContext) : base(shopContext)
         {

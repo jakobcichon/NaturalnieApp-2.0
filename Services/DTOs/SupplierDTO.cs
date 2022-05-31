@@ -16,6 +16,8 @@ namespace NaturalnieApp2.Services.DTOs
         public string Name { get; set; }
         public string Info { get; set; }
 
+        public ICollection<ProductDTO> Products { get; set; }
+
         public SupplierDTO DeepCopy()
         {
             SupplierDTO supplier = (SupplierDTO)this.MemberwiseClone();
