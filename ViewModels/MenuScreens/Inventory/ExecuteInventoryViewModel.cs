@@ -62,7 +62,7 @@ namespace NaturalnieApp2.ViewModels.MenuScreens.Inventory
 
         public Action<bool> OnDataFiltered { get; set; }
 
-        public string? ActualInventoryName { get => "Inwentaryzacja 2021"; }
+        public string? ActualInventoryName { get => "Inwentaryzacja2022"; }
 
         private StockProvider _stockProvider;
         public StockProvider StockProvider

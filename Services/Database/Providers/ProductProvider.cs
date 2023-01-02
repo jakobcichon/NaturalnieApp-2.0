@@ -282,7 +282,7 @@ namespace NaturalnieApp2.Services.Database.Providers
                 SupplierCode = productDTO.SupplierCode,
                 BarCodeShort = productDTO.BarCodeShort,
                 Discount = productDTO.Discount,
-                ElzabProductId = productDTO.ElzabProductId,
+                ElzabProductId = productDTO.ElzabProductId ?? -1,
                 ElzabProductName = productDTO.ElzabProductName,
                 FinalPrice = productDTO.FinalPrice,
                 ManufacturerName = manufacturerDTOs.Find(e => e.Id == productDTO.ManufacturerId)?.Name,

@@ -14,7 +14,7 @@ namespace NaturalnieApp2.Services.DTOs
         [Key]
         public int Id { get; set; }
         public int SupplierId { get; set; }
-        public int ElzabProductId { get; set; }
+        public int? ElzabProductId { get; set; }
         public int ManufacturerId { get; set; }
         public string ProductName { get; set; }
         public string ElzabProductName { get; set; }
@@ -28,6 +28,7 @@ namespace NaturalnieApp2.Services.DTOs
         public string BarCodeShort { get; set; }
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
+        public bool CanBeRemoveFromCashRegister { get; set; }
 
         public ProductDTO DeepCopy()
         {
