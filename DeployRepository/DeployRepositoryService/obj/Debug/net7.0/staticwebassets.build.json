@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ayzSfv89DZGkgjDySx6ifcjW6LfxKrEEuV1ZdmBGVTc=",
+  "Source": "DeployRepositoryService",
+  "BasePath": "_content/DeployRepositoryService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,17 @@
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\bin\Debug\net7.0\DeployRepository.exe
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\bin\Debug\net7.0\DeployRepository.deps.json
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\bin\Debug\net7.0\DeployRepository.runtimeconfig.json
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\bin\Debug\net7.0\DeployRepository.dll
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\bin\Debug\net7.0\DeployRepository.pdb
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\bin\Debug\net7.0\CommandLine.dll
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.csproj.AssemblyReference.cache
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.GeneratedMSBuildEditorConfig.editorconfig
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.AssemblyInfoInputs.cache
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.AssemblyInfo.cs
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.csproj.CoreCompileInputs.cache
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.csproj.CopyComplete
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.dll
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\refint\DeployRepository.dll
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.pdb
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\DeployRepository.genruntimeconfig.cache
+C:\!Personal\PrivateRepo\DeployRepository\DeployRepository\obj\Debug\net7.0\ref\DeployRepository.dll

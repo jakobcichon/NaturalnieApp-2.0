@@ -1,0 +1,38 @@
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\bin\Debug\net6.0-windows\NaturalnieApp2_ViewResources.deps.json
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\bin\Debug\net6.0-windows\NaturalnieApp2_ViewResources.dll
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\bin\Debug\net6.0-windows\NaturalnieApp2_ViewResources.pdb
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.csproj.AssemblyReference.cache
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources_MarkupCompile.cache
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.g.resources
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.GeneratedMSBuildEditorConfig.editorconfig
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.AssemblyInfoInputs.cache
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.AssemblyInfo.cs
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.csproj.CoreCompileInputs.cache
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.dll
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\refint\NaturalnieApp2_ViewResources.dll
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.pdb
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ref\NaturalnieApp2_ViewResources.dll
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\ButtonsResources.baml
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\ColorResources.baml
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\ImageResources.baml
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\UserControlResources.baml
+C:\!Personal\Private repo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\BackgroundsResources.baml
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\bin\Debug\net6.0-windows\NaturalnieApp2_ViewResources.deps.json
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\bin\Debug\net6.0-windows\NaturalnieApp2_ViewResources.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\bin\Debug\net6.0-windows\NaturalnieApp2_ViewResources.pdb
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.csproj.AssemblyReference.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\BackgroundsResources.baml
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\ButtonsResources.baml
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\ColorResources.baml
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\ImageResources.baml
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ResourceDictionaries\UserControlResources.baml
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources_MarkupCompile.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.g.resources
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.GeneratedMSBuildEditorConfig.editorconfig
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.AssemblyInfoInputs.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.AssemblyInfo.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.csproj.CoreCompileInputs.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\refint\NaturalnieApp2_ViewResources.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\NaturalnieApp2_ViewResources.pdb
+C:\!Personal\PrivateRepo\NaturalnieApp2_ViewResources\obj\Debug\net6.0-windows\ref\NaturalnieApp2_ViewResources.dll

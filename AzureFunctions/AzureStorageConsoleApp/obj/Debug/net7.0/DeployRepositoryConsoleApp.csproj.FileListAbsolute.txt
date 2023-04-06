@@ -1,0 +1,17 @@
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.csproj.AssemblyReference.cache
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.AssemblyInfoInputs.cache
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.AssemblyInfo.cs
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.csproj.CoreCompileInputs.cache
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\bin\Debug\net7.0\DeployRepositoryConsoleApp.exe
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\bin\Debug\net7.0\DeployRepositoryConsoleApp.deps.json
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\bin\Debug\net7.0\DeployRepositoryConsoleApp.runtimeconfig.json
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\bin\Debug\net7.0\DeployRepositoryConsoleApp.dll
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\bin\Debug\net7.0\DeployRepositoryConsoleApp.pdb
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\bin\Debug\net7.0\CommandLine.dll
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.csproj.CopyComplete
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.dll
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\refint\DeployRepositoryConsoleApp.dll
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.pdb
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\DeployRepositoryConsoleApp.genruntimeconfig.cache
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorageConsoleApp\obj\Debug\net7.0\ref\DeployRepositoryConsoleApp.dll

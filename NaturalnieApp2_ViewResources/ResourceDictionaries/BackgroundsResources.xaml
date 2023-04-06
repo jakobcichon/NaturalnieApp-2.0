@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <!-- Recourses dictionaries-->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Resources\UserControlResources.xaml"/>
+        <ResourceDictionary Source="Resources\ButtonsResources.xaml"/>
+        <ResourceDictionary Source="Resources\ImageResources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

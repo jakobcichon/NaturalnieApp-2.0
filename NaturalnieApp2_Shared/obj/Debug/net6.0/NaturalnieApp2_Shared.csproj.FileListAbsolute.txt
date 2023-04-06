@@ -1,0 +1,24 @@
+C:\!Personal\Private repo\NaturalnieApp2_Shared\bin\Debug\net6.0\NaturalnieApp2_Shared.deps.json
+C:\!Personal\Private repo\NaturalnieApp2_Shared\bin\Debug\net6.0\NaturalnieApp2_Shared.dll
+C:\!Personal\Private repo\NaturalnieApp2_Shared\bin\Debug\net6.0\NaturalnieApp2_Shared.pdb
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.csproj.AssemblyReference.cache
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.AssemblyInfoInputs.cache
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.AssemblyInfo.cs
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.csproj.CoreCompileInputs.cache
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.dll
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\refint\NaturalnieApp2_Shared.dll
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.pdb
+C:\!Personal\Private repo\NaturalnieApp2_Shared\obj\Debug\net6.0\ref\NaturalnieApp2_Shared.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\bin\Debug\net6.0\NaturalnieApp2_Shared.deps.json
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\bin\Debug\net6.0\NaturalnieApp2_Shared.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\bin\Debug\net6.0\NaturalnieApp2_Shared.pdb
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.csproj.AssemblyReference.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.AssemblyInfoInputs.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.AssemblyInfo.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.csproj.CoreCompileInputs.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\refint\NaturalnieApp2_Shared.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\NaturalnieApp2_Shared.pdb
+C:\!Personal\PrivateRepo\NaturalnieApp2_Shared\obj\Debug\net6.0\ref\NaturalnieApp2_Shared.dll

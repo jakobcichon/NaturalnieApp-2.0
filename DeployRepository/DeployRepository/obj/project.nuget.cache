@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "z4/nqpkn74SghJB0HgDWgPMXEe2LGY8qyW3IYrDnRIsfl4jJz1k9LtEKcXDkuKMnG1boX6i1AdUHnBbgPzxuTg==",
+  "success": true,
+  "projectFilePath": "C:\\!Personal\\PrivateRepo\\DeployRepository\\DeployRepository\\DeployRepository.CLI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Jakob.Cichon\\.nuget\\packages\\commandlineparser\\2.9.1\\commandlineparser.2.9.1.nupkg.sha512"
+  ],
+  "logs": []
+}

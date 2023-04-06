@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "q8TU45J4KlhzG5NhjuSsKwZXqJk5p5DoXFBE+eInJ4Mt8idKLM/QCHGUNjAzzbbv+6twMq5zbwNv8Fn+lMZkaQ==",
+  "success": true,
+  "projectFilePath": "C:\\!Personal\\PrivateRepo\\AzureFunctions\\AzureStorageConsoleApp\\DeployRepositoryConsoleApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Jakob.Cichon\\.nuget\\packages\\commandlineparser\\2.9.1\\commandlineparser.2.9.1.nupkg.sha512"
+  ],
+  "logs": []
+}

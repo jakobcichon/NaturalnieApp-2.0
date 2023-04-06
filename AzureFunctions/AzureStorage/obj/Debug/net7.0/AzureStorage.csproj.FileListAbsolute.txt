@@ -1,0 +1,12 @@
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\bin\Debug\net7.0\AzureStorage.deps.json
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\bin\Debug\net7.0\AzureStorage.dll
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\bin\Debug\net7.0\AzureStorage.pdb
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\AzureStorage.csproj.AssemblyReference.cache
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\AzureStorage.GeneratedMSBuildEditorConfig.editorconfig
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\AzureStorage.AssemblyInfoInputs.cache
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\AzureStorage.AssemblyInfo.cs
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\AzureStorage.csproj.CoreCompileInputs.cache
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\AzureStorage.dll
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\refint\AzureStorage.dll
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\AzureStorage.pdb
+C:\!Personal\PrivateRepo\AzureFunctions\AzureStorage\obj\Debug\net7.0\ref\AzureStorage.dll

@@ -1,0 +1,151 @@
+  private async getBitmaps(): Promise<void> {
+        //const tiles = await this.airportFleetApiService.GetTiles();
+
+        console.log(this.map.getLayers());
+
+        var test = this.GetPolygons();
+        console.log("test = ", test);
+
+        const polygonFeature = new ol.Feature(
+            new ol.geom.Polygon([test[2].Points]).transform('EPSG:4326','EPSG:3857'));  
+    
+        console.log("polygonFeature = ", polygonFeature);
+    
+        let source = new VectorSource({
+          features: [polygonFeature]
+        });
+    
+        console.log("source = ", source);
+
+        var layer = new VectorLayer({
+          source: source,
+          style: new Style({
+            stroke: new Stroke({
+              color: 'blue',
+              width: 3,
+            }),
+            fill: new Fill({
+              color: 'rgba(0, 0, 255, 0.1)',
+            }),
+          })
+        });
+
+        console.log("layer = ", layer);
+    
+        this.map.addLayer(layer);
+
+
+        // let i = 1;
+
+        // for (const tile of tiles.tileList) {
+
+        //     const area: IArea = tile.area;
+        //     const nw = this.ConvertGpsPointToMapCoordinates(area.gpsPointNorthWest);
+        //     const se = this.ConvertGpsPointToMapCoordinates(area.gpsPointSouthEast);
+        //     const extent: Extent = [nw[0], se[1], se[0], nw[1]];
+
+        //     const bytes = new Uint8Array(tile.bitmap);
+        //     const blob = new Blob([bytes], { type: 'image/png' });
+        //     const imageUrl = URL.createObjectURL(blob);
+        //     const projection = new Projection({
+        //         code: 'xkcd-image',
+        //         units: 'pixels',
+        //         extent: extent
+        //     });
+
+        //     const staticImage: Static = new Static({
+        //         url: imageUrl,
+        //         projection: projection,
+        //         imageExtent: extent
+        //     });
+
+        //     if (i < this.map.getLayers().getLength()) {
+        //         const imageLayers: ol.Collection<ol.BaseLayer> = this.map.getLayers();
+        //         const baseLayer = imageLayers.getArray()[i];
+        //         const imageLayer = baseLayer as ImageLayer;
+
+        //         imageLayer.setSource(staticImage);
+        //     }
+        //     else {
+        //         const imageLayer: ImageLayer = new ImageLayer({
+
+        //         });
+
+        //         imageLayer.setSource(staticImage);
+
+        //         this.map.addLayer(
+        //             imageLayer
+        //         );
+        //     }
+
+        //     i++;
+        // }
+
+        // while (this.map.getLayers().getLength() > i) {
+        //     this.map.getLayers().pop();
+        // }
+
+    }
+
+    private GetPolygons(): Array<Polygon>
+    {
+        var polygons: Array<Polygon> = new Array<Polygon>();
+        var polygon = new Polygon(); // part2
+        polygon.add([6.13190266218754, 51.9973433690195])
+        polygon.add([6.13196032968136, 51.9973466718808])
+        polygon.add([6.13196837630841, 51.997307863244])
+        polygon.add([6.13190936771008, 51.9973029089476])
+        polygons.push(polygon);
+
+        polygon = new Polygon();
+        polygon.add([6.13195094194981, 51.9973462590232])
+        polygon.add([6.13201531496617, 51.9973557547484])
+        polygon.add([6.13202872601124, 51.99731281754])
+        polygon.add([6.13195228305431, 51.997307450386])
+        polygons.push(polygon);
+
+        polygon = new Polygon();
+        polygon.add([6.13201263275715, 51.9973512133149])
+        polygon.add([6.13210382786366, 51.9973615347541])
+        polygon.add([6.13211589780422, 51.9973185975512])
+        polygon.add([6.13201263275715, 51.9973107532501])
+        polygons.push(polygon);
+
+        polygon = new Polygon();
+        polygon.add([6.13209444013211, 51.9973590576089])
+        polygon.add([6.13222452726933, 51.9973714433335])
+        polygon.add([6.13223525610539, 51.997330983287])
+        polygon.add([6.13209175792309, 51.9973144689718])
+        polygons.push(polygon);
+
+        polygon = new Polygon();
+        polygon.add([6.13220374014946, 51.9973706176187])
+        polygon.add([6.13235059109303, 51.9973871319132])
+        polygon.add([6.1323626610336, 51.9973433690195])
+        polygon.add([6.13221446898552, 51.997330983287])
+        polygons.push(polygon);
+
+        polygon = new Polygon();
+        polygon.add([6.13233181562992, 51.9973809390535])
+        polygon.add([6.13253834572407, 51.9974044719158])
+        polygon.add([6.13255712118717, 51.9973640118992])
+        polygon.add([6.13234120336147, 51.9973429561618])
+        polygons.push(polygon);
+
+        return polygons;
+
+    }
+
+}
+
+class Polygon{
+    public Points: ol.Coordinate[];
+
+    constructor()
+    {
+        this.Points = [];
+    }
+
+    public add(cord: ol.Coordinate): void{
+        this.Points.push(cord);
+    }

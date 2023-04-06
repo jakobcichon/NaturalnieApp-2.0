@@ -1,0 +1,47 @@
+C:\!Personal\Private repo\NaturalnieApp2_Controls\bin\Debug\net6.0-windows\NaturalnieApp2_Controls.deps.json
+C:\!Personal\Private repo\NaturalnieApp2_Controls\bin\Debug\net6.0-windows\NaturalnieApp2_Controls.dll
+C:\!Personal\Private repo\NaturalnieApp2_Controls\bin\Debug\net6.0-windows\NaturalnieApp2_Controls.pdb
+C:\!Personal\Private repo\NaturalnieApp2_Controls\bin\Debug\net6.0-windows\NaturalnieApp2_Shared.dll
+C:\!Personal\Private repo\NaturalnieApp2_Controls\bin\Debug\net6.0-windows\NaturalnieApp2_ViewResources.dll
+C:\!Personal\Private repo\NaturalnieApp2_Controls\bin\Debug\net6.0-windows\NaturalnieApp2_Shared.pdb
+C:\!Personal\Private repo\NaturalnieApp2_Controls\bin\Debug\net6.0-windows\NaturalnieApp2_ViewResources.pdb
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.csproj.AssemblyReference.cache
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\ImageResources.baml
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\SelectionControls\ComboboxNaturalnieApp.g.cs
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls_MarkupCompile.cache
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls_MarkupCompile.lref
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\SelectionControls\ComboboxNaturalnieApp.baml
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.g.resources
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.GeneratedMSBuildEditorConfig.editorconfig
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.AssemblyInfoInputs.cache
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.AssemblyInfo.cs
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.csproj.CoreCompileInputs.cache
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.csproj.CopyComplete
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.dll
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\refint\NaturalnieApp2_Controls.dll
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.pdb
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\ref\NaturalnieApp2_Controls.dll
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\BottomButtonBarView.baml
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\BottomButtonBarView.g.cs
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\DataGridSettingsView.g.cs
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\ElementDeliminer.g.cs
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\ModelPropertyPresenter.g.cs
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\PropertyDisplay.g.cs
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\ShopProductSelector.g.cs
+C:\!Personal\Private repo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.csproj.AssemblyReference.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\ImageResources.baml
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\BottomButtonBarView.baml
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\BottomButtonBarView.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\DataGridSettingsView.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\ElementDeliminer.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\ModelPropertyPresenter.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\PropertyDisplay.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\SelectionControls\ComboboxNaturalnieApp.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\MVVM\Views\ShopProductSelector.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls_MarkupCompile.cache
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls_MarkupCompile.lref
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\refint\NaturalnieApp2_Controls.dll
+C:\!Personal\PrivateRepo\NaturalnieApp2_Controls\obj\Debug\net6.0-windows\NaturalnieApp2_Controls.pdb
