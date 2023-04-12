@@ -8,7 +8,7 @@ namespace AzureStorage
         public required string ConnectionString { get; init; }
         public required string ShareName { get; init; }
 
-        public bool IsInitilized  => !(_shareClient is null);
+        public bool IsInitilized  => _shareClient is not null;
         
         private ShareClient? _shareClient;
 

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "hzZBxBkgEqahLAL/4rLcPaL+MehMc6YCpbn3x67aIYZVR3cHV6yJYvheQtjm/7wbjt7Gdc7Rmwl0rdNopDSqUw==",
+  "dgSpecHash": "rmZIt850FxyD4v2CQPLjK3adhDkoWj+faK/e5PsfXtTXOWawvIn4a0dioky44GFPlgn9ZOOF8SKwCgJn75t/yw==",
   "success": true,
   "projectFilePath": "C:\\!Personal\\PrivateRepo\\AzureFunctions\\AzureStorage.Tests\\AzureStorage.Tests.csproj",
   "expectedPackageFiles": [
